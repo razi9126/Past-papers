@@ -75,7 +75,8 @@ class AddQ extends Component {
               </legend>
               
               <label htmlFor="job">Subject:</label>
-              <select id="job" name="Subject" onChange={this.changeHandler} required>
+              <select defaultValue = "-----" id="job" name="Subject" onChange={this.changeHandler} required>
+                  <option value="None">--------</option>
                   <option value="Physics">Physics</option>
                   <option value="Chemistry">Chemistry</option>
                   <option value="Mathematics">Mathematics</option>
@@ -108,8 +109,9 @@ class AddQ extends Component {
               </div>
 
               <label htmlFor="job">Answer</label>
-              <select id="job" name="Answer" onChange={this.changeHandler} required>
+              <select defaultValue="-----" id="job" name="Answer" onChange={this.changeHandler} required>
                 <optgroup>
+                  <option value="None">--------</option>
                   <option value="A">A</option>
                   <option value="B">B</option>
                   <option value="C">C</option>
