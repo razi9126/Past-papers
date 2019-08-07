@@ -129,7 +129,7 @@ function uploadFile(auth) {
 }
 
 app.post('/upload-question', (req, res) => {
-  console.log(req.body)  
+  console.log(req.body);
 });
 
 
