@@ -9,7 +9,8 @@ const { google } = require('googleapis');
 const SCOPES = ['https://www.googleapis.com/auth/drive'];
 const TOKEN_PATH = 'token.json';
 const readline = require('readline');
-const PORT = process.env.PORT || 2001;
+// const PORT = process.env.PORT || 2001;
+const PORT = 2001;
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -121,7 +122,8 @@ function uploadFile(auth) {
       // Handle error
       console.error(err);
     } else {
-      console.log('File Id: ', file.id);
+      console.log(file);    	
+      console.log('File Id: ', file.data.id);
     }
   });
 }
