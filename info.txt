@@ -1,2 +1,8 @@
 public folder id : 1GfTFUiZQmhpHLAYv-7AX0xQRsrOtgbFk
 file id: 19-K3F_36NAulp475PrQNOsWtEtjTWyMs
+
+
+To access the file, use the link
+https://drive.google.com/uc?export=view&id=19-K3F_36NAulp475PrQNOsWtEtjTWyMs
+
+https://drive.google.com/uc?id=19-K3F_36NAulp475PrQNOsWtEtjTWyMs

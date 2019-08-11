@@ -11,24 +11,25 @@ const TOKEN_PATH = 'token.json';
 const readline = require('readline');
 // const PORT = process.env.PORT || 2001;
 const PORT = 2001;
+// The authdata will be stored in this global variable. Pass this auth data
+// to each function call.
+var auth_data;
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-// if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, 'pastpaper/build')));
+app.use(express.static(path.join(__dirname, 'pastpaper/build')));
 	
-  app.get('*', function(req, res) {
+app.get('*', function(req, res) {
 	res.sendFile(path.join(__dirname, 'pastpaper/build', 'index.html'));
-  });
-// }
+});
 
 // Load client secrets from a local file.
 fs.readFile('credentials.json', (err, content) => {
   if (err) return console.log('Error loading client secret file:', err);
   // Authorize a client with credentials, then call the Google Drive API.
-  authorize(JSON.parse(content), shareFolder);
+  authorize(JSON.parse(content), saveAuth);
 });
 
 /**
@@ -81,27 +82,9 @@ function getAccessToken(oAuth2Client, callback) {
   });
 }
 
-/**
- * Lists the names and IDs of up to 10 files.
- * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
- */
-function listFiles(auth) {
-  const drive = google.drive({version: 'v3', auth});
-  drive.files.list({
-	pageSize: 10,
-	fields: 'nextPageToken, files(id, name)',
-  }, (err, res) => {
-	if (err) return console.log('The API returned an error: ' + err);
-	const files = res.data.files;
-	if (files.length) {
-	  console.log('Files:');
-	  files.map((file) => {
-		console.log(`${file.name} (${file.id})`);
-	  });
-	} else {
-	  console.log('No files found.');
-	}
-  });
+function saveAuth(auth) {
+	auth_data = auth;
+	console.log("Authentication complete")
 }
 
 function uploadFile(auth) {
@@ -144,7 +127,6 @@ function shareFolder(auth) {
 	    });
 }
 
-
 function makeFolder(auth) {
 	const drive = google.drive({version: 'v3', auth});
 	var fileMetadata = {
@@ -167,8 +149,6 @@ function makeFolder(auth) {
 app.post('/upload-question', (req, res) => {
   console.log(req.body);
 });
-
-
  
 app.listen(PORT, () =>
   console.log(`🚀 Server ready at http://localhost:${PORT}`)
