@@ -2,7 +2,7 @@ const express = require('express');
 const {MongoClient, ObjectId} = require('mongodb');
 const bodyParser = require('body-parser');
 const path = require('path');
-
+const multer = require("multer");
 const fs = require('fs');
 const { google } = require('googleapis');
 // If modifying these scopes, delete token.json.
@@ -18,7 +18,6 @@ var auth_data;
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
 app.use(express.static(path.join(__dirname, 'pastpaper/build')));
 	
 app.get('*', function(req, res) {
@@ -30,7 +29,7 @@ fs.readFile('credentials.json', (err, content) => {
   if (err) return console.log('Error loading client secret file:', err);
   // Authorize a client with credentials, then call the Google Drive API.
   authorize(JSON.parse(content), saveAuth);
-});
+})
 
 /**
  * Create an OAuth2 client with the given credentials, and then execute the
@@ -84,19 +83,21 @@ function getAccessToken(oAuth2Client, callback) {
 
 function saveAuth(auth) {
 	auth_data = auth;
-	console.log("Authentication complete")
+	console.log("Authentication complete");
+	uploadFile(auth_data,'photo.jpeg');
 }
 
-function uploadFile(auth) {
+function uploadFile(auth, name) {
 	const drive = google.drive({version: 'v3', auth});
+	const filepath = 'files/' + name
 	var folderId = '1GfTFUiZQmhpHLAYv-7AX0xQRsrOtgbFk';
 	var fileMetadata = {
-	  'name': 'photo.jpg',
+	  'name': 'photo1.jpg',
 	  parents: [folderId]
 	};
 	var media = {
-	  mimeType: 'image/jpeg',
-	  body: fs.createReadStream('files/photo.jpeg')
+	  mimeType: ['image/jpeg','image/jpg'],
+	  body: fs.createReadStream(filepath)
 	};
 	drive.files.create({
 	  resource: fileMetadata,
@@ -146,9 +147,40 @@ function makeFolder(auth) {
 	});
 }
 
+const storage = multer.diskStorage({
+      destination: (req, file, cb) => {
+        /*
+          Files will be saved in the 'uploads' directory. Make
+          sure this directory already exists!
+        */
+        cb(null, './files');
+      },
+      filename: function(req, file, cb){
+      cb(null,"IMAGE-" + Date.now() + path.extname(file.originalname));
+   },   
+    });
+    // create the multer instance that will be used to upload/save the file
+    const upload = multer({ storage });
+
+app.post('/uploadpic', upload.single('selectedFile'), (req, res) => {
+	let x = req.file.filename;
+	console.log(x);
+	uploadFile(auth_data,x);
+
+      /*
+        We now have a new req.file object here. At this point the file has been saved
+        and the req.file.filename value will be the name returned by the
+        filename() function defined in the diskStorage configuration. Other form fields
+        are available here in req.body.
+      */
+      res.send("DOne");
+    });
+
+
 app.post('/upload-question', (req, res) => {
   console.log(req.body);
 });
+
  
 app.listen(PORT, () =>
   console.log(`🚀 Server ready at http://localhost:${PORT}`)
