@@ -27,11 +27,18 @@ class AddQ extends Component {
   }
 
   fileSelectedHandler = event =>{
-    this.setState({
-      selectedFile: event.target.files[0],
-      selectText: event.target.files[0].name
+    let p1= new Promise((resolve, reject) =>{
+      this.setState({
+        selectedFile: event.target.files[0],
+        selectText: event.target.files[0].name
+      })
+      let x=0
+      resolve(x)
+      
     })
-    console.log(event.target.files[0].name)
+    p1.then(x=>{
+      console.log(this.state.selectedFile)
+    })
   }
 
   changeHandler = event => {
@@ -75,8 +82,8 @@ class AddQ extends Component {
               </legend>
               
               <label htmlFor="job">Subject:</label>
-              <select defaultValue = "-----" id="job" name="Subject" onChange={this.changeHandler} required>
-                  <option value="None">--------</option>
+              <select defaultValue= "None" id="job" name="Subject" onChange={this.changeHandler} required>
+                  <option value="None">-------</option>
                   <option value="Physics">Physics</option>
                   <option value="Chemistry">Chemistry</option>
                   <option value="Mathematics">Mathematics</option>
@@ -109,9 +116,9 @@ class AddQ extends Component {
               </div>
 
               <label htmlFor="job">Answer</label>
-              <select defaultValue="-----" id="job" name="Answer" onChange={this.changeHandler} required>
+              <select defaultValue="None" id="job" name="Answer" onChange={this.changeHandler} required>
                 <optgroup>
-                  <option value="None">--------</option>
+                  <option value="None">-------</option>
                   <option value="A">A</option>
                   <option value="B">B</option>
                   <option value="C">C</option>

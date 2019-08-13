@@ -16,6 +16,8 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+let auth_copy = null
+
 // if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, 'pastpaper/build')));
     
@@ -46,7 +48,8 @@ function authorize(credentials, callback) {
   fs.readFile(TOKEN_PATH, (err, token) => {
     if (err) return getAccessToken(oAuth2Client, callback);
     oAuth2Client.setCredentials(JSON.parse(token));
-    callback(oAuth2Client);
+    auth_copy = oAuth2Client
+    // callback(oAuth2Client);
   });
 }
 
@@ -104,14 +107,14 @@ function listFiles(auth) {
   });
 }
 
-function uploadFile(auth) {
+function uploadFile(auth, filename) {
   const drive = google.drive({version: 'v3', auth});
   const fileMetadata = {
-    'name': 'photo.jpg'
+    'name': 'photo1.jpg'
   };
   const media = {
     mimeType: 'image/jpeg',
-    body: fs.createReadStream('files/photo.jpeg')
+    body: fs.createReadStream(filename)
   };
   drive.files.create({
     resource: fileMetadata,
@@ -129,11 +132,11 @@ function uploadFile(auth) {
 }
 
 app.post('/upload-question', (req, res) => {
-  console.log(req.body);
+  console.log(req.body.Question.length);
+  uploadFile(auth_copy, req.body.Question.name)
 });
 
 
- 
 app.listen(PORT, () =>
   console.log(`🚀 Server ready at http://localhost:${PORT}`)
 );
