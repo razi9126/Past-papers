@@ -90,6 +90,33 @@ function saveAuth(auth) {
 	// uploadFile(auth_data,'photo.jpeg');
 }
 
+const fileUpload = (auth,name) => {
+  return new Promise((resolve, reject) => {
+		const drive = google.drive({version: 'v3', auth});
+		const filepath = 'files/' + name
+		var folderId = '1GfTFUiZQmhpHLAYv-7AX0xQRsrOtgbFk';
+		var fileMetadata = {
+		'name': 'photo1.jpg',
+		parents: [folderId]
+		};
+		var media = {
+		mimeType: ['image/jpeg','image/jpg'],
+		body: fs.createReadStream(filepath)
+		};
+		drive.files.create({
+		  resource: fileMetadata,
+		  media: media,
+		  fields: 'id'
+		}, function (err, file) {
+		  if (err) {
+		    reject(err);
+		  } else {
+		    resolve(file.data.id);
+		  }
+		});  
+  });
+};
+
 function uploadFile(auth, name) {
 	const drive = google.drive({version: 'v3', auth});
 	const filepath = 'files/' + name
@@ -168,16 +195,19 @@ const storage = multer.diskStorage({
 app.post('/uploadpic', upload.single('selectedFile'), (req, res) => {
 	let filename = req.file.filename;
 	console.log(filename);
-	await uploadFile(auth_data,filename);
+	fileUpload(auth_data,filename).then(fileid =>{
+		console.log("Drive id of file is: ", fileid);
+	})
+	// uploadFile(auth_data,filename);
 
-	await unlinkAsync(filename) //COULD GIVE ERROR. NEEDS PATH. CAN'T TEST DUE TO GIT ISSUES
+	// await unlinkAsync(filename) //COULD GIVE ERROR. NEEDS PATH. CAN'T TEST DUE TO GIT ISSUES
       /*
         We now have a new req.file object here. At this point the file has been saved
         and the req.file.filename value will be the name returned by the
         filename() function defined in the diskStorage configuration. Other form fields
         are available here in req.body.
       */
-      res.send("File Uploaded");
+      // res.send("File Uploaded");
     });
 
 
