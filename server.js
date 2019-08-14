@@ -5,6 +5,9 @@ const path = require('path');
 const multer = require("multer");
 const fs = require('fs');
 const { google } = require('googleapis');
+const { promisify } = require('util');
+
+const unlinkAsync = promisify(fs.unlink);
 // If modifying these scopes, delete token.json.
 const SCOPES = ['https://www.googleapis.com/auth/drive'];
 const TOKEN_PATH = 'token.json';
@@ -163,17 +166,18 @@ const storage = multer.diskStorage({
     const upload = multer({ storage });
 
 app.post('/uploadpic', upload.single('selectedFile'), (req, res) => {
-	let x = req.file.filename;
-	console.log(x);
-	uploadFile(auth_data,x);
+	let filename = req.file.filename;
+	console.log(filename);
+	await uploadFile(auth_data,filename);
 
+	await unlinkAsync(filename) //COULD GIVE ERROR. NEEDS PATH. CAN'T TEST DUE TO GIT ISSUES
       /*
         We now have a new req.file object here. At this point the file has been saved
         and the req.file.filename value will be the name returned by the
         filename() function defined in the diskStorage configuration. Other form fields
         are available here in req.body.
       */
-      res.send("DOne");
+      res.send("File Uploaded");
     });
 
 
