@@ -6,6 +6,11 @@ const multer = require("multer");
 const fs = require('fs');
 const { google } = require('googleapis');
 const { promisify } = require('util');
+var firebase = require("firebase/app");
+
+// Add the Firebase products that you want to use
+require("firebase/auth");
+require("firebase/firestore");
 
 const unlinkAsync = promisify(fs.unlink);
 // If modifying these scopes, delete token.json.
@@ -17,6 +22,17 @@ const PORT = 2001;
 // The authdata will be stored in this global variable. Pass this auth data
 // to each function call.
 var auth_data;
+var firebaseConfig = {
+    apiKey: "AIzaSyBEt4ft31_lsa5sDivuQ7b2k1pyJMvwjSQ",
+    authDomain: "pastpaper.firebaseapp.com",
+    databaseURL: "https://pastpaper.firebaseio.com",
+    projectId: "pastpaper",
+    storageBucket: "",
+    messagingSenderId: "908127586907",
+    appId: "1:908127586907:web:4e2640bffabd0bac"
+  };
+  // Initialize Firebase
+firebase.initializeApp(firebaseConfig);
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -143,38 +159,46 @@ function uploadFile(auth, name) {
 	});
 }
 
-function shareFolder(auth) {
-	var permissions ={
-	    'type': 'anyone',
-	    'role': 'reader',
-	  };
-	const drive = google.drive({version: 'v3', auth});
-	drive.permissions.create({
-	      fileId: '1GfTFUiZQmhpHLAYv-7AX0xQRsrOtgbFk',
-	      resource: permissions,
-	  }, function(err,result){
-	        if(err) console.log(err) 
-	        else console.log(result)
-	    });
+const shareFolder = (auth) => {
+	return new Promise((resolve, reject) => {
+		var permissions ={
+		    'type': 'anyone',
+		    'role': 'reader',
+		  };
+		const drive = google.drive({version: 'v3', auth});
+		drive.permissions.create({
+		      fileId: '1GfTFUiZQmhpHLAYv-7AX0xQRsrOtgbFk',
+		      resource: permissions,
+		},function(err,result){
+	        if(err){
+	       		reject(err) 
+	        }
+	        else {
+	        	resolve(result)
+	        }
+		});
+	})
 }
 
-function makeFolder(auth) {
-	const drive = google.drive({version: 'v3', auth});
-	var fileMetadata = {
-	  'name': 'Question-Images',
-	  'mimeType': 'application/vnd.google-apps.folder'
-	};
-	drive.files.create({
-	  resource: fileMetadata,
-	  fields: 'id'
-	}, function (err, file) {
-	  if (err) {
-		// Handle error
-		console.error(err);
-	  } else {
-		console.log('Folder Id: ', file);
-	  }
-	});
+const makeFolder= (auth) => {
+	return new Promise((resolve, reject) => {
+		const drive = google.drive({version: 'v3', auth});
+		var fileMetadata = {
+		  'name': 'Question-Images',
+		  'mimeType': 'application/vnd.google-apps.folder'
+		};
+		drive.files.create({
+		  resource: fileMetadata,
+		  fields: 'id'
+		}, function (err, file) {
+		  if (err) {
+			// Handle error
+			reject(err);
+		  } else {
+			resolve(file);
+		  }
+		});
+	})
 }
 
 const storage = multer.diskStorage({
@@ -189,18 +213,27 @@ const storage = multer.diskStorage({
       cb(null,"IMAGE-" + Date.now() + path.extname(file.originalname));
    },   
     });
-    // create the multer instance that will be used to upload/save the file
-    const upload = multer({ storage });
+const upload = multer({ storage });
 
 app.post('/uploadpic', upload.single('selectedFile'), (req, res) => {
 	let filename = req.file.filename;
-	console.log(filename);
+	console.log(req.file.path);
+	// console.log(filename);
 	fileUpload(auth_data,filename).then(fileid =>{
 		console.log("Drive id of file is: ", fileid);
-	})
-	// uploadFile(auth_data,filename);
-
-	// await unlinkAsync(filename) //COULD GIVE ERROR. NEEDS PATH. CAN'T TEST DUE TO GIT ISSUES
+		fs.unlink(req.file.path, function (err) {
+			if(err){
+				console.log(err)
+			}
+			else{
+				console.log("Deleted from folder");
+			}
+		});
+	}).catch(
+	   error => {
+	   	console.log("Error in upload to drive: ",error)
+	   }
+	);
       /*
         We now have a new req.file object here. At this point the file has been saved
         and the req.file.filename value will be the name returned by the
