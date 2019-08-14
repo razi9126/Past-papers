@@ -1,44 +1,48 @@
 const express = require('express');
-const {MongoClient, ObjectId} = require('mongodb');
 const bodyParser = require('body-parser');
 const path = require('path');
 const multer = require("multer");
 const fs = require('fs');
 const { google } = require('googleapis');
-const { promisify } = require('util');
 var firebase = require("firebase/app");
 
-// Add the Firebase products that you want to use
-require("firebase/auth");
-require("firebase/firestore");
-
-const unlinkAsync = promisify(fs.unlink);
-// If modifying these scopes, delete token.json.
-const SCOPES = ['https://www.googleapis.com/auth/drive'];
+const SCOPES = ['https://www.googleapis.com/auth/drive']; // If modifying these scopes, delete token.json.
 const TOKEN_PATH = 'token.json';
 const readline = require('readline');
-// const PORT = process.env.PORT || 2001;
-const PORT = 2001;
-// The authdata will be stored in this global variable. Pass this auth data
-// to each function call.
-var auth_data;
-var firebaseConfig = {
-    apiKey: "AIzaSyBEt4ft31_lsa5sDivuQ7b2k1pyJMvwjSQ",
-    authDomain: "pastpaper.firebaseapp.com",
-    databaseURL: "https://pastpaper.firebaseio.com",
-    projectId: "pastpaper",
-    storageBucket: "",
-    messagingSenderId: "908127586907",
-    appId: "1:908127586907:web:4e2640bffabd0bac"
-  };
-  // Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-
+const PORT = 2001; // const PORT = process.env.PORT || 2001;
 const app = express();
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'pastpaper/build')));
-	
+
+// // THIS METHOD IS FOR REALTIME DB NOT FIRESTORE
+// // Add the Firebase products that you want to use
+// require("firebase/auth");
+// require("firebase/firestore");
+
+// var firebaseConfig = {
+//     apiKey: "AIzaSyBEt4ft31_lsa5sDivuQ7b2k1pyJMvwjSQ",
+//     authDomain: "pastpaper.firebaseapp.com",
+//     databaseURL: "https://pastpaper.firebaseio.com",
+//     storageBucket: "",
+//     projectId: "pastpaper",
+//     messagingSenderId: "908127586907",
+//     appId: "1:908127586907:web:4e2640bffabd0bac"
+// };
+// firebase.initializeApp(firebaseConfig); // Initialize Firebase
+
+const admin = require('firebase-admin');
+let serviceAccount = require('past-papers-9566f-firebase-adminsdk-65q4d-c2f9a65bf1.json');
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount)
+  databaseURL: "https://past-papers-9566f.firebaseio.com"
+});
+let db = admin.firestore();
+
+
+var auth_data; // The authdata will be stored in this global variable. Pass this auth data // to each function call.
+
 app.get('*', function(req, res) {
 	res.sendFile(path.join(__dirname, 'pastpaper/build', 'index.html'));
 });
@@ -46,8 +50,7 @@ app.get('*', function(req, res) {
 // Load client secrets from a local file.
 fs.readFile('credentials.json', (err, content) => {
   if (err) return console.log('Error loading client secret file:', err);
-  // Authorize a client with credentials, then call the Google Drive API.
-  authorize(JSON.parse(content), saveAuth);
+  authorize(JSON.parse(content), saveAuth); // Authorize a client with credentials, then call the Google Drive API.
 })
 
 /**
@@ -133,32 +136,6 @@ const fileUpload = (auth,name) => {
   });
 };
 
-function uploadFile(auth, name) {
-	const drive = google.drive({version: 'v3', auth});
-	const filepath = 'files/' + name
-	var folderId = '1GfTFUiZQmhpHLAYv-7AX0xQRsrOtgbFk';
-	var fileMetadata = {
-	  'name': 'photo1.jpg',
-	  parents: [folderId]
-	};
-	var media = {
-	  mimeType: ['image/jpeg','image/jpg'],
-	  body: fs.createReadStream(filepath)
-	};
-	drive.files.create({
-	  resource: fileMetadata,
-	  media: media,
-	  fields: 'id'
-	}, function (err, file) {
-	  if (err) {
-	    // Handle error
-	    console.error(err);
-	  } else {
-	    console.log('File Id: ', file.data.id);
-	  }
-	});
-}
-
 const shareFolder = (auth) => {
 	return new Promise((resolve, reject) => {
 		var permissions ={
@@ -212,13 +189,12 @@ const storage = multer.diskStorage({
       filename: function(req, file, cb){
       cb(null,"IMAGE-" + Date.now() + path.extname(file.originalname));
    },   
-    });
+});
 const upload = multer({ storage });
 
 app.post('/uploadpic', upload.single('selectedFile'), (req, res) => {
 	let filename = req.file.filename;
-	console.log(req.file.path);
-	// console.log(filename);
+	// console.log(req.file.path);
 	fileUpload(auth_data,filename).then(fileid =>{
 		console.log("Drive id of file is: ", fileid);
 		fs.unlink(req.file.path, function (err) {
@@ -234,12 +210,6 @@ app.post('/uploadpic', upload.single('selectedFile'), (req, res) => {
 	   	console.log("Error in upload to drive: ",error)
 	   }
 	);
-      /*
-        We now have a new req.file object here. At this point the file has been saved
-        and the req.file.filename value will be the name returned by the
-        filename() function defined in the diskStorage configuration. Other form fields
-        are available here in req.body.
-      */
       // res.send("File Uploaded");
     });
 
