@@ -174,12 +174,11 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 app.post('/uploadpic', upload.any(), (req, res) => {
-
-	req.files.forEach(function (file) {
-		
+	const promises = req.files.map((file)=>{
 		if (file.fieldname=='question'){
 			let filename = file.filename;
-			fileUpload(auth_data,filename).then(fileid =>{
+			// returning the promise over here
+			return fileUpload(auth_data,filename).then(fileid =>{
 				console.log("Drive id of question is: ", fileid);
 				fs.unlink(file.path, function (err) {
 					if(err){
@@ -197,7 +196,7 @@ app.post('/uploadpic', upload.any(), (req, res) => {
 		}
 		if (file.fieldname=='answer'){
 			let filename = file.filename;
-			fileUpload(auth_data,filename).then(fileid =>{
+			return fileUpload(auth_data,filename).then(fileid =>{
 				console.log("Drive id of answer is: ", fileid);
 				fs.unlink(file.path, function (err) {
 					if(err){
@@ -214,7 +213,13 @@ app.post('/uploadpic', upload.any(), (req, res) => {
 			);
 		}
 	})
+	Promise.all(promises).then(()=>{
+		console.log("Done uploading both files")
+		res.send("Both uploads completed")
+	});
 });
+
+
 	// let filename = req.file.filename;
 	// console.log(req.body);
 	// fileUpload(auth_data,filename).then(fileid =>{
