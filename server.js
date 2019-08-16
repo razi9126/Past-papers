@@ -16,32 +16,16 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'pastpaper/build')));
 
-// // THIS METHOD IS FOR REALTIME DB NOT FIRESTORE
-// // Add the Firebase products that you want to use
-// require("firebase/auth");
-// require("firebase/firestore");
-
-// var firebaseConfig = {
-//     apiKey: "AIzaSyBEt4ft31_lsa5sDivuQ7b2k1pyJMvwjSQ",
-//     authDomain: "pastpaper.firebaseapp.com",
-//     databaseURL: "https://pastpaper.firebaseio.com",
-//     storageBucket: "",
-//     projectId: "pastpaper",
-//     messagingSenderId: "908127586907",
-//     appId: "1:908127586907:web:4e2640bffabd0bac"
-// };
-// firebase.initializeApp(firebaseConfig); // Initialize Firebase
-
 const admin = require('firebase-admin');
-let serviceAccount = require('past-papers-9566f-firebase-adminsdk-65q4d-c2f9a65bf1.json');
+let serviceAccount = require('./past-papers-9566f-firebase-adminsdk-65q4d-c2f9a65bf1.json');
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount)
+  credential: admin.credential.cert(serviceAccount),
   databaseURL: "https://past-papers-9566f.firebaseio.com"
 });
 let db = admin.firestore();
 
-
-var auth_data; // The authdata will be stored in this global variable. Pass this auth data // to each function call.
+// The authdata will be stored in this global variable. Pass this auth data // to each function call.
+var auth_data; 
 
 app.get('*', function(req, res) {
 	res.sendFile(path.join(__dirname, 'pastpaper/build', 'index.html'));
@@ -190,16 +174,18 @@ const storage = multer.diskStorage({
       cb(null,"IMAGE-" + Date.now() + path.extname(file.originalname));
    },   
 });
+
 const upload = multer({ storage });
 
 app.post('/uploadpic', upload.single('selectedFile'), (req, res) => {
 	let filename = req.file.filename;
-	// console.log(req.file.path);
+	console.log(req.body);
 	fileUpload(auth_data,filename).then(fileid =>{
 		console.log("Drive id of file is: ", fileid);
 		fs.unlink(req.file.path, function (err) {
 			if(err){
-				console.log(err)
+				console.log("Error in deleting from server", err)
+				res.send("File Uploaded");
 			}
 			else{
 				console.log("Deleted from folder");
@@ -210,8 +196,7 @@ app.post('/uploadpic', upload.single('selectedFile'), (req, res) => {
 	   	console.log("Error in upload to drive: ",error)
 	   }
 	);
-      // res.send("File Uploaded");
-    });
+});
 
 
 app.post('/upload-question', (req, res) => {
