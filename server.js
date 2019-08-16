@@ -220,33 +220,10 @@ app.post('/uploadpic', upload.any(), (req, res) => {
 	});
 });
 
-
-	// let filename = req.file.filename;
-	// console.log(req.body);
-	// fileUpload(auth_data,filename).then(fileid =>{
-	// 	console.log("Drive id of file is: ", fileid);
-	// 	fs.unlink(req.file.path, function (err) {
-	// 		if(err){
-	// 			console.log("Error in deleting from server", err)
-	// 			res.send("File Uploaded");
-	// 		}
-	// 		else{
-	// 			console.log("Deleted from folder");
-	// 		}
-	// 	});
-	// }).catch(
-	//    error => {
-	//    	console.log("Error in upload to drive: ",error)
-	//    }
-	// );
-
-
-
 app.post('/upload-question', (req, res) => {
   console.log(req.body);
 });
 
- 
 app.listen(PORT, () =>
   console.log(`🚀 Server ready at http://localhost:${PORT}`)
 );
