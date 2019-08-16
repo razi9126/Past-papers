@@ -164,10 +164,6 @@ const makeFolder= (auth) => {
 
 const storage = multer.diskStorage({
       destination: (req, file, cb) => {
-        /*
-          Files will be saved in the 'uploads' directory. Make
-          sure this directory already exists!
-        */
         cb(null, './files');
       },
       filename: function(req, file, cb){
@@ -177,26 +173,67 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-app.post('/uploadpic', upload.single('selectedFile'), (req, res) => {
-	let filename = req.file.filename;
-	console.log(req.body);
-	fileUpload(auth_data,filename).then(fileid =>{
-		console.log("Drive id of file is: ", fileid);
-		fs.unlink(req.file.path, function (err) {
-			if(err){
-				console.log("Error in deleting from server", err)
-				res.send("File Uploaded");
-			}
-			else{
-				console.log("Deleted from folder");
-			}
-		});
-	}).catch(
-	   error => {
-	   	console.log("Error in upload to drive: ",error)
-	   }
-	);
+app.post('/uploadpic', upload.any(), (req, res) => {
+
+	req.files.forEach(function (file) {
+		
+		if (file.fieldname=='question'){
+			let filename = file.filename;
+			fileUpload(auth_data,filename).then(fileid =>{
+				console.log("Drive id of question is: ", fileid);
+				fs.unlink(file.path, function (err) {
+					if(err){
+						console.log("Error in deleting question from server", err)
+					}
+					else{
+						console.log("Deleted from folder");
+					}
+				});
+			}).catch(
+			   error => {
+			   	console.log("Error in upload to drive: ",error)
+			   }
+			);
+		}
+		if (file.fieldname=='answer'){
+			let filename = file.filename;
+			fileUpload(auth_data,filename).then(fileid =>{
+				console.log("Drive id of answer is: ", fileid);
+				fs.unlink(file.path, function (err) {
+					if(err){
+						console.log("Error in deleting answer from server", err)
+					}
+					else{
+						console.log("Deleted from folder");
+					}
+				});
+			}).catch(
+			   error => {
+			   	console.log("Error in upload to drive: ",error)
+			   }
+			);
+		}
+	})
 });
+	// let filename = req.file.filename;
+	// console.log(req.body);
+	// fileUpload(auth_data,filename).then(fileid =>{
+	// 	console.log("Drive id of file is: ", fileid);
+	// 	fs.unlink(req.file.path, function (err) {
+	// 		if(err){
+	// 			console.log("Error in deleting from server", err)
+	// 			res.send("File Uploaded");
+	// 		}
+	// 		else{
+	// 			console.log("Deleted from folder");
+	// 		}
+	// 	});
+	// }).catch(
+	//    error => {
+	//    	console.log("Error in upload to drive: ",error)
+	//    }
+	// );
+
 
 
 app.post('/upload-question', (req, res) => {
