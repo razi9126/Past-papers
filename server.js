@@ -16,22 +16,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'pastpaper/build')));
 
-// // THIS METHOD IS FOR REALTIME DB NOT FIRESTORE
-// // Add the Firebase products that you want to use
-// require("firebase/auth");
-// require("firebase/firestore");
-
-// var firebaseConfig = {
-//     apiKey: "AIzaSyBEt4ft31_lsa5sDivuQ7b2k1pyJMvwjSQ",
-//     authDomain: "pastpaper.firebaseapp.com",
-//     databaseURL: "https://pastpaper.firebaseio.com",
-//     storageBucket: "",
-//     projectId: "pastpaper",
-//     messagingSenderId: "908127586907",
-//     appId: "1:908127586907:web:4e2640bffabd0bac"
-// };
-// firebase.initializeApp(firebaseConfig); // Initialize Firebase
-
 const admin = require('firebase-admin');
 let serviceAccount = require('./past-papers-9566f-firebase-adminsdk-65q4d-c2f9a65bf1.json');
 admin.initializeApp({
@@ -40,8 +24,8 @@ admin.initializeApp({
 })
 let db = admin.firestore();
 
-
-var auth_data; // The authdata will be stored in this global variable. Pass this auth data // to each function call.
+// The authdata will be stored in this global variable. Pass this auth data // to each function call.
+var auth_data; 
 
 app.get('*', function(req, res) {
 	res.sendFile(path.join(__dirname, 'pastpaper/build', 'index.html'));
@@ -102,6 +86,7 @@ function getAccessToken(oAuth2Client, callback) {
 	});
   });
 }
+
 
 function saveAuth(auth) {
 	auth_data = auth;
@@ -180,46 +165,66 @@ const makeFolder= (auth) => {
 
 const storage = multer.diskStorage({
       destination: (req, file, cb) => {
-        /*
-          Files will be saved in the 'uploads' directory. Make
-          sure this directory already exists!
-        */
         cb(null, './files');
       },
       filename: function(req, file, cb){
       cb(null,"IMAGE-" + Date.now() + path.extname(file.originalname));
    },   
 });
+
+
 const upload = multer({ storage });
 
-app.post('/uploadpic', upload.single('selectedFile'), (req, res) => {
-	let filename = req.file.filename;
-	let meta = req.body
-	console.log(meta.description);
-	fileUpload(auth_data,filename).then(fileid =>{
-		console.log("Drive id of file is: ", fileid);
-		fs.unlink(req.file.path, function (err) {
-			if(err){
-				console.log(err)
-			}
-			else{
-				console.log("Deleted from folder");
-			}
-		});
-	}).catch(
-	   error => {
-	   	console.log("Error in upload to drive: ",error)
-	   }
-	);
-      // res.send("File Uploaded");
-    });
-// 
+app.post('/uploadpic', upload.any(), (req, res) => {
+	const promises = req.files.map((file)=>{
+		if (file.fieldname=='question'){
+			let filename = file.filename;
+			// returning the promise over here
+			return fileUpload(auth_data,filename).then(fileid =>{
+				console.log("Drive id of question is: ", fileid);
+				fs.unlink(file.path, function (err) {
+					if(err){
+						console.log("Error in deleting question from server", err)
+					}
+					else{
+						console.log("Deleted from folder");
+					}
+				});
+			}).catch(
+			   error => {
+			   	console.log("Error in upload to drive: ",error)
+			   }
+			);
+		}
+		if (file.fieldname=='answer'){
+			let filename = file.filename;
+			return fileUpload(auth_data,filename).then(fileid =>{
+				console.log("Drive id of answer is: ", fileid);
+				fs.unlink(file.path, function (err) {
+					if(err){
+						console.log("Error in deleting answer from server", err)
+					}
+					else{
+						console.log("Deleted from folder");
+					}
+				});
+			}).catch(
+			   error => {
+			   	console.log("Error in upload to drive: ",error)
+			   }
+			);
+		}
+	})
+	Promise.all(promises).then(()=>{
+		console.log("Done uploading both files")
+		res.send("Both uploads completed")
+	});
+});
 
 app.post('/upload-question', (req, res) => {
   console.log(req.body);
 });
 
- 
 app.listen(PORT, () =>
   console.log(`🚀 Server ready at http://localhost:${PORT}`)
 );
