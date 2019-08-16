@@ -33,11 +33,11 @@ app.use(express.static(path.join(__dirname, 'pastpaper/build')));
 // firebase.initializeApp(firebaseConfig); // Initialize Firebase
 
 const admin = require('firebase-admin');
-let serviceAccount = require('past-papers-9566f-firebase-adminsdk-65q4d-c2f9a65bf1.json');
+let serviceAccount = require('./past-papers-9566f-firebase-adminsdk-65q4d-c2f9a65bf1.json');
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount)
+  credential: admin.credential.cert(serviceAccount),
   databaseURL: "https://past-papers-9566f.firebaseio.com"
-});
+})
 let db = admin.firestore();
 
 
@@ -194,7 +194,8 @@ const upload = multer({ storage });
 
 app.post('/uploadpic', upload.single('selectedFile'), (req, res) => {
 	let filename = req.file.filename;
-	// console.log(req.file.path);
+	let meta = req.body
+	console.log(meta.description);
 	fileUpload(auth_data,filename).then(fileid =>{
 		console.log("Drive id of file is: ", fileid);
 		fs.unlink(req.file.path, function (err) {
@@ -212,7 +213,7 @@ app.post('/uploadpic', upload.single('selectedFile'), (req, res) => {
 	);
       // res.send("File Uploaded");
     });
-
+// 
 
 app.post('/upload-question', (req, res) => {
   console.log(req.body);
