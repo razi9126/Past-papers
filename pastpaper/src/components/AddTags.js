@@ -26,9 +26,15 @@ class AddTags extends React.Component {
           }
     }).then((result) =>{
       console.log(result)
-
       })      
   }
+
+  // componentDidMount() {
+  //   fetch('get-tags')
+  //     .then(response => response.json())
+  //     .then(data => console.log(data));
+  // }
+
 
 
   render() {
@@ -40,7 +46,6 @@ class AddTags extends React.Component {
       </label>
       <input type="submit" value="Submit" />
       </form>
-      <h4> this.state.response
       );
   }
 }
