@@ -19,8 +19,6 @@ class AddQ extends Component {
       answerText: 'Upload Answer Image',
       Difficulty: '',
       Description:'',
-
-
     }
     this.questionselectedHandler = this.questionselectedHandler.bind(this);
     this.answerselectedHandler = this.answerselectedHandler.bind(this);
@@ -29,7 +27,6 @@ class AddQ extends Component {
   }
 
   questionselectedHandler = event =>{
-    // console.log(event.target.files)
     if(event.target.files.length!== 0){
       this.setState({
         questionFile: event.target.files[0],

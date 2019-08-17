@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './DelQ.css'
+import './EditQ.css'
 import '../../node_modules/font-awesome/css/font-awesome.min.css'; 
 import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
@@ -120,7 +120,7 @@ class DelQ extends Component {
 
     const form= (        
       <div className="main_container"> 
-        <h1 className="title"> DELETE A QUESTION </h1>    
+        <h1 className="title"> SEARCH FOR QUESTIONS </h1>    
         <div className="form-style">
           <form onSubmit={this.submitHandler}>
             <fieldset>
@@ -157,7 +157,7 @@ class DelQ extends Component {
     const table = (
       <div>
         <div className="main_container">
-          <h1 className="title"> DELETE A QUESTION </h1>    
+          <h1 className="title"> SEARCH RESULTS </h1>    
         </div>
         <button className="filter" onClick={this.changeFilter}><i className="fa fa-search"></i> Change Filter</button>
             

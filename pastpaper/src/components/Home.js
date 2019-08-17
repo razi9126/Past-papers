@@ -13,7 +13,7 @@ class Home extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <a
             className="App-link"
-            href="\Upload"
+            href="/Menu"
             rel="noopener noreferrer"
           >
             Upload Questions

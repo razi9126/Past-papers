@@ -11,11 +11,7 @@
     "react-fontawesome": "^1.6.1",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
-<<<<<<< HEAD
-    "react-super-responsive-table": "^5.0.0"
-=======
     "react-select": "^3.0.4"
->>>>>>> 3cd66bc705c1e9c16bdcd1b26d04aaa99dc74f41
   },
   "scripts": {
     "start": "react-scripts start",
