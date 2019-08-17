@@ -97,7 +97,7 @@ class AddQ extends Component {
     return (
       <div className="main_container">
         <h1 className="title"> ADD A QUESTION </h1>
-        <div className="form-style">
+        <div className="form-style1">
           <form onSubmit={this.submitHandler}>
             <fieldset>
               <legend>
@@ -130,8 +130,8 @@ class AddQ extends Component {
                 Question Info
               </legend>
 
-              <div className="upload-btn-wrapper">
-                <button className="btn">{this.state.questionText}</button>
+              <div className="upload-btn1-wrapper">
+                <button className="btn1">{this.state.questionText}</button>
                 <input type="file" onChange={this.questionselectedHandler} placeholder="sada" required/>
               </div>
 
@@ -147,8 +147,8 @@ class AddQ extends Component {
                 </optgroup>
               </select>
               
-              <div className="upload-btn-wrapper">
-                <button className="btn">{this.state.answerText}</button>
+              <div className="upload-btn1-wrapper">
+                <button className="btn1">{this.state.answerText}</button>
                 <input type="file" onChange={this.answerselectedHandler} placeholder="sada"/>
               </div>
               <input type="number" name="Difficulty" placeholder="Difficulty" value={this.state.Difficulty} onChange={this.changeHandler} required/>

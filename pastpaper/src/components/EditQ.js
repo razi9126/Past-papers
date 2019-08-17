@@ -3,7 +3,7 @@ import './EditQ.css'
 import '../../node_modules/font-awesome/css/font-awesome.min.css'; 
 import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
-import { Modal, Button } from 'react-bootstrap';
+import { Modal, Button, Card } from 'react-bootstrap';
 
 
 class DelQ extends Component {
@@ -36,25 +36,27 @@ class DelQ extends Component {
   submitHandler = event =>{
     event.preventDefault();
     const { Subject, Year, Zone, Paper } = this.state;  
-    fetch('/find-questions', {
-          method: 'POST',
-          body: JSON.stringify({subject: Subject, year: Year, zone: Zone, paper: Paper}),
-          headers: {
-            "Content-Type": "application/json",
-          }
-    }).then((result) =>{
-        result.json().then(body=>{
-          console.log(body)
-          this.setState({
-            Questions: body,
-            Subject: null,
-            Year: '',
-            Zone: '',
-            Paper: '',
-            Form: false
-          })
-        })
-      })      
+    // fetch('/find-questions', {
+    //       method: 'POST',
+    //       body: JSON.stringify({subject: Subject, year: Year, zone: Zone, paper: Paper}),
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //       }
+    // }).then((result) =>{
+    //     result.json().then(body=>{
+    //       console.log(body)
+    //       this.setState({
+    //         Questions: body,
+    //         Subject: null,
+    //         Year: '',
+    //         Zone: '',
+    //         Paper: '',
+    //         Form: false
+    //       })
+    //     })
+    //   })  
+
+    this.setState({Form: false})    
   }
 
   changeFilter = event =>{
@@ -122,41 +124,18 @@ class DelQ extends Component {
         </Modal.Body>
 
         <Modal.Footer>
-          <Button className= "btn" variant="primary">Save changes</Button>
+          <Button variant="primary">Save changes</Button>
         </Modal.Footer>
       </Modal>
 
     )
 
-    const qlist = this.state.Questions.map((question,i)=>
-        <tr>
-          <td>{question.subject}</td>
-          <td>{question.year}</td>
-          <td>{question.zone}</td>
-          <td>{question.paper}</td>
-          <td>{question.difficulty}</td>
-          <td>{question.description}</td>
-          <td>{question.question_link}</td>
-          <td>{question.answer_link}</td>
-          <td>{question.answer}</td>
-          <td>{question.tags}</td>
-          <td className='select'>
-            <button className='button' onClick = {()=>{this.handleModalShow()}}>
-              Edit
-            </button>
-          </td>
-          <td className='select'>
-            <button className='button' onClick = {(e)=>{this.handleDelete(e,question)}}>
-              Delete
-            </button>
-          </td>
-        </tr>  
-    )
 
-    const form= (        
+    const form= ( 
+    <div>       
       <div className="main_container"> 
         <h1 className="title"> SEARCH FOR QUESTIONS </h1>    
-        <div className="form-style">
+        <div className="form-style1">
           <form onSubmit={this.submitHandler}>
             <fieldset>
               <legend>
@@ -186,10 +165,38 @@ class DelQ extends Component {
             <input type="submit" value="Show Results" />
           </form>
         </div>
-      </div>  
+      </div> 
+        <Button variant = "danger" onClick={() =>{this.handleModalShow()}}> modal </Button>
+    </div> 
     )
 
-    const table = (
+
+    const qlist = this.state.Questions.map((question,i)=>
+        <tr>
+          <td>{question.subject}</td>
+          <td>{question.year}</td>
+          <td>{question.zone}</td>
+          <td>{question.paper}</td>
+          <td>{question.difficulty}</td>
+          <td>{question.description}</td>
+          <td>{question.question_link}</td>
+          <td>{question.answer_link}</td>
+          <td>{question.answer}</td>
+          <td>{question.tags}</td>
+          <td className='select'>
+            <button className='button' onClick = {()=>{this.handleModalShow()}}>
+              Edit
+            </button>
+          </td>
+          <td className='select'>
+            <button className='button' onClick = {(e)=>{this.handleDelete(e,question)}}>
+              Delete
+            </button>
+          </td>
+        </tr>  
+    )
+
+    const cards = (
       <div>
         <div className="main_container">
           <h1 className="title"> SEARCH RESULTS </h1>    
@@ -197,35 +204,28 @@ class DelQ extends Component {
         <button className="filter" onClick={this.changeFilter}><i className="fa fa-search"></i> Change Filter</button>
             
         <div className="main_container">
-        <main>
-          <table>
-            <thead>
-              <tr>
-                <th> Subject</th>
-                <th> Year</th>
-                <th> Zone</th>
-                <th> Paper</th>
-                <th> Difficulty</th>
-                <th> Description</th>
-                <th> Question Link</th>
-                <th> Answer Link</th>
-                <th> Answer Text</th>
-                <th> Tags</th>
-                <th> </th>
-              </tr>
-            </thead>
-            <tbody>
-              {qlist}
-            </tbody>
-          </table>
-        </main>
+          <Card>
+            <Card.Img className = "card-img-top" variant="top" src="https://i.ytimg.com/vi/tSWCs1TuEZI/maxresdefault.jpg" />
+            <Card.ImgOverlay>
+              <Card.Title>QUESTION</Card.Title>
+            </Card.ImgOverlay>
+            <Card.Body>
+              <Card.Text>
+                Subject:<br/> 
+                Year:  <br/>
+                Paper: <br/>
+                Zone:  <br/>
+              </Card.Text>
+            </Card.Body>
+          </Card>
+          <br />
         </div>
       </div>
     )
 
     return (
       <div>
-        {this.state.Form? form:table}
+        {this.state.Form? form:cards}
         {this.state.showModal? editModal:null}
       </div>
 
