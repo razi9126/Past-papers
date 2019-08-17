@@ -239,13 +239,13 @@ app.post('/upload-question', upload.any(), (req, res) => {
 
 		let addQues = db.collection('question').add(data)
 		.then(ref =>{
+			res.send("Upload completed")
 			console.log("Added record with id: ", ref.id)
 		})
 		.catch(error=>{
+			res.send("Couldn't add record to DB")
 			console.log("DB error while adding question: ", error)
 		})
-
-		res.send("Upload completed")
 	});
 });
 
