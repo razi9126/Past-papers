@@ -115,7 +115,7 @@ class EditQ extends Component {
     
     fetch('/delete-question', {
           method: 'POST',
-          body: JSON.stringify({question_id: question.id}),
+          body: JSON.stringify({question_id: question.id, question_link: question.question_link, answer_link: question.answer_link}),
           headers: {
             "Content-Type": "application/json",
           }

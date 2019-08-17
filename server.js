@@ -335,10 +335,27 @@ app.post('/find-tags', (req,res)=>{
 	  });
 });
 
+/**
+* Permanently delete a file, skipping the trash.
+*
+* @param {String} fileId ID of the file to delete.
+*/
+function deleteFile(fileId) {
+  var request = gapi.client.drive.files.delete({
+    'fileId': fileId
+  });
+  request.execute(function(resp) { });
+}
+
 app.post('/delete-question', (req,res)=>{
 	db.collection('question').doc(req.body.question_id).delete()
 		.then(()=>{
 			console.log("Deleted Question: ", req.body.question_id)
+			deleteFile(req.body.question_link)
+			if (req.body.answer_link!="")
+			{
+				deleteFile(req.body.answer_link)
+			}
 			res.send("Deleted Question")
 		})
 		.catch(error =>{
