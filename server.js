@@ -87,24 +87,10 @@ function getAccessToken(oAuth2Client, callback) {
   });
 }
 
-function mytags(){
-	let tagRef = db.collection('tags')
-
-  	let alltags = tagRef.get()
-  	.then(snapshot => {
-	    snapshot.forEach(doc => {
-	      console.log(doc.id, '=>', doc.data());
-	    });
-	  })
-	  .catch(err => {
-	    console.log('Error getting documents', err);
-	  });
-}
 
 function saveAuth(auth) {
 	auth_data = auth;
 	console.log("Authentication complete");
-	mytags()
 	// uploadFile(auth_data,'photo.jpeg');
 }
 
@@ -294,7 +280,6 @@ app.post('/find-questions', (req,res)=>{
 app.post('/add-tags', (req,res)=>{
 	let tagRef = db.collection('tags');
 	val_to_add = req.body.value
-	console.log(val_to_add)
 
 	let query = tagRef.where('value', '==', val_to_add).get()
 	  .then(snapshot => {
@@ -305,17 +290,17 @@ app.post('/add-tags', (req,res)=>{
 			}
 			let addTags = db.collection('tags').add(data)
 				.then(ref =>{
-					res.status(300).send("Tag Added")
+					res.send({response: "Tag Added"})
 					console.log("Added tag with id: ", ref.id)
 				})
 				.catch(error=>{
 
-					res.send("Couldn't add tag to DB")
+					res.send({response: "Couldn't add tag to DB"})
 					console.log("DB error while adding tag: ", error)
 				})
 		}
 	    else{
-	    	res.status(200).send("The tag already exists")
+	    	res.status(200).send({response: "The tag already exists"})
 	    }  
 	  })
 	  .catch(err => {
@@ -323,20 +308,18 @@ app.post('/add-tags', (req,res)=>{
 	  });
 })
 
-app.get('/find-tags', (req,res)=>{
-	// let ret = []
-	// let tagRef = db.collection('tags')
-
- //  	let alltags = tagRef.get()
- //  	.then(snapshot => {
-	//     snapshot.forEach(doc => {
-	//       console.log(doc.id, '=>', doc.data());
-	//     });
-	//   })
-	//   .catch(err => {
-	//     console.log('Error getting documents', err);
-	//   });
-	mytags()
+app.post('/find-tags', (req,res)=>{
+	let tagRef = db.collection('tags')
+  	const alltags = tagRef.get()
+  	.then(snapshot => {
+  		res.send(snapshot)
+	    snapshot.forEach(doc => {
+	      console.log(doc.id, '=>', doc.data());
+	    });
+	  })
+	  .catch(err => {
+	    console.log('Error getting documents', err);
+	  });
 });
 
 app.post('/delete-question', (req,res)=>{

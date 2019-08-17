@@ -6,6 +6,7 @@ class AddTags extends React.Component {
     this.state = {
       value:'',
       response:'',
+      alltags:[],
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -13,32 +14,60 @@ class AddTags extends React.Component {
 
   handleChange(event) {
     this.setState({value: event.target.value});
-  }
+  };
 
   handleSubmit(event) {
     event.preventDefault();
     const { value } = this.state;  
     fetch('/add-tags', {
-          method: 'POST',
-          body: JSON.stringify({value: value}),
-          headers: {
-            "Content-Type": "application/json",
-          }
+      method: 'POST',
+      body: JSON.stringify({value: value}),
+      headers: {
+        "Content-Type": "application/json",
+      }
     }).then((result) =>{
-      console.log(result)
-      })      
-  }
+      result.json().then(body=>{
+        this.setState({response:body.response})
+      })
+    })      
+  };
 
   // componentDidMount() {
-  //   fetch('get-tags')
-  //     .then(response => response.json())
-  //     .then(data => console.log(data));
-  // }
+  //   console.log("Mounted")
+  //   fetch('/find-tags')
+  //   .then((result) =>{
+  //     result.json().then(body=>{
+  //       console.log(body)
+  //     })
+  //   }) 
+  // };
+  componentDidMount() {
+    fetch('/find-tags', {
+      method: 'POST',
+      body: '',
+      headers: {
+        "Content-Type": "application/json",
+      }
+    }).then((result) =>{
+      result.json().then(body=>{
 
-
+        console.log(body)
+        body.forEach((x)=>{
+          console.lod(x)
+        })
+      })
+    }) 
+  }
 
   render() {
+
+    let taglist = this.state.alltags
+    .map((singletag,i) => 
+      <TagCard key={i} {...singletag} />
+      )
+
     return (
+      <React.Fragment>
       <form onSubmit={this.handleSubmit}>
       <label>
       Add Tag
@@ -46,7 +75,21 @@ class AddTags extends React.Component {
       </label>
       <input type="submit" value="Submit" />
       </form>
+      
+      <h5>{this.state.response}</h5>
+
+      </React.Fragment>
       );
   }
+};
+
+const TagCard = (props) => {
+  return (
+    <div>
+    <hr />
+    <p><b>Tag:</b> {props.value.toUpperCase()}</p>
+    <hr />
+    </div>
+    )
 }
 export default AddTags;
