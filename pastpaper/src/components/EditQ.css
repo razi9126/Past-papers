@@ -159,3 +159,10 @@
     /*height: 10vw;*/
     object-fit: cover;
 }
+.spacer{
+  flex: 1;  
+}
+
+.right{
+  align:right;
+}
