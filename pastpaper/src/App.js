@@ -6,6 +6,7 @@ import Upload from './components/Upload';
 import AddQ from './components/AddQ'
 import DelQ from './components/DelQ'
 import RUI from './components/ReactUploadImage'
+import AddTags from './components/AddTags'
 
 class App extends Component {
   render() {
@@ -17,6 +18,7 @@ class App extends Component {
           <Route path='/AddQ' component={AddQ}/>
           <Route path='/DelQ' component={DelQ}/>
           <Route path='/RUI' component={RUI}/>
+          <Route path='/AddTags' component={AddTags}/>
         </Switch>
       </div>
     )
