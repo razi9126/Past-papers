@@ -3,6 +3,7 @@ import './EditQ.css'
 import '../../node_modules/font-awesome/css/font-awesome.min.css'; 
 import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
+import { Modal, Button } from 'react-bootstrap';
 
 
 class DelQ extends Component {
@@ -14,12 +15,15 @@ class DelQ extends Component {
       Zone:  '',
       Paper: '',
       Form: true,
-      Questions:[]
+      Questions:[],
+      showModal:false,
     }
 
     this.changeHandler = this.changeHandler.bind(this);
     this.submitHandler = this.submitHandler.bind(this);
     this.changeFilter = this.changeFilter.bind(this);
+    this.handleModalClose = this.handleModalClose.bind(this);
+    this.handleModalShows = this.handleModalShow.bind(this);
   }
   
   changeHandler = event => {
@@ -97,7 +101,33 @@ class DelQ extends Component {
 
   }
 
+  handleModalClose() {
+      this.setState({ showModal: false });
+  }
+
+  handleModalShow() {
+     this.setState({ showModal: true });
+
+  }
+
   render() {
+    const editModal = (
+      <Modal show={this.state.showModal} animation='true' onHide={this.handleModalClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Edit Question</Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body>
+          <p>Put Form here</p>
+        </Modal.Body>
+
+        <Modal.Footer>
+          <Button className= "btn" variant="primary">Save changes</Button>
+        </Modal.Footer>
+      </Modal>
+
+    )
+
     const qlist = this.state.Questions.map((question,i)=>
         <tr>
           <td>{question.subject}</td>
@@ -111,9 +141,14 @@ class DelQ extends Component {
           <td>{question.answer}</td>
           <td>{question.tags}</td>
           <td className='select'>
-            <a className='button' onClick = {(e)=>{this.handleDelete(e,question)}}>
+            <button className='button' onClick = {()=>{this.handleModalShow()}}>
+              Edit
+            </button>
+          </td>
+          <td className='select'>
+            <button className='button' onClick = {(e)=>{this.handleDelete(e,question)}}>
               Delete
-            </a>
+            </button>
           </td>
         </tr>  
     )
@@ -191,6 +226,7 @@ class DelQ extends Component {
     return (
       <div>
         {this.state.Form? form:table}
+        {this.state.showModal? editModal:null}
       </div>
 
 /*
