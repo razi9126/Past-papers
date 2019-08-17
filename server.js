@@ -305,10 +305,11 @@ app.post('/add-tags', (req,res)=>{
 			}
 			let addTags = db.collection('tags').add(data)
 				.then(ref =>{
-					res.send("Tag Added")
+					res.status(300).send("Tag Added")
 					console.log("Added tag with id: ", ref.id)
 				})
 				.catch(error=>{
+
 					res.send("Couldn't add tag to DB")
 					console.log("DB error while adding tag: ", error)
 				})
