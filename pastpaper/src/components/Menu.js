@@ -34,6 +34,17 @@ class Upload extends Component {
           </div>
         </a>
 
+        <span> &nbsp;&nbsp;</span>
+        
+        <a href = "/AddTags">
+          <div className="inner_container">
+            <img className = "img" src= {plus} alt="" />
+            <div className = "label">
+              <p> Add New Tags </p>
+            </div>  
+          </div>
+        </a>
+
       </div>
     );
   }

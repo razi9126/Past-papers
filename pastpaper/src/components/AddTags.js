@@ -56,24 +56,36 @@ class AddTags extends React.Component {
 
   render() {
 
-    let taglist = this.state.alltags
-    .map((singletag,i) => 
-      <TagCard key={i} {...singletag} />
+    let taglist = this.state.alltags.map((singletag,i) => 
+        <TagCard key={i} {...singletag} />
       )
 
     return (
       <React.Fragment>
-      <form onSubmit={this.handleSubmit}>
-      <label>
-      Add Tag
-      <input type="text" label={this.state.label} onChange={this.handleChange} />
-      </label>
-      <input type="submit" label="Submit" />
-      </form>
-      
-      <h5>{this.state.response}</h5>
-      <h4>Tags already in the list</h4>
-      {taglist}
+          <div className="main_container">
+            <div className="form-style1">
+              <form onSubmit = {this.handleSubmit}>
+                <fieldset>
+                  <legend>
+                    <span className="number">1</span> 
+                    Add a New Tag
+                  </legend>
+                  <input type="text" label={this.state.label} onChange={this.handleChange} />            
+                </fieldset>
+                <input type="submit" value="Add Tag" />
+              </form>
+            </div>
+            
+            <div className="form-style1">
+              <h5>{this.state.response}</h5>
+              <legend>
+                <span className="number">2</span> 
+                Tags Already Added
+              </legend>
+              <div className="list">{taglist}</div>
+            </div>
+          
+          </div>
       </React.Fragment>
       );
   }

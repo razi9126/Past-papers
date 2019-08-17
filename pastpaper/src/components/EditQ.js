@@ -6,7 +6,7 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 import { Modal, Button, Card } from 'react-bootstrap';
 
 
-class DelQ extends Component {
+class EditQ extends Component {
   constructor(props){
     super(props);
     this.state = {
@@ -188,7 +188,9 @@ class DelQ extends Component {
       pr.then(new_list=>{
           this.setState({Questions: new_list})
           console.log(new_list)
+          this.handleModalClose()
       })
+
 
     })
   }
@@ -358,4 +360,4 @@ class DelQ extends Component {
     );
   }
 }
-export default DelQ;
+export default EditQ;
