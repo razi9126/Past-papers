@@ -51,7 +51,8 @@ class DelQ extends Component {
             Year: '',
             Zone: '',
             Paper: '',
-            Form: false
+            Form: false,
+            selectedQ: null,
           })
         })
       })  
@@ -104,14 +105,13 @@ class DelQ extends Component {
   }
 
   handleModalClose() {
-      this.setState({ showModal: false });
+      this.setState({ showModal: false, selectedQ: null });
   }
 
-  handleModalShow() {
-     this.setState({ showModal: true });
-
+  handleModalShow(question) {
+    console.log(question)
+     this.setState({ showModal: true});
   }
-
   render() {
     const editModal = (
       <Modal show={this.state.showModal} animation='true' onHide={this.handleModalClose}>
@@ -120,7 +120,7 @@ class DelQ extends Component {
         </Modal.Header>
 
         <Modal.Body>
-          <p>Put Form here</p>
+          <p>{this.state.selectedQ}</p>
         </Modal.Body>
 
         <Modal.Footer>
@@ -166,7 +166,6 @@ class DelQ extends Component {
           </form>
         </div>
       </div> 
-        <Button variant = "danger" onClick={() =>{this.handleModalShow()}}> modal </Button>
     </div> 
     )
 
@@ -176,7 +175,7 @@ class DelQ extends Component {
           <Card bg = "dark" text= "white">
             <Card.Header as="h5">
                 Question &nbsp; &nbsp;
-                <Button variant="info"> Edit </Button>
+                <Button variant="info" onClick = {(question)=>{this.handleModalShow(question)}}> Edit </Button>
                 &nbsp;
                 <Button variant="danger" onClick={(e)=>{this.handleDelete(e,question)}}> Delete </Button>
             </Card.Header>
@@ -209,7 +208,7 @@ class DelQ extends Component {
         <div className="main_container">
           <h1 className="title"> SEARCH RESULTS </h1>    
         </div>
-        <button className="filter" onClick={this.changeFilter}><i className="fa fa-search"></i> Change Filter</button>
+        <Button className="filter" variant="info" onClick={this.changeFilter}><i className="fa fa-search"></i> Change Filter</Button>
             
         <div>
           {card}
