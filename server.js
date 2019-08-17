@@ -351,6 +351,26 @@ app.post('/delete-question', (req,res)=>{
 		})
 })
 
+app.post('/edit-question', (req,res)=>{
+	db.collection('question').doc(req.body.id).update({
+		subject: req.body.subject,
+		year: req.body.year,
+		zone: req.body.zone,
+		paper: req.body.paper,
+		difficulty: req.body.difficulty,
+		description: req.body.description,
+		answer: req.body.answer
+	})
+	.then(()=>{
+		console.log("Edited Question: ", req.body.id)
+		res.send("Edited Question Successfully!")
+	})
+	.catch(error=>{
+		console.log(error)
+		res.send("Error in Editing Question")
+	})	
+})
+
 app.listen(PORT, () =>
   console.log(`🚀 Server ready at http://localhost:${PORT}`)
 );

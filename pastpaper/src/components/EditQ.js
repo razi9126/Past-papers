@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import './EditQ.css'
 import '../../node_modules/font-awesome/css/font-awesome.min.css'; 
-import { confirmAlert } from 'react-confirm-alert'; // Import
-import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
+import { confirmAlert } from 'react-confirm-alert'; 
+import 'react-confirm-alert/src/react-confirm-alert.css'; 
 import { Modal, Button, Card } from 'react-bootstrap';
 
 
@@ -17,6 +17,14 @@ class DelQ extends Component {
       Form: true,
       Questions:[],
       showModal:false,
+      selectedQid: '',
+      selectedQSubject: '',
+      selectedQYear: '',
+      selectedQZone: '',
+      selectedQPaper: '',
+      selectedQDifficulty: '',
+      selectedQDescription: '',
+      selectedQAnswer: '',
     }
 
     this.changeHandler = this.changeHandler.bind(this);
@@ -29,6 +37,12 @@ class DelQ extends Component {
   changeHandler = event => {
     this.setState({
       [event.target.name]: event.target.value
+    })
+  }
+
+  editChangeHandler = event => {
+    this.setState({
+      ["selectedQ"+event.target.name] : event.target.value
     })
     console.log(event.target.name,event.target.value)
   }
@@ -52,7 +66,14 @@ class DelQ extends Component {
             Zone: '',
             Paper: '',
             Form: false,
-            selectedQ: null,
+            selectedQid: '',
+            selectedQSubject: '',
+            selectedQYear: '',
+            selectedQZone: '',
+            selectedQPaper: '',
+            selectedQDifficulty: '',
+            selectedQDescription: '',
+            selectedQAnswer: '',
           })
         })
       })  
@@ -105,31 +126,144 @@ class DelQ extends Component {
   }
 
   handleModalClose() {
-      this.setState({ showModal: false, selectedQ: null });
+      this.setState({ 
+        showModal: false, 
+        selectedQid: '',
+        selectedQSubject: '',
+        selectedQYear:'',
+        selectedQZone:'',
+        selectedQPaper:'',
+        selectedQDifficulty:'',
+        selectedQDescription:'',
+        selectedQAnswer:'',
+      });
   }
 
   handleModalShow(question) {
-    console.log(question)
-     this.setState({ showModal: true});
+    let p1 = new Promise((resolve, reject)=>{
+      this.setState({
+        selectedQid: question.id,
+        selectedQSubject: question.subject,
+        selectedQYear:question.year,
+        selectedQZone:question.zone,
+        selectedQPaper:question.paper,
+        selectedQDifficulty:question.difficulty,
+        selectedQDescription:question.description,
+        selectedQAnswer:question.answer,
+      })
+      resolve()
+    })
+    p1.then(()=>{
+      this.setState({showModal: true})
+    })
   }
+
+  editSubmitHandler = event =>{
+    event.preventDefault()
+    fetch('/edit-question', {
+      method: 'POST',
+      body: JSON.stringify({id:this.state.selectedQid ,subject: this.state.selectedQSubject, year: this.state.selectedQYear, zone: this.state.selectedQZone, paper: this.state.selectedQPaper, difficulty: this.state.selectedQDifficulty, description:this.state.selectedQDescription, answer: this.state.selectedQAnswer}),
+      headers: {
+        "Content-Type": "application/json",
+      }
+    })
+    .then(res=>{
+      console.log(res.body)
+      let pr = new Promise((resolve, reject)=>{
+        let new_list = this.state.Questions
+        for (var i = 0 ; i< new_list.length; i++) {
+          if (new_list[i]["id"] ===this.state.selectedQid){
+            new_list[i]["subject"]=this.state.selectedQSubject
+            new_list[i]["year"]=this.state.selectedQYear
+            new_list[i]["zone"]=this.state.selectedQZone
+            new_list[i]["paper"]=this.state.selectedQPaper
+            new_list[i]["difficulty"]=this.state.selectedQDifficulty
+            new_list[i]["description"]=this.state.selectedQDescription
+            new_list[i]["answer"]=this.state.selectedQAnswer
+            break
+          }
+        }
+        resolve(new_list)
+      })
+      pr.then(new_list=>{
+          this.setState({Questions: new_list})
+          console.log(new_list)
+      })
+
+    })
+  }
+
   render() {
+    const editform = (
+      <div>       
+        <div className="main_container"> 
+          <div className="form-style1">
+            <form onSubmit = {this.editSubmitHandler}>
+              <fieldset>
+                <legend>
+                  <span className="number">1</span> 
+                  Question Details
+                </legend>
+                
+                <label htmlFor="job">Subject:</label>
+                <select defaultValue= {this.state.selectedQsubject} id="job" name="Subject" onChange={(e)=>{this.editChangeHandler(e)}} required>
+                    <option value="None">-------</option>
+                    <option value="Physics">Physics</option>
+                    <option value="Chemistry">Chemistry</option>
+                    <option value="Mathematics">Mathematics</option>
+                    <option value="Additional Mathematics">Additional Mathematics</option>
+                    <option value="Biology">Biology</option>
+                    <option value="Computer Science">Computer Science</option>
+                    <option value="Pakistan Studies">Pakistan Studies</option>
+                    <option value="Islamic Studies;">Islamic Studies</option>
+                    <option value="Other">Other</option>
+                </select>
+
+                <input type="number" name="Year" placeholder="Year" value={this.state.selectedQYear} onChange={(e)=>{this.editChangeHandler(e)}} required/>
+                <input type="number" name="Zone" placeholder="Zone" value={this.state.selectedQZone} onChange={(e)=>{this.editChangeHandler(e)}} required/>
+                <input type="number" name="Paper" placeholder="Paper" value={this.state.selectedQPaper} onChange={(e)=>{this.editChangeHandler(e)}} required/>   
+              </fieldset>
+
+              <fieldset>
+                <legend>
+                  <span className="number">2</span> 
+                  Question Info
+                </legend>
+
+                <label htmlFor="job"><b>Answer:</b> Do Nothing if Answer is Image</label>
+
+                <select defaultValue={this.state.selectedQAnswer} id="job" name="Answer" onChange={(e)=>{this.editChangeHandler(e)}}>
+                  <optgroup>
+                    <option value="None">-------</option>
+                    <option value="A">A</option>
+                    <option value="B">B</option>
+                    <option value="C">C</option>
+                    <option value="D">D</option>
+                  </optgroup>
+                </select>
+                
+                <input type="number" name="Difficulty" placeholder="Difficulty" value={this.state.selectedQDifficulty} onChange={(e)=>{this.editChangeHandler(e)}} required/>
+                <textarea name="Description" placeholder="Description/Hints" value={this.state.selectedQDescription} onChange={(e)=>{this.editChangeHandler(e)}} ></textarea>
+              </fieldset>
+
+              <input type="submit" value="Save Changes" />
+            </form>
+          </div>
+        </div> 
+      </div> 
+    )
+
+
     const editModal = (
       <Modal show={this.state.showModal} animation='true' onHide={this.handleModalClose}>
         <Modal.Header closeButton>
           <Modal.Title>Edit Question</Modal.Title>
         </Modal.Header>
-
         <Modal.Body>
-          <p>{this.state.selectedQ}</p>
+          {editform}
         </Modal.Body>
-
-        <Modal.Footer>
-          <Button variant="primary">Save changes</Button>
-        </Modal.Footer>
       </Modal>
-
     )
-
 
     const form= ( 
     <div>       
@@ -175,7 +309,7 @@ class DelQ extends Component {
           <Card bg = "dark" text= "white">
             <Card.Header as="h5">
                 Question &nbsp; &nbsp;
-                <Button variant="info" onClick = {(question)=>{this.handleModalShow(question)}}> Edit </Button>
+                <Button variant="info" onClick = {()=>{this.handleModalShow(question)}}> Edit </Button>
                 &nbsp;
                 <Button variant="danger" onClick={(e)=>{this.handleDelete(e,question)}}> Delete </Button>
             </Card.Header>
@@ -221,12 +355,6 @@ class DelQ extends Component {
         {this.state.Form? form:cards}
         {this.state.showModal? editModal:null}
       </div>
-
-/*
-      <div className="main_container">
-        <h1 className="title"> DELETE A QUESTION </h1>
-      </div>
-*/
     );
   }
 }
