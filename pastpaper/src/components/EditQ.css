@@ -1,10 +1,8 @@
-
-
 .main_container{
   text-align: center;
 }
 
-.form-style{
+.form-style1{
   max-width: 500px;
   padding: 10px 20px;
   margin: 10px auto;
@@ -15,25 +13,25 @@
   width: 80%;
 }
 
-.form-style fieldset{
+.form-style1 fieldset{
   border: none;
 }
-.form-style legend {
+.form-style1 legend {
   font-size: 1.4em;
   margin-bottom: 10px;
   color: #8a97a0;
 }
-.form-style label {
+.form-style1 label {
   display: block;
   text-align: left;
   margin-bottom: 8px;
   color: #8a97a0;
 }
 
-.form-style input[type="text"],
-.form-style input[type="number"],
-.form-style textarea,
-.form-style select {
+.form-style1 input[type="text"],
+.form-style1 input[type="number"],
+.form-style1 textarea,
+.form-style1 select {
   font-family: Georgia, "Times New Roman", Times, serif;
   background: rgba(255,255,255,.1);
   border: none;
@@ -52,17 +50,17 @@
   box-shadow: 0 1px 0 rgba(0,0,0,0.03) inset;
   margin-bottom: 30px;
 }
-.form-style input[type="text"]:focus,
-.form-style input[type="number"]:focus,
-.form-style textarea:focus,
-.form-style select:focus{
+.form-style1 input[type="text"]:focus,
+.form-style1 input[type="number"]:focus,
+.form-style1 textarea:focus,
+.form-style1 select:focus{
   background: #d2d9dd; /* engraving */
 }
-.form-style select{
+.form-style1 select{
   -webkit-appearance: menulist-button;
   height:35px;
 }
-.form-style .number {
+.form-style1 .number {
   background: #1adae8;
   color: #fff;
   height: 30px;
@@ -76,17 +74,17 @@
   border-radius: 15px 15px 15px 0px;
 }
 
-.form-style input[type="submit"],
-.form-style input[type="button"],
-.form-style input[type="file"],
-.form-style button
+.form-style1 input[type="submit"],
+.form-style1 input[type="button"],
+.form-style1 input[type="file"],
+.form-style1 button
 {
   position: relative;
   display: block;
   padding: 19px 0px 18px 0px;
   color: #FFF;
   margin: 0 auto;
-  background: #1adae8;
+  background: #12dae8;
   font-size: 120%;
   text-align: center;
   font-style: normal;
@@ -96,20 +94,21 @@
   margin-bottom: 10px;
 }
 
-.form-style input[type="submit"]:hover,
-.form-style input[type="button"]:hover,
-.form-style input[type="file"]:hover
+.form-style1 input[type="submit"]:hover,
+.form-style1 input[type="button"]:hover,
+.form-style1 input[type="file"]:hover
+.form-style1 button:hover
 {
   background: #1a94bc;
 }
 
-.upload-btn-wrapper {
+.upload-btn1-wrapper {
   position: relative;
   overflow: hidden;
   display: inline-block;
 }
 
-.btn {
+.btn1 {
   border: 2px solid gray;
   color: gray;
   background-color: cyan;
@@ -119,7 +118,7 @@
   font-weight: bold;
 }
 
-.upload-btn-wrapper input[type=file] {
+.upload-btn1-wrapper input[type=file] {
   font-size: 100px;
   position: absolute;
   left: 0;
@@ -149,16 +148,14 @@
   background: #1adae8;
   margin-bottom: 2%;
   align-items: left;
-  
-  /*position: relative;*/
-  /*display: block;*/
-  /*margin: 0 auto;*/
-  /*text-align: center;*/
-  /*width: 100%;*/
-  /*border-width: 1px 1px 3px;*/
 }
 
 .filter:hover{
   background: #1a94bc;
 }
 
+.card-img-top {
+    width: 100%;
+    /*height: 10vw;*/
+    object-fit: cover;
+}
