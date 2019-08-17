@@ -175,21 +175,25 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-app.post('/uploadpic', upload.any(), (req, res) => {
+app.post('/upload-question', upload.any(), (req, res) => {
+	let qlink = ''
+	let alink = ''
 	const promises = req.files.map((file)=>{
 		if (file.fieldname=='question'){
 			let filename = file.filename;
+			
 			// returning the promise over here
-			return fileUpload(auth_data,filename).then(fileid =>{
-				console.log("Drive id of question is: ", fileid);
+			return fileUpload(auth_data,filename).then(qfileid =>{
+				// console.log("Drive id of question is: ", qfileid);
 				fs.unlink(file.path, function (err) {
 					if(err){
 						console.log("Error in deleting question from server", err)
 					}
 					else{
-						console.log("Deleted from folder");
+						console.log("Deleted question from folder");
 					}
 				});
+				qlink = qfileid;
 			}).catch(
 			   error => {
 			   	console.log("Error in upload to drive: ",error)
@@ -198,16 +202,17 @@ app.post('/uploadpic', upload.any(), (req, res) => {
 		}
 		if (file.fieldname=='answer'){
 			let filename = file.filename;
-			return fileUpload(auth_data,filename).then(fileid =>{
-				console.log("Drive id of answer is: ", fileid);
+			return fileUpload(auth_data,filename).then(afileid =>{
+				// console.log("Drive id of answer is: ", afileid);
 				fs.unlink(file.path, function (err) {
 					if(err){
 						console.log("Error in deleting answer from server", err)
 					}
 					else{
-						console.log("Deleted from folder");
+						console.log("Deleted answer from folder");
 					}
 				});
+				alink = afileid;
 			}).catch(
 			   error => {
 			   	console.log("Error in upload to drive: ",error)
@@ -215,15 +220,57 @@ app.post('/uploadpic', upload.any(), (req, res) => {
 			);
 		}
 	})
-	Promise.all(promises).then(()=>{
-		console.log("Done uploading both files")
-		res.send("Both uploads completed")
+	Promise.all(promises).then((vals)=>{
+		// console.log("qid: ",qlink)
+		// console.log("aid: ",alink)
+		// console.log(vals)
+		let data = {
+					subject:(req.body.subject),
+					year:(req.body.year),
+					zone:(req.body.zone),
+					paper:(req.body.paper),
+					difficulty:(req.body.difficulty),
+					description:(req.body.description),
+					question_link: qlink, // INSERT WHOLE LINK HERE
+					answer_link: alink,	  // INSERT WHOLE LINK HERE. alink.length? ('www.google...' + alink):null	
+					answer: (req.body.answertext==="null"? '': req.body.answertext),
+					tags: []
+				}
+
+		let addQues = db.collection('question').add(data)
+		.then(ref =>{
+			console.log("Added record with id: ", ref.id)
+		})
+		.catch(error=>{
+			console.log("DB error while adding question: ", error)
+		})
+
+		res.send("Upload completed")
 	});
 });
 
-app.post('/upload-question', (req, res) => {
-  console.log(req.body);
-});
+app.post('/find-questions', (req,res)=>{
+	let ret = []
+	let quesRef = db.collection('question')
+	let query = quesRef.where('subject','==',req.body.subject)
+	query = query.where('year','==',req.body.year)
+	query = query.where('zone','==',req.body.zone)
+	query = query.where('paper','==',req.body.paper)
+	query.get()
+		.then(snapshot =>{
+			snapshot.forEach(doc =>{
+				// console.log(doc.id, '=>', doc.data())
+				ret.push(doc.data())	
+			})
+			// console.log(ret)
+			res.send(ret)
+		})
+		.catch(error =>{
+			console.log("DB error while finding questions: ", error)
+			res.send("error")
+		})
+
+})
 
 app.listen(PORT, () =>
   console.log(`🚀 Server ready at http://localhost:${PORT}`)

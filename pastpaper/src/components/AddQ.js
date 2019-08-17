@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './AddQ.css'
+import axios from 'axios'
 
 class AddQ extends Component {
   constructor(props){
@@ -11,34 +12,52 @@ class AddQ extends Component {
       Zone:  '',
       Paper: '',
 
-      Topic: '',
-      Subtopic: '',
-      Difficulty: '',
-
-      selectedFile: '',
-      selectText: 'Upload Question Image',
-
+      questionFile: '',
+      questionText: 'Upload Question Image',
       Answer: null,
+      answerFile: '',
+      answerText: 'Upload Answer Image',
+      Difficulty: '',
       Description:'',
+
+
     }
-    this.fileSelectedHandler = this.fileSelectedHandler.bind(this);
+    this.questionselectedHandler = this.questionselectedHandler.bind(this);
+    this.answerselectedHandler = this.answerselectedHandler.bind(this);
     this.changeHandler = this.changeHandler.bind(this);
     this.submitHandler = this.submitHandler.bind(this);
   }
 
-  fileSelectedHandler = event =>{
-    let p1= new Promise((resolve, reject) =>{
+  questionselectedHandler = event =>{
+    // console.log(event.target.files)
+    if(event.target.files.length!== 0){
       this.setState({
-        selectedFile: event.target.files[0],
-        selectText: event.target.files[0].name
+        questionFile: event.target.files[0],
+        questionText: event.target.files[0].name
       })
-      let x=0
-      resolve(x)
-      
-    })
-    p1.then(x=>{
-      console.log(this.state.selectedFile)
-    })
+    }
+    else{
+      this.setState({
+        questionFile: '',
+        questionText: 'Upload Question Image'
+      })
+    }      
+  }
+
+  answerselectedHandler = event =>{
+    // console.log(event.target.files)
+    if(event.target.files.length!== 0){
+      this.setState({
+        answerFile: event.target.files[0],
+        answerText: event.target.files[0].name
+      })
+    }
+    else{
+      this.setState({
+        answerFile: '',
+        answerText: 'Upload Answer Image'
+      })
+    }      
   }
 
   changeHandler = event => {
@@ -50,23 +69,31 @@ class AddQ extends Component {
 
   submitHandler = event =>{
     event.preventDefault();
-    fetch('upload-question', {
-      method: 'POST',
-      body: JSON.stringify({Subject: this.state.Subject, Year: this.state.Year, Zone: this.state.Zone, Paper: this.state.Paper, Topic: this.state.Topic, Subtopic: this.state.Subtopic, Difficulty: this.state.Difficulty, Question: this.state.selectedFile, Answer: this.state.Answer, Description: this.state.Description}),
-      headers: {
-        "Content-Type": "application/json"
-      }
-    })
+    const { Subject, Year, Zone, Paper, Difficulty, Answer, Description, questionFile, answerFile } = this.state;
+    let formData= new FormData();
+    formData.append('subject', Subject);
+    formData.append('year', Year);
+    formData.append('zone', Zone);
+    formData.append('paper', Paper);
+    formData.append('difficulty', Difficulty);
+    formData.append('answertext', Answer);
+    formData.append('description', Description);
+    formData.append('question', questionFile);
+    formData.append('answer', answerFile)
 
-    this.setState({
-      Topic: '',
-      Subtopic: '',
-      Difficulty: '',
-      Answer: '',
-      Description: '',
-      selectedFile: '',
-      selectText: 'Upload Question Image'
-    })
+    axios.post('/upload-question', formData)
+      .then((result) =>{
+        console.log(result)
+        this.setState({
+          Difficulty: '',
+          Answer: '',
+          Description: '',
+          questionFile: '',
+          questionText: 'Upload Question Image',
+          answerFile: '',
+          answerText: 'Upload Answer Image',
+        })
+      })
   }
   
   render() {
@@ -106,17 +133,14 @@ class AddQ extends Component {
                 Question Info
               </legend>
 
-              <input type="text" name="Topic" placeholder="Topic" value={this.state.Topic} onChange={this.changeHandler} required />
-              <input type="text" name="Subtopic" placeholder="Subtopic" value={this.state.Subtopic} onChange={this.changeHandler}required/>
-              <input type="number" name="Difficulty" placeholder="Difficulty" value={this.state.Difficulty} onChange={this.changeHandler} required/>
-              
               <div className="upload-btn-wrapper">
-                <button className="btn">{this.state.selectText}</button>
-                <input type="file" onChange={this.fileSelectedHandler} placeholder="sada" required/>
+                <button className="btn">{this.state.questionText}</button>
+                <input type="file" onChange={this.questionselectedHandler} placeholder="sada" required/>
               </div>
 
-              <label htmlFor="job">Answer</label>
-              <select defaultValue="None" id="job" name="Answer" onChange={this.changeHandler} required>
+              <label htmlFor="job">Answer: (Please select either text or image but not both)</label>
+
+              <select defaultValue="None" id="job" name="Answer" onChange={this.changeHandler}>
                 <optgroup>
                   <option value="None">-------</option>
                   <option value="A">A</option>
@@ -125,6 +149,12 @@ class AddQ extends Component {
                   <option value="D">D</option>
                 </optgroup>
               </select>
+              
+              <div className="upload-btn-wrapper">
+                <button className="btn">{this.state.answerText}</button>
+                <input type="file" onChange={this.answerselectedHandler} placeholder="sada"/>
+              </div>
+              <input type="number" name="Difficulty" placeholder="Difficulty" value={this.state.Difficulty} onChange={this.changeHandler} required/>
               <textarea name="Description" placeholder="Description/Hints" value={this.state.Description} onChange={this.changeHandler}></textarea>
            
             </fieldset>
