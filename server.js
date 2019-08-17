@@ -235,8 +235,6 @@ app.post('/upload-question', upload.any(), (req, res) => {
 		}
 	})
 	Promise.all(promises).then((vals)=>{
-		// console.log("qid: ",qlink)
-		// console.log("aid: ",alink)
 		// console.log(vals)
 		let data = {
 					subject:(req.body.subject),
@@ -264,7 +262,6 @@ app.post('/upload-question', upload.any(), (req, res) => {
 });
 
 app.post('/find-questions', (req,res)=>{
-	let ret = []
 	let quesRef = db.collection('question')
 	let query = quesRef.where('subject','==',req.body.subject)
 	query = query.where('year','==',req.body.year)
@@ -272,12 +269,20 @@ app.post('/find-questions', (req,res)=>{
 	query = query.where('paper','==',req.body.paper)
 	query.get()
 		.then(snapshot =>{
-			snapshot.forEach(doc =>{
-				// console.log(doc.id, '=>', doc.data())
-				ret.push(doc.data())	
+			let send_ret = new Promise((resolve1, reject1)=>{
+				let ret = []
+				snapshot.forEach(doc =>{
+					// console.log(doc.id, "=>", doc.data())
+					let add_id = new Promise((resolve, reject) =>{
+						let temp = doc.data()
+						temp["id"] = doc.id
+						resolve(temp)
+					})
+					add_id.then(temp=>{ret.push(temp)})
+				})
+				resolve1(ret)
 			})
-			// console.log(ret)
-			res.send(ret)
+			send_ret.then(ret=>{res.send(ret)})
 		})
 		.catch(error =>{
 			console.log("DB error while finding questions: ", error)
@@ -285,7 +290,6 @@ app.post('/find-questions', (req,res)=>{
 		})
 
 })
-
 
 app.post('/add-tags', (req,res)=>{
 	let tagRef = db.collection('tags');
@@ -332,7 +336,18 @@ app.get('/find-tags', (req,res)=>{
 	//     console.log('Error getting documents', err);
 	//   });
 	mytags()
+});
 
+app.post('/delete-question', (req,res)=>{
+	db.collection('question').doc(req.body.question_id).delete()
+		.then(()=>{
+			console.log("Deleted Question: ", req.body.question_id)
+			res.send("Deleted Question")
+		})
+		.catch(error =>{
+			console.log(error)
+			res.send("Error in Deleting Question")
+		})
 })
 
 app.listen(PORT, () =>

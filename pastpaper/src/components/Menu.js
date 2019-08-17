@@ -1,17 +1,13 @@
 import React, { Component } from 'react';
-import './Upload.css'
+import './Menu.css'
 import plus from './plus_cyan.png'
 import minus from './minus_cyan.png'
 
 class Upload extends Component {
-  // Initialize the state
   constructor(props){
     super(props);
     this.state = {
     }
-  }
-
-  componentDidMount() {
   }
 
   render() {
@@ -29,11 +25,11 @@ class Upload extends Component {
         
         <span> &nbsp;&nbsp;</span>
         
-        <a href = "/DelQ">
+        <a href = "/EditQ">
           <div className="inner_container">
             <img className = "img" src= {minus} alt="" />
             <div className = "label">
-              <p> Delete a Question </p>
+              <p> Edit a Question </p>
             </div>  
           </div>
         </a>

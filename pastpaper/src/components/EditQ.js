@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
-import './DelQ.css'
+import './EditQ.css'
 import '../../node_modules/font-awesome/css/font-awesome.min.css'; 
+import { confirmAlert } from 'react-confirm-alert'; // Import
+import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
+
 
 class DelQ extends Component {
   constructor(props){
@@ -50,10 +53,48 @@ class DelQ extends Component {
       })      
   }
 
-
   changeFilter = event =>{
     event.preventDefault();
     this.setState({Form:true})
+  }
+
+  handleDelete(e, question){
+    confirmAlert({
+      title: 'Delete Question',
+      message: 'Are you sure you want to delete this question?',
+      buttons: [
+        { 
+          label: 'Proceed',
+          onClick: ()=>{this.deleteQuestion(e, question)}
+        },
+        {
+          label: 'Cancel',
+        }
+      ]
+    })
+  }
+
+  deleteQuestion(e,question){
+    e.preventDefault();
+    console.log(question)
+    let p1 = new Promise((resolve, reject)=>{
+    let filtered = this.state.Questions.filter(ques => ques["id"]!== question.id)
+        resolve(filtered)
+    })
+    p1.then(filtered => {
+      this.setState({Questions: filtered})
+    })
+    
+    fetch('/delete-question', {
+          method: 'POST',
+          body: JSON.stringify({question_id: question.id}),
+          headers: {
+            "Content-Type": "application/json",
+          }
+    }).then((result) =>{         
+        console.log(result)
+      })      
+
   }
 
   render() {
@@ -70,7 +111,7 @@ class DelQ extends Component {
           <td>{question.answer}</td>
           <td>{question.tags}</td>
           <td className='select'>
-            <a className='button' href='#'>
+            <a className='button' onClick = {(e)=>{this.handleDelete(e,question)}}>
               Delete
             </a>
           </td>
@@ -79,7 +120,7 @@ class DelQ extends Component {
 
     const form= (        
       <div className="main_container"> 
-        <h1 className="title"> DELETE A QUESTION </h1>    
+        <h1 className="title"> SEARCH FOR QUESTIONS </h1>    
         <div className="form-style">
           <form onSubmit={this.submitHandler}>
             <fieldset>
@@ -116,7 +157,7 @@ class DelQ extends Component {
     const table = (
       <div>
         <div className="main_container">
-          <h1 className="title"> DELETE A QUESTION </h1>    
+          <h1 className="title"> SEARCH RESULTS </h1>    
         </div>
         <button className="filter" onClick={this.changeFilter}><i className="fa fa-search"></i> Change Filter</button>
             

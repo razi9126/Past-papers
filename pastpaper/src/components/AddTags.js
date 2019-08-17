@@ -4,7 +4,8 @@ class AddTags extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      value:''
+      value:'',
+      response:'',
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -25,9 +26,7 @@ class AddTags extends React.Component {
           }
     }).then((result) =>{
       console.log(result)
-        // result.json().then(body=>{
-        //   console.log(body)
-        // })
+
       })      
   }
 
@@ -41,6 +40,7 @@ class AddTags extends React.Component {
       </label>
       <input type="submit" value="Submit" />
       </form>
+      <h4> this.state.response
       );
   }
 }

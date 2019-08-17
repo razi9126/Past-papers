@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import './App.css';
 import Home from './components/Home';
-import Upload from './components/Upload';
+import Menu from './components/Menu';
 import AddQ from './components/AddQ'
-import DelQ from './components/DelQ'
+import EditQ from './components/EditQ'
 import RUI from './components/ReactUploadImage'
 import AddTags from './components/AddTags'
 
@@ -14,9 +14,9 @@ class App extends Component {
       <div>
         <Switch>
           <Route exact path='/' component={Home}/>
-          <Route path='/Upload' component={Upload}/>
+          <Route path='/Menu' component={Menu}/>
           <Route path='/AddQ' component={AddQ}/>
-          <Route path='/DelQ' component={DelQ}/>
+          <Route path='/EditQ' component={EditQ}/>
           <Route path='/RUI' component={RUI}/>
           <Route path='/AddTags' component={AddTags}/>
         </Switch>
