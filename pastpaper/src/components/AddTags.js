@@ -1,47 +1,42 @@
 import React from 'react';
+import './AddTags.css'
+
 
 class AddTags extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      value:'',
+      label:'',
       response:'',
       alltags:[],
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.fetchtags = this.fetchtags.bind(this);
   }
 
   handleChange(event) {
-    this.setState({value: event.target.value});
+    this.setState({label: event.target.value});
   };
 
   handleSubmit(event) {
     event.preventDefault();
-    const { value } = this.state;  
+    const { label } = this.state;  
     fetch('/add-tags', {
       method: 'POST',
-      body: JSON.stringify({value: value}),
+      body: JSON.stringify({label: label}),
       headers: {
         "Content-Type": "application/json",
       }
     }).then((result) =>{
       result.json().then(body=>{
         this.setState({response:body.response})
+        this.fetchtags()
       })
     })      
   };
 
-  // componentDidMount() {
-  //   console.log("Mounted")
-  //   fetch('/find-tags')
-  //   .then((result) =>{
-  //     result.json().then(body=>{
-  //       console.log(body)
-  //     })
-  //   }) 
-  // };
-  componentDidMount() {
+  fetchtags(){
     fetch('/find-tags', {
       method: 'POST',
       body: '',
@@ -49,14 +44,14 @@ class AddTags extends React.Component {
         "Content-Type": "application/json",
       }
     }).then((result) =>{
-      result.json().then(body=>{
-
-        console.log(body)
-        body.forEach((x)=>{
-          console.lod(x)
-        })
+      result.json().then(tags=>{
+        this.setState({alltags:tags})
       })
     }) 
+  }
+
+  componentDidMount() {
+    this.fetchtags()
   }
 
   render() {
@@ -71,13 +66,14 @@ class AddTags extends React.Component {
       <form onSubmit={this.handleSubmit}>
       <label>
       Add Tag
-      <input type="text" value={this.state.value} onChange={this.handleChange} />
+      <input type="text" label={this.state.label} onChange={this.handleChange} />
       </label>
-      <input type="submit" value="Submit" />
+      <input type="submit" label="Submit" />
       </form>
       
       <h5>{this.state.response}</h5>
-
+      <h4>Tags already in the list</h4>
+      {taglist}
       </React.Fragment>
       );
   }
@@ -86,9 +82,7 @@ class AddTags extends React.Component {
 const TagCard = (props) => {
   return (
     <div>
-    <hr />
-    <p><b>Tag:</b> {props.value.toUpperCase()}</p>
-    <hr />
+    <p>{props.label}</p>
     </div>
     )
 }

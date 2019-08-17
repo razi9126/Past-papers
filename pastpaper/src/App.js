@@ -7,6 +7,7 @@ import AddQ from './components/AddQ'
 import EditQ from './components/EditQ'
 import RUI from './components/ReactUploadImage'
 import AddTags from './components/AddTags'
+import TagPhotos from './components/TagPhotos'
 
 class App extends Component {
   render() {
@@ -19,6 +20,7 @@ class App extends Component {
           <Route path='/EditQ' component={EditQ}/>
           <Route path='/RUI' component={RUI}/>
           <Route path='/AddTags' component={AddTags}/>
+          <Route path='/TagPhotos' component={TagPhotos}/>
         </Switch>
       </div>
     )

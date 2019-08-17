@@ -279,14 +279,15 @@ app.post('/find-questions', (req,res)=>{
 
 app.post('/add-tags', (req,res)=>{
 	let tagRef = db.collection('tags');
-	val_to_add = req.body.value
+	val_to_add = req.body.label
+	val_to_add=val_to_add.toLowerCase()
 
-	let query = tagRef.where('value', '==', val_to_add).get()
+	let query = tagRef.where('label', '==', val_to_add).get()
 	  .then(snapshot => {
 	    if (snapshot.empty) {
 	      
 		    let data = {
-				value: (req.body.value)
+				label: (val_to_add)
 			}
 			let addTags = db.collection('tags').add(data)
 				.then(ref =>{
@@ -312,10 +313,22 @@ app.post('/find-tags', (req,res)=>{
 	let tagRef = db.collection('tags')
   	const alltags = tagRef.get()
   	.then(snapshot => {
-  		res.send(snapshot)
-	    snapshot.forEach(doc => {
-	      console.log(doc.id, '=>', doc.data());
-	    });
+
+  		let send_ret = new Promise((resolve1, reject1)=>{
+				let ret = []
+				snapshot.forEach(doc =>{
+					// console.log(doc.id, "=>", doc.data())
+					let add_id = new Promise((resolve, reject) =>{
+						let temp = doc.data()
+						temp["key"] = doc.id
+						resolve(temp)
+					})
+					add_id.then(temp=>{ret.push(temp)})
+				})
+				resolve1(ret)
+			})
+			send_ret.then(ret=>{res.send(ret)})
+
 	  })
 	  .catch(err => {
 	    console.log('Error getting documents', err);
