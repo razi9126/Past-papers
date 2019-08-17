@@ -36,25 +36,25 @@ class DelQ extends Component {
   submitHandler = event =>{
     event.preventDefault();
     const { Subject, Year, Zone, Paper } = this.state;  
-    // fetch('/find-questions', {
-    //       method: 'POST',
-    //       body: JSON.stringify({subject: Subject, year: Year, zone: Zone, paper: Paper}),
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //       }
-    // }).then((result) =>{
-    //     result.json().then(body=>{
-    //       console.log(body)
-    //       this.setState({
-    //         Questions: body,
-    //         Subject: null,
-    //         Year: '',
-    //         Zone: '',
-    //         Paper: '',
-    //         Form: false
-    //       })
-    //     })
-    //   })  
+    fetch('/find-questions', {
+          method: 'POST',
+          body: JSON.stringify({subject: Subject, year: Year, zone: Zone, paper: Paper}),
+          headers: {
+            "Content-Type": "application/json",
+          }
+    }).then((result) =>{
+        result.json().then(body=>{
+          console.log(body)
+          this.setState({
+            Questions: body,
+            Subject: null,
+            Year: '',
+            Zone: '',
+            Paper: '',
+            Form: false
+          })
+        })
+      })  
 
     this.setState({Form: false})    
   }
@@ -171,29 +171,37 @@ class DelQ extends Component {
     )
 
 
-    const qlist = this.state.Questions.map((question,i)=>
-        <tr>
-          <td>{question.subject}</td>
-          <td>{question.year}</td>
-          <td>{question.zone}</td>
-          <td>{question.paper}</td>
-          <td>{question.difficulty}</td>
-          <td>{question.description}</td>
-          <td>{question.question_link}</td>
-          <td>{question.answer_link}</td>
-          <td>{question.answer}</td>
-          <td>{question.tags}</td>
-          <td className='select'>
-            <button className='button' onClick = {()=>{this.handleModalShow()}}>
-              Edit
-            </button>
-          </td>
-          <td className='select'>
-            <button className='button' onClick = {(e)=>{this.handleDelete(e,question)}}>
-              Delete
-            </button>
-          </td>
-        </tr>  
+    const card = this.state.Questions.map((question,i)=>
+        <div>
+          <Card bg = "dark" text= "white">
+            <Card.Header as="h5">
+                Question &nbsp; &nbsp;
+                <Button variant="info"> Edit </Button>
+                &nbsp;
+                <Button variant="danger" onClick={(e)=>{this.handleDelete(e,question)}}> Delete </Button>
+            </Card.Header>
+            <Card.Img className = "card-img-tosp" variant="top" src={"https://drive.google.com/uc?id="+question.question_link} />
+            <Card.Body>
+              <Card.Text>
+                <b>{question.subject} {question.year} Paper {question.paper} Zone {question.zone}</b>
+                <br/>
+                <b>Description:</b> {question.description}
+                <br/>
+                <b>Difficulty Level:</b> {question.difficulty} 
+              </Card.Text>
+            </Card.Body>
+            <Card.Header as="h5">Answer</Card.Header>
+            <Card.Body>
+              <Card.Text>
+                { question.answer!==""? 
+                  question.answer:
+                  <Card.Img className = "card-img-tosp" variant="top" src={"https://drive.google.com/uc?id="+question.answer_link} />
+                }
+              </Card.Text>
+            </Card.Body>
+          </Card>
+          <br />  
+        </div>
     )
 
     const cards = (
@@ -203,22 +211,8 @@ class DelQ extends Component {
         </div>
         <button className="filter" onClick={this.changeFilter}><i className="fa fa-search"></i> Change Filter</button>
             
-        <div className="main_container">
-          <Card>
-            <Card.Img className = "card-img-top" variant="top" src="https://i.ytimg.com/vi/tSWCs1TuEZI/maxresdefault.jpg" />
-            <Card.ImgOverlay>
-              <Card.Title>QUESTION</Card.Title>
-            </Card.ImgOverlay>
-            <Card.Body>
-              <Card.Text>
-                Subject:<br/> 
-                Year:  <br/>
-                Paper: <br/>
-                Zone:  <br/>
-              </Card.Text>
-            </Card.Body>
-          </Card>
-          <br />
+        <div>
+          {card}
         </div>
       </div>
     )
