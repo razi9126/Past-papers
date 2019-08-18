@@ -425,19 +425,10 @@ app.post('/edit-question', (req,res)=>{
 	})	
 })
 
-app.use(express.static(path.join(__dirname, 'pastpaper/build')));
-    
+app.use(express.static(path.join(__dirname, 'pastpaper/build')));  
 app.get('*', function(req, res) {
 	res.sendFile(path.join(__dirname, 'pastpaper/build', 'index.html'));
 });
-  
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, 'pastpaper/build')));
-    
-  app.get('*', function(req, res) {
-    res.sendFile(path.join(__dirname, 'pastpaper/build', 'index.html'));
-  });
-}
 
 
 app.listen(PORT, () =>
