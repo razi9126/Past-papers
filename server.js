@@ -29,10 +29,6 @@ let db = admin.firestore();
 // The authdata will be stored in this global variable. Pass this auth data // to each function call.
 var auth_data; 
 
-app.get('*', function(req, res) {
-	res.sendFile(path.join(__dirname, 'pastpaper/build', 'index.html'));
-});
-
 // Load client secrets from a local file.
 fs.readFile('credentials.json', (err, content) => {
   if (err) return console.log('Error loading client secret file:', err);
@@ -429,6 +425,12 @@ app.post('/edit-question', (req,res)=>{
 	})	
 })
 
+app.use(express.static(path.join(__dirname, 'pastpaper/build')));
+    
+app.get('*', function(req, res) {
+	res.sendFile(path.join(__dirname, 'pastpaper/build', 'index.html'));
+});
+  
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, 'pastpaper/build')));
     
