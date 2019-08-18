@@ -5,9 +5,12 @@ const multer = require("multer");
 const fs = require('fs');
 const { google } = require('googleapis');
 var firebase = require("firebase/app");
+var http = require('http');
+
 
 const SCOPES = ['https://www.googleapis.com/auth/drive']; // If modifying these scopes, delete token.json.
 const TOKEN_PATH = 'token.json';
+
 const readline = require('readline');
 const PORT = 2001; // const PORT = process.env.PORT || 2001;
 const app = express();
@@ -90,8 +93,51 @@ function getAccessToken(oAuth2Client, callback) {
 
 function saveAuth(auth) {
 	auth_data = auth;
+	// console.log(auth_data)
 	console.log("Authentication complete");
+
+	// fileUpload(auth_data,'2.jpg').then((question)=>{
+	// 	console.log(question)
+	// })
+
+
+	// api key: AIzaSyAiAcu61XLAFm-WXyFlKNnHajFpqaJjFF4
+	// file to delete: 1CEAYLzfj3KmR8ShZBnPmspiTpXfShYR_
+	// deletefile('1nKcZ0-2s6kax5AtNtHm_pGFE4Nmwynx3')
 	// uploadFile(auth_data,'photo.jpeg');
+	// deletefile('1Ni8MUSiTQVgVKJvJiYcNRJbhxAugNnPU')
+}
+
+function deletefile(file_id){
+	// var request=require("request");
+	// console.log(auth_data.credentials.access_token)
+
+	// url = 'https://www.googleapis.com/drive/v3/files/' + file_id
+	// request.del(url,function(error,response,body){
+	// if(error){
+	//      console.log(error);
+	// }else{
+	// 	console.log(response);
+	// 	console.log(response.body);
+	//         }
+			        // })
+	const options = {
+	  hostname: 'https://www.googleapis.com',
+	  path: '/drive/v3/files/'+ file_id+'?key=AIzaSyBB5-95sXXExxLWgT_lZL1rSWzLkBSnHC0',
+	  method: 'DELETE',
+	  headers: {
+	    'Content-Type': 'application/json',
+	    'Authorization': 'Bearer '+ auth_data.credentials.access_token
+	  }
+	}
+
+	const req = http.request(options, (res) => {
+	  console.log(`statusCode: ${res.statusCode}`)
+
+	  res.on('data', (d) => {
+	    console.log(d)
+	  })
+	})
 }
 
 const fileUpload = (auth,name) => {
