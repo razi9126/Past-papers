@@ -12,12 +12,11 @@ const SCOPES = ['https://www.googleapis.com/auth/drive']; // If modifying these 
 const TOKEN_PATH = 'token.json';
 
 const readline = require('readline');
-const PORT = 2001; // const PORT = process.env.PORT || 2001;
+const PORT = process.env.PORT || 2001;
 const app = express();
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, 'pastpaper/build')));
 
 const admin = require('firebase-admin');
 let serviceAccount = require('./past-papers-9566f-firebase-adminsdk-65q4d-c2f9a65bf1.json');
@@ -429,6 +428,15 @@ app.post('/edit-question', (req,res)=>{
 		res.send("Error in Editing Question")
 	})	
 })
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, 'pastpaper/build')));
+    
+  app.get('*', function(req, res) {
+    res.sendFile(path.join(__dirname, 'pastpaper/build', 'index.html'));
+  });
+}
+
 
 app.listen(PORT, () =>
   console.log(`🚀 Server ready at http://localhost:${PORT}`)
