@@ -1,7 +1,7 @@
 import React from 'react';
 import Select from 'react-select';
 import { Button, Card } from 'react-bootstrap';
-
+import './TagPhotos.css'
 const options = [
   { value: 'chocolate', label: 'Chocolate' },
   { value: 'strawberry', label: 'Strawberry' },
@@ -19,6 +19,7 @@ class TagPhotos extends React.Component {
     }
     this.fetchtags = this.fetchtags.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.saveTags = this.saveTags.bind(this);
   }
 
   fetchtags(){
@@ -59,6 +60,7 @@ class TagPhotos extends React.Component {
       }
     }).then((result) =>{
       result.json().then(untagged=>{
+        console.log(untagged)
         this.setState({Questions:untagged})
       }) 
     })
@@ -66,15 +68,39 @@ class TagPhotos extends React.Component {
 
   componentDidMount() {
     this.fetchtags()
+    this.fetchUntagged()
 
   }
-
 
   handleChange = selectedOption => {
     this.setState({ selectedOption },()=>{
       console.log(`Option selected:`, this.state.selectedOption);
     });
   };
+
+  saveTags = (event, id) => {
+    event.preventDefault();
+    // console.log(id)
+    fetch('/tag-question', {
+      method: 'POST',
+      body: JSON.stringify({question_id: id, tags: this.state.selectedOption}),
+      headers: {
+        "Content-Type": "application/json",
+      }
+    }).then((result)=>{
+      // document.getElementById(id).classList.add("animated-card")
+      let temp = this.state.Questions
+      for (var i = temp.length - 1; i >= 0; i--) {
+        if (temp[i]["id"]==id){
+          temp.splice(i,1)
+        }
+      }
+      // console.log(temp)
+      this.setState({selectedOption: null, Questions: temp})
+      
+    })
+  }
+
   render() {
     const { selectedOption } = this.state;
     const myoptions = this.state.alltags.map(v => ({
@@ -83,44 +109,36 @@ class TagPhotos extends React.Component {
     }));
 
     const cards = this.state.Questions.map((question,i)=>
-        <div>
-          <Card bg = "dark" text= "white">
-            <Card.Header as="h5">
-                Question &nbsp; &nbsp;
-            </Card.Header>
-            <Card.Img className = "card-img-tosp" variant="top" src={"https://drive.google.com/uc?id="+question.question_link} />
-            <Card.Header as="h5">
-              Add New Tags
+      <div >
+        <Card bg = "dark" id={question.id}>
+          <Card.Header as="h5" className="white_text">
+              Question &nbsp; &nbsp;
+          </Card.Header>
+          <Card.Img className = "card-img-tosp" variant="top" src={"https://drive.google.com/uc?id="+question.question_link} />
+          <Card.Header as="h5">
+            <div className="white_text">Add New Tags</div>
+            <br/> 
               <Select
                 isMulti='true'
                 value={selectedOption}
                 onChange={this.handleChange}
                 options={this.state.options}
               />
-            </Card.Header>
-            <Card.Footer as="h5">
-              <div>
-                {
-                  question.tags.map((subitem, i) => {
-                    return (
-                       <Button>{subitem}</Button>
-                    )
-                  })
-                }
-              </div>
-            </Card.Footer>
-          </Card>
-          <br />  
-        </div>
-      )
-
+          </Card.Header>
+          <Card.Footer as="h5">
+            <div className="right">
+              <Button variant ="info" onClick={(e)=>{this.saveTags(e,question.id)}}> Save </Button> 
+            </div>
+          </Card.Footer>
+        </Card>
+        <br />  
+      </div>
+    )
 
     return (
       <div>
         {cards}
       </div>
-
-      
     );
   }
 }

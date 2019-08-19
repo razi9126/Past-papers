@@ -1,6 +1,6 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './AddTags.css'
-
+import {Badge} from 'react-bootstrap'
 
 class AddTags extends React.Component {
   constructor(props){
@@ -9,6 +9,8 @@ class AddTags extends React.Component {
       label:'',
       response:'',
       alltags:[],
+      showAlert:false,
+      counter: 0,
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -30,8 +32,12 @@ class AddTags extends React.Component {
       }
     }).then((result) =>{
       result.json().then(body=>{
-        this.setState({response:body.response})
+        console.log(body.response)
+        this.setState({response:body.response, showAlert: true})
         this.fetchtags()
+        if(body.response!== "The tag already exists"){
+          this.setState({counter: this.state.counter+1})
+        }
       })
     })      
   };
@@ -61,32 +67,33 @@ class AddTags extends React.Component {
       )
 
     return (
-      <React.Fragment>
-          <div className="main_container">
-            <div className="form-style1">
-              <form onSubmit = {this.handleSubmit}>
-                <fieldset>
-                  <legend>
-                    <span className="number">1</span> 
-                    Add a New Tag
-                  </legend>
-                  <input type="text" label={this.state.label} onChange={this.handleChange} />            
-                </fieldset>
-                <input type="submit" value="Add Tag" />
-              </form>
-            </div>
+      <div>
+        <React.Fragment>
+            <div className="main_container">
+              <div className="form-style1">
+                <form onSubmit = {this.handleSubmit}>
+                  <fieldset>
+                    <legend>
+                      <span className="number">1</span> 
+                      Add a New Tag
+                    </legend>
+                    <input type="text" label={this.state.label} onChange={this.handleChange} />            
+                  </fieldset>
+                  <input type="submit" value="Add Tag" />
+                </form>
+              </div>
+              
+              <div className="form-style1">              
+                <legend>
+                  <span className="number">2</span> 
+                  Tags Already Added {this.state.counter? <small><Badge variant="success">+{this.state.counter}</Badge></small>:null}
+                </legend>
+                <div className="list">{taglist}</div>
+              </div>
             
-            <div className="form-style1">
-              <h5>{this.state.response}</h5>
-              <legend>
-                <span className="number">2</span> 
-                Tags Already Added
-              </legend>
-              <div className="list">{taglist}</div>
-            </div>
-          
-        </div>
-      </React.Fragment>
+          </div>
+        </React.Fragment>
+      </div>
       );
   }
 };

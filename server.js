@@ -321,7 +321,7 @@ app.post('/find-questions', (req,res)=>{
 })
 app.post('/untagged-questions', (req,res)=>{
 	let quesRef = db.collection('question')
-	let query = quesRef.where('tag','==',[])
+	let query = quesRef.where('tags','==',[])
 	query.get()
 		.then(snapshot =>{
 			let send_ret = new Promise((resolve1, reject1)=>{
@@ -343,6 +343,31 @@ app.post('/untagged-questions', (req,res)=>{
 			console.log("DB error while finding questions: ", error)
 			res.send("error")
 		})
+})
+
+app.post('/tag-question', (req, res)=>{
+	console.log(req.body.question_id, req.body.tags)
+	let p1 = new Promise((resolve,reject)=>{
+		let taglist = []
+		for (var i = 0; i < req.body.tags.length ; i++) {
+			taglist.push(req.body.tags[i]["label"])
+		}
+		resolve(taglist)
+	})
+	p1.then(taglist=>{
+		console.log(taglist)
+		db.collection('question').doc(req.body.question_id).update({
+			tags: taglist
+		})
+		.then(()=>{
+			console.log(question_id, "Gud")
+			res.send("Tagged Question Successfully!")
+		})
+		.catch(error=>{
+			res.send("Error in Tagging Question")
+		})
+	})
+
 })
 
 app.post('/add-tags', (req,res)=>{

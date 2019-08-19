@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-// import { Link } from 'react-router-dom';
+import { ProgressBar } from 'react-bootstrap'
 import '../App.css';
 import logo from '../logo.svg';
 
@@ -10,13 +10,13 @@ class Home extends Component {
 
       <div className="App">
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
           <a
             className="App-link"
             href="/Menu"
             rel="noopener noreferrer"
           >
-            Upload Questions
+            <img src={logo} className="App-logo" alt="logo" /><br/>
+            Go to Menu
           </a>
         </header>
       </div>
