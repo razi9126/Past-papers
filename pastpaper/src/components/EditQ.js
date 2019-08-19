@@ -173,13 +173,18 @@ class EditQ extends Component {
         let new_list = this.state.Questions
         for (var i = 0 ; i< new_list.length; i++) {
           if (new_list[i]["id"] ===this.state.selectedQid){
-            new_list[i]["subject"]=this.state.selectedQSubject
-            new_list[i]["year"]=this.state.selectedQYear
-            new_list[i]["zone"]=this.state.selectedQZone
-            new_list[i]["paper"]=this.state.selectedQPaper
-            new_list[i]["difficulty"]=this.state.selectedQDifficulty
-            new_list[i]["description"]=this.state.selectedQDescription
-            new_list[i]["answer"]=this.state.selectedQAnswer
+            if (new_list[i]["subject"]!==this.state.selectedQSubject ||
+                new_list[i]["year"]!==this.state.selectedQYear ||
+                new_list[i]["zone"]!==this.state.selectedQZone ||
+                new_list[i]["paper"]!==this.state.selectedQPaper
+                ){
+              new_list.splice(i,1)
+            }
+            else{
+              new_list[i]["difficulty"]=this.state.selectedQDifficulty
+              new_list[i]["description"]=this.state.selectedQDescription
+              new_list[i]["answer"]=this.state.selectedQAnswer
+            }
             break
           }
         }
@@ -270,7 +275,7 @@ class EditQ extends Component {
     const form= ( 
     <div>       
       <div className="main_container"> 
-        <h1 className="title"> SEARCH FOR QUESTIONS </h1>    
+        <h1 className="title1"> Search for questions </h1>    
         <div className="form-style1">
           <form onSubmit={this.submitHandler}>
             <fieldset>
@@ -305,6 +310,7 @@ class EditQ extends Component {
     </div> 
     )
 
+    
 
     const card = this.state.Questions.map((question,i)=>
         <div>
@@ -324,7 +330,7 @@ class EditQ extends Component {
                 <br/>
                 <b>Difficulty Level:</b> {question.difficulty} 
               </Card.Text>
-            </Card.Body>
+            </Card.Body>  
             <Card.Header as="h5">Answer</Card.Header>
             <Card.Body>
               <Card.Text>
@@ -334,6 +340,17 @@ class EditQ extends Component {
                 }
               </Card.Text>
             </Card.Body>
+            <Card.Footer as="h5">
+              <div>
+                {
+                  question.tags.map((subitem, i) => {
+                    return (
+                       <Button>{subitem}</Button>
+                    )
+                  })
+                }
+              </div>
+            </Card.Footer>
           </Card>
           <br />  
         </div>
@@ -342,7 +359,7 @@ class EditQ extends Component {
     const cards = (
       <div>
         <div className="main_container">
-          <h1 className="title"> SEARCH RESULTS </h1>    
+          <h1 className="title1"> Search Results </h1>    
         </div>
         <Button className="filter" variant="info" onClick={this.changeFilter}><i className="fa fa-search"></i> Change Filter</Button>
             

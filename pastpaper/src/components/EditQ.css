@@ -127,15 +127,15 @@
 }
 
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:400,800,700,300);
-.title {
+.title1 {
   font-family: 'Open Sans', sans-serif;
-  color: #555;
+  color: #EDEDED;
   text-decoration: none;
   text-transform: uppercase;
   font-weight: 800;
   letter-spacing: -3px;
   line-height: 1;
-  text-shadow: #EDEDED 3px 2px 0;
+  /*text-shadow: #EDEDED 3px 2px 0;*/
   position: relative;
 }
 

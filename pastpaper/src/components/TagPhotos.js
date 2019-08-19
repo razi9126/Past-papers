@@ -1,5 +1,6 @@
 import React from 'react';
 import Select from 'react-select';
+import { Button, Card } from 'react-bootstrap';
 
 const options = [
   { value: 'chocolate', label: 'Chocolate' },
@@ -14,6 +15,7 @@ class TagPhotos extends React.Component {
       selectedOption: null,
       alltags:[],
       options:[],
+      Questions: [],
     }
     this.fetchtags = this.fetchtags.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -48,8 +50,23 @@ class TagPhotos extends React.Component {
   })
   };
 
+  fetchUntagged(){
+    fetch('/untagged-questions', {
+      method: 'POST',
+      body: '',
+      headers: {
+        "Content-Type": "application/json",
+      }
+    }).then((result) =>{
+      result.json().then(untagged=>{
+        this.setState({Questions:untagged})
+      }) 
+    })
+  }
+
   componentDidMount() {
     this.fetchtags()
+
   }
 
 
@@ -65,13 +82,45 @@ class TagPhotos extends React.Component {
       value: v
     }));
 
+    const cards = this.state.Questions.map((question,i)=>
+        <div>
+          <Card bg = "dark" text= "white">
+            <Card.Header as="h5">
+                Question &nbsp; &nbsp;
+            </Card.Header>
+            <Card.Img className = "card-img-tosp" variant="top" src={"https://drive.google.com/uc?id="+question.question_link} />
+            <Card.Header as="h5">
+              Add New Tags
+              <Select
+                isMulti='true'
+                value={selectedOption}
+                onChange={this.handleChange}
+                options={this.state.options}
+              />
+            </Card.Header>
+            <Card.Footer as="h5">
+              <div>
+                {
+                  question.tags.map((subitem, i) => {
+                    return (
+                       <Button>{subitem}</Button>
+                    )
+                  })
+                }
+              </div>
+            </Card.Footer>
+          </Card>
+          <br />  
+        </div>
+      )
+
+
     return (
-      <Select
-        isMulti='true'
-        value={selectedOption}
-        onChange={this.handleChange}
-        options={this.state.options}
-      />
+      <div>
+        {cards}
+      </div>
+
+      
     );
   }
 }

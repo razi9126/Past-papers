@@ -85,7 +85,7 @@ class AddTags extends React.Component {
               <div className="list">{taglist}</div>
             </div>
           
-          </div>
+        </div>
       </React.Fragment>
       );
   }

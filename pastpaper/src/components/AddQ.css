@@ -128,16 +128,16 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:400,800,700,300);
 body {
   padding: 20px 80px;
-  background: #eee url(https://subtlepatterns.com/patterns/extra_clean_paper.png);
+  background: #eee url("blue_bg.jpg");
 }
 .title {
-  font-family: 'Open Sans', sans-serif;
-  color: #555;
-  text-decoration: none;
-  text-transform: uppercase;
-  font-weight: 800;
-  letter-spacing: -3px;
-  line-height: 1;
-  text-shadow: #EDEDED 3px 2px 0;
-  position: relative;
+  /*font-family: 'Open Sans', sans-serif;*/
+  /*color: #EDEDED;*/
+  /*text-decoration: none;*/
+  /*text-transform: uppercase;*/
+  /*font-weight: 800;*/
+  /*letter-spacing: -3px;*/
+  /*line-height: 1;*/
+  /*text-shadow: #EDEDED 3px 2px 0;*/
+  /*position: relative;*/
 }
