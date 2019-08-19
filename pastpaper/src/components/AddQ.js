@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import './AddQ.css'
 import axios from 'axios'
+import { Modal, Button } from 'react-bootstrap';
+
 
 class AddQ extends Component {
   constructor(props){
@@ -11,6 +13,8 @@ class AddQ extends Component {
       Year: '',
       Zone:  '',
       Paper: '',
+      response:'',
+      showModal:false,
 
       questionFile: '',
       questionText: 'Upload Question Image',
@@ -24,6 +28,8 @@ class AddQ extends Component {
     this.answerselectedHandler = this.answerselectedHandler.bind(this);
     this.changeHandler = this.changeHandler.bind(this);
     this.submitHandler = this.submitHandler.bind(this);
+    this.handleModalClose = this.handleModalClose.bind(this);
+    this.handleModalShow = this.handleModalShow.bind(this);
   }
 
   questionselectedHandler = event =>{
@@ -57,6 +63,15 @@ class AddQ extends Component {
     }      
   }
 
+  handleModalClose() {
+    this.setState({showModal: false})
+  }
+
+  handleModalShow() {
+    this.setState({showModal: true})
+  }
+
+
   changeHandler = event => {
     this.setState({
       [event.target.name]: event.target.value
@@ -89,11 +104,30 @@ class AddQ extends Component {
           questionText: 'Upload Question Image',
           answerFile: '',
           answerText: 'Upload Answer Image',
+          response: result.data
         })
+        this.handleModalShow()
       })
   }
   
   render() {
+
+    const editModal = (
+      <Modal show={this.state.showModal} animation='true' onHide={this.handleModalClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Status</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <h3>{this.state.response} </h3>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={this.handleModalClose}>
+            Add new
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    )
+
     return (
       <div className="main_container">
         <h1 className="title"> ADD A QUESTION </h1>
@@ -157,7 +191,8 @@ class AddQ extends Component {
             </fieldset>
             <input type="submit" value="Save Question" />
           </form>
-        </div>    
+        </div> 
+        <div>{this.state.showModal? editModal:null}  </div> 
       </div>
     );
   }

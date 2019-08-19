@@ -319,6 +319,31 @@ app.post('/find-questions', (req,res)=>{
 		})
 
 })
+app.post('/untagged-questions', (req,res)=>{
+	let quesRef = db.collection('question')
+	let query = quesRef.where('tag','==',[])
+	query.get()
+		.then(snapshot =>{
+			let send_ret = new Promise((resolve1, reject1)=>{
+				let ret = []
+				snapshot.forEach(doc =>{
+					// console.log(doc.id, "=>", doc.data())
+					let add_id = new Promise((resolve, reject) =>{
+						let temp = doc.data()
+						temp["id"] = doc.id
+						resolve(temp)
+					})
+					add_id.then(temp=>{ret.push(temp)})
+				})
+				resolve1(ret)
+			})
+			send_ret.then(ret=>{res.send(ret)})
+		})
+		.catch(error =>{
+			console.log("DB error while finding questions: ", error)
+			res.send("error")
+		})
+})
 
 app.post('/add-tags', (req,res)=>{
 	let tagRef = db.collection('tags');
