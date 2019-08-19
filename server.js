@@ -90,14 +90,17 @@ function saveAuth(auth) {
 	auth_data = auth;
 	// console.log(auth_data)
 	console.log("Authentication complete");
+	// shareFolder(auth).then((response)=>{
+	// 	console.log(response)
+	// })
 
 	// fileUpload(auth_data,'2.jpg').then((question)=>{
 	// 	console.log(question)
 	// })
 
+	// file to delete : 1ITKtcyeqbP5NjjgwxxpNku0DFLiZ4mlb
 
 	// api key: AIzaSyAiAcu61XLAFm-WXyFlKNnHajFpqaJjFF4
-	// file to delete: 1CEAYLzfj3KmR8ShZBnPmspiTpXfShYR_
 	// deletefile('1nKcZ0-2s6kax5AtNtHm_pGFE4Nmwynx3')
 	// uploadFile(auth_data,'photo.jpeg');
 	// deletefile('1Ni8MUSiTQVgVKJvJiYcNRJbhxAugNnPU')
@@ -139,7 +142,7 @@ const fileUpload = (auth,name) => {
   return new Promise((resolve, reject) => {
 		const drive = google.drive({version: 'v3', auth});
 		const filepath = 'files/' + name
-		var folderId = '1GfTFUiZQmhpHLAYv-7AX0xQRsrOtgbFk';
+		var folderId = '1PmVCcMf61pP89k_PQsAQbyYz-bpAGtHv';
 		var fileMetadata = {
 		'name': 'photo1.jpg',
 		parents: [folderId]
@@ -170,7 +173,7 @@ const shareFolder = (auth) => {
 		  };
 		const drive = google.drive({version: 'v3', auth});
 		drive.permissions.create({
-		      fileId: '1GfTFUiZQmhpHLAYv-7AX0xQRsrOtgbFk',
+		      fileId: '1PmVCcMf61pP89k_PQsAQbyYz-bpAGtHv',
 		      resource: permissions,
 		},function(err,result){
 	        if(err){
@@ -187,7 +190,7 @@ const makeFolder= (auth) => {
 	return new Promise((resolve, reject) => {
 		const drive = google.drive({version: 'v3', auth});
 		var fileMetadata = {
-		  'name': 'Question-Images',
+		  'name': 'Pastpaper-Question-Images',
 		  'mimeType': 'application/vnd.google-apps.folder'
 		};
 		drive.files.create({
@@ -195,7 +198,6 @@ const makeFolder= (auth) => {
 		  fields: 'id'
 		}, function (err, file) {
 		  if (err) {
-			// Handle error
 			reject(err);
 		  } else {
 			resolve(file);
