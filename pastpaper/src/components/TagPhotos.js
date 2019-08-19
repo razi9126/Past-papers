@@ -109,7 +109,7 @@ class TagPhotos extends React.Component {
     }));
 
     const cards = this.state.Questions.map((question,i)=>
-      <div >
+      <div key={i} >
         <Card bg = "dark" id={question.id}>
           <Card.Header as="h5" className="white_text">
               Question &nbsp; &nbsp;
