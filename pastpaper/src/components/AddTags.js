@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import './AddTags.css'
-import {Badge} from 'react-bootstrap'
+import {Badge, Button} from 'react-bootstrap'
+
 
 class AddTags extends React.Component {
   constructor(props){
@@ -15,6 +16,26 @@ class AddTags extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.fetchtags = this.fetchtags.bind(this);
+  }
+
+  deleteTag(event,key){
+    event.preventDefault();
+    fetch('/delete-tags', {
+      method: 'POST',
+      body: JSON.stringify({key: key}),
+      headers: {
+        "Content-Type": "application/json",
+      }
+    }).then((result) =>{
+        let temp = this.state.alltags
+        for (var i = 0; i < temp.length; i++) {
+          if(temp[i]["key"]===key){
+            temp.splice(i,1)
+          }
+          break;
+        }
+        this.setState({alltags: temp})
+      })
   }
 
   handleChange(event) {
@@ -52,6 +73,7 @@ class AddTags extends React.Component {
     }).then((result) =>{
       result.json().then(tags=>{
         this.setState({alltags:tags})
+        console.log(this.state.alltags)
       })
     }) 
   }
@@ -83,7 +105,7 @@ class AddTags extends React.Component {
                 </form>
               </div>
               
-              <div className="form-style1">              
+              <div className="form-style2">              
                 <legend>
                   <span className="number">2</span> 
                   Tags Already Added {this.state.counter? <small><Badge variant="success">+{this.state.counter}</Badge></small>:null}
@@ -100,8 +122,12 @@ class AddTags extends React.Component {
 
 const TagCard = (props) => {
   return (
-    <div>
-    <p>{props.label}</p>
+    <div>      
+        <Button className = "btn-tag" variant = "secondary" onClick = {(e)=>{this.deleteTag(props.key)}} >
+          {props.label} &nbsp;
+          <Badge className = "tag-line" > X </Badge>
+        </Button>
+        <br/><br/>
     </div>
     )
 }
