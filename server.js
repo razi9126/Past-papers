@@ -457,6 +457,18 @@ app.post('/delete-question', (req,res)=>{
 		})
 })
 
+app.post('/delete-tag', (req,res)=>{
+	db.collection('tags').doc(req.body.key).delete()
+		.then(()=>{
+			console.log("Deleted Tag")
+			res.send("Deleted Tag")
+		})
+		.catch(error =>{
+			console.log(error)
+			res.send("Error in Deleting Tag")
+		})
+})
+
 app.post('/edit-question', (req,res)=>{
 	db.collection('question').doc(req.body.id).update({
 		subject: req.body.subject,
