@@ -130,6 +130,7 @@ class AddQ extends Component {
 
     return (
       <div className="main_container">
+      <br/><br/>
         <h1 className="title1"> ADD A QUESTION </h1>
         <div className="form-style1">
           <form onSubmit={this.submitHandler}>

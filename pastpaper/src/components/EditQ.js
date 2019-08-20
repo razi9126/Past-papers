@@ -370,7 +370,9 @@ class EditQ extends Component {
     )
 
     return (
+
       <div>
+      <br/><br/>
         {this.state.Form? form:cards}
         {this.state.showModal? editModal:null}
       </div>

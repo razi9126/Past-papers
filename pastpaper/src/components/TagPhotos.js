@@ -137,6 +137,7 @@ class TagPhotos extends React.Component {
 
     return (
       <div>
+      <br/><br/>
         {cards}
       </div>
     );

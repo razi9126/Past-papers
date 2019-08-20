@@ -149,6 +149,7 @@ class DelQ extends Component {
 
     return (
       <div>
+      <br/><br/>
         {this.state.Form? form:table}
       </div>
 

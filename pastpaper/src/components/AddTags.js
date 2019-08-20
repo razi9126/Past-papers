@@ -101,6 +101,7 @@ class AddTags extends React.Component {
 const TagCard = (props) => {
   return (
     <div>
+
     <p>{props.label}</p>
     </div>
     )
