@@ -30,7 +30,7 @@ render() {
         <MDBCollapse id="navbarCollapse3" isOpen={this.state.isOpen} navbar>
           <MDBNavbarNav left>
             <MDBNavItem active>
-              <MDBNavLink to="/">Home</MDBNavLink>
+              <MDBNavLink>Home</MDBNavLink>
             </MDBNavItem>
             <MDBNavItem>
               <MDBNavLink to='/Menu'>Menu</MDBNavLink>
@@ -80,12 +80,13 @@ render() {
           </MDBNavbarNav>
         </MDBCollapse>
       </MDBNavbar>
-      <Route exact path='/' component={Home}/>
-      <Route path='/Menu' component={Menu}/>
-      <Route path='/AddQ' component={AddQ}/>
-      <Route path='/EditQ' component={EditQ}/>
-      <Route path='/AddTags' component={AddTags}/>
-      <Route path='/TagPhotos' component={TagPhotos}/>
+          <Route exact path='/' component={Home}/>
+          <Route path='/Menu' component={Menu}/>
+          <Route path='/AddQ' component={AddQ}/>
+          <Route path='/EditQ' component={EditQ}/>
+          <Route path='/RUI' component={RUI}/>
+          <Route path='/AddTags' component={AddTags}/>
+          <Route path='/TagPhotos' component={TagPhotos}/>
     </Router>
     );
   }
