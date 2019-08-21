@@ -373,7 +373,9 @@ app.post('/tag-question', (req, res)=>{
 app.post('/add-tags', (req,res)=>{
 	let tagRef = db.collection('tags');
 	val_to_add = req.body.label
-	val_to_add=val_to_add.toLowerCase()
+	val_to_add = val_to_add.toLowerCase()
+	val_to_add = val_to_add.trim()
+
 
 	let query = tagRef.where('label', '==', val_to_add).get()
 	  .then(snapshot => {

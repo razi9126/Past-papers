@@ -13,7 +13,7 @@ class Upload extends Component {
   render() {
     return (
       <div className="main_container">
-        <br/><br/>
+        
         <a href= "/AddQ">
           <div className="inner_container">
             <img className = "img" src= {plus} alt="" />
