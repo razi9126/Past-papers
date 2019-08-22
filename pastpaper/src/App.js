@@ -8,14 +8,16 @@ import EditQ from './components/EditQ'
 import RUI from './components/ReactUploadImage'
 import AddTags from './components/AddTags'
 import TagPhotos from './components/TagPhotos'
-import NavbarPage from './components/NavbarPage'
+// import NavbarPage from './components/NavbarPage'
+import ProgNavbar from './components/ProgNavbar'
 
 class App extends Component {
   render() {
     const App = () => (
       <div>
-      <NavbarPage/>
+      <ProgNavbar/>
         <Switch>
+
           <Route exact path='/' component={Home}/>
           <Route path='/Menu' component={Menu}/>
           <Route path='/AddQ' component={AddQ}/>
