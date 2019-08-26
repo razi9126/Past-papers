@@ -12,7 +12,7 @@ class TagPhotos extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      selectedOption: null,
+      selectedOption: [],
       alltags:[],
       options:[],
       Questions: [],
@@ -60,7 +60,7 @@ class TagPhotos extends React.Component {
       }
     }).then((result) =>{
       result.json().then(untagged=>{
-        console.log(untagged)
+        // console.log(untagged)
         this.setState({Questions:untagged})
       }) 
     })
@@ -72,32 +72,30 @@ class TagPhotos extends React.Component {
 
   }
 
-  handleChange = selectedOption => {
-    this.setState({ selectedOption },()=>{
-      console.log(`Option selected:`, this.state.selectedOption);
-    });
+  handleChange = (selectedOption,qid) => {
+    console.log(selectedOption, qid)
+    this.state.selectedOption[qid] = selectedOption
+    console.log(this.state.selectedOption)
   };
 
   saveTags = (event, id) => {
     event.preventDefault();
-    // console.log(id)
+    console.log(this.state.selectedOption[id])
     fetch('/tag-question', {
       method: 'POST',
-      body: JSON.stringify({question_id: id, tags: this.state.selectedOption}),
+      body: JSON.stringify({question_id: id, tags: this.state.selectedOption[id]}),
       headers: {
         "Content-Type": "application/json",
       }
     }).then((result)=>{
-      // document.getElementById(id).classList.add("animated-card")
-      let temp = this.state.Questions
-      for (var i = temp.length - 1; i >= 0; i--) {
-        if (temp[i]["id"]==id){
-          temp.splice(i,1)
+        // document.getElementById(id).classList.add("animated-card")
+        let temp = this.state.Questions
+        for (var i = temp.length - 1; i >= 0; i--) {
+          if (temp[i]["id"]==id){
+            temp.splice(i,1)
+          }
         }
-      }
-      // console.log(temp)
-      this.setState({selectedOption: null, Questions: temp})
-      
+        this.setState({selectedOption:[], Questions: temp})
     })
   }
 
@@ -120,8 +118,8 @@ class TagPhotos extends React.Component {
             <br/> 
               <Select
                 isMulti='true'
-                value={selectedOption}
-                onChange={this.handleChange}
+                value={selectedOption[question.id]}
+                onChange={(e)=>{this.handleChange(e,question.id)}}
                 options={this.state.options}
               />
           </Card.Header>
@@ -135,10 +133,21 @@ class TagPhotos extends React.Component {
       </div>
     )
 
+    const blank = (
+      <div className= "main_container">
+        <br/><br/><br/>
+        <Card  bg = "dark" id="blank" className ="vc">
+          <Card.Header as="h5" className="white_text">
+              No Untagged Questions &nbsp; &nbsp;
+          </Card.Header>
+        </Card>
+      </div>
+      )
+
     return (
       <div>
       <br/><br/>
-        {cards}
+        {this.state.Questions.length? cards:blank}
       </div>
     );
   }

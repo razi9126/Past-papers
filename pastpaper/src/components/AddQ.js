@@ -146,7 +146,7 @@ class AddQ extends Component {
               <select defaultValue= "None" id="job" name="Syllabus" onChange={this.changeHandler} required>
                   <option value="None">-------</option>
                   <option value="O-levels">O-levels</option>
-                  <option value="A-levels">A-levelsy</option>
+                  <option value="A-levels">A-levels</option>
                   <option value="IGCSE">IGCSE</option>
                   <option value="IBDP">IBDP</option>
               </select>
