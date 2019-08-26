@@ -11,8 +11,9 @@ class EditQ extends Component {
     super(props);
     this.state = {
       Subject: null,
+      Syllabus: '',
       Year: '',
-      Zone:  '',
+      Session:  '',
       Paper: '',
       Form: true,
       Questions:[],
@@ -49,10 +50,10 @@ class EditQ extends Component {
 
   submitHandler = event =>{
     event.preventDefault();
-    const { Subject, Year, Zone, Paper } = this.state;  
+    const { Syllabus, Subject, Year, Session, Paper } = this.state;  
     fetch('/find-questions', {
           method: 'POST',
-          body: JSON.stringify({subject: Subject, year: Year, zone: Zone, paper: Paper}),
+          body: JSON.stringify({syllabus:Syllabus, subject: Subject, year: Year, session: Session, paper: Paper}),
           headers: {
             "Content-Type": "application/json",
           }
@@ -62,8 +63,9 @@ class EditQ extends Component {
           this.setState({
             Questions: body,
             Subject: null,
+            Syllabus: '',
             Year: '',
-            Zone: '',
+            Session: '',
             Paper: '',
             Form: false,
             selectedQid: '',
@@ -130,8 +132,9 @@ class EditQ extends Component {
         showModal: false, 
         selectedQid: '',
         selectedQSubject: '',
+        selectedQSyllabus: '',
         selectedQYear:'',
-        selectedQZone:'',
+        selectedQSession:'',
         selectedQPaper:'',
         selectedQDifficulty:'',
         selectedQDescription:'',
@@ -143,9 +146,10 @@ class EditQ extends Component {
     let p1 = new Promise((resolve, reject)=>{
       this.setState({
         selectedQid: question.id,
+        selectedQSyllabus: question.syllabus,
         selectedQSubject: question.subject,
         selectedQYear:question.year,
-        selectedQZone:question.zone,
+        selectedQSession:question.session,
         selectedQPaper:question.paper,
         selectedQDifficulty:question.difficulty,
         selectedQDescription:question.description,
@@ -162,7 +166,7 @@ class EditQ extends Component {
     event.preventDefault()
     fetch('/edit-question', {
       method: 'POST',
-      body: JSON.stringify({id:this.state.selectedQid ,subject: this.state.selectedQSubject, year: this.state.selectedQYear, zone: this.state.selectedQZone, paper: this.state.selectedQPaper, difficulty: this.state.selectedQDifficulty, description:this.state.selectedQDescription, answer: this.state.selectedQAnswer}),
+      body: JSON.stringify({id:this.state.selectedQid ,subject: this.state.selectedQSubject,syllabus: this.state.selectedQSyllabus, year: this.state.selectedQYear, session: this.state.selectedQSession, paper: this.state.selectedQPaper, difficulty: this.state.selectedQDifficulty, description:this.state.selectedQDescription, answer: this.state.selectedQAnswer}),
       headers: {
         "Content-Type": "application/json",
       }
@@ -175,7 +179,8 @@ class EditQ extends Component {
           if (new_list[i]["id"] ===this.state.selectedQid){
             if (new_list[i]["subject"]!==this.state.selectedQSubject ||
                 new_list[i]["year"]!==this.state.selectedQYear ||
-                new_list[i]["zone"]!==this.state.selectedQZone ||
+                new_list[i]["syllabus"]!==this.state.selectedQSyllabus ||
+                new_list[i]["session"]!==this.state.selectedQSession ||
                 new_list[i]["paper"]!==this.state.selectedQPaper
                 ){
               new_list.splice(i,1)
@@ -212,22 +217,32 @@ class EditQ extends Component {
                   Question Details
                 </legend>
                 
+                <label htmlFor="job">Syllabus:</label>
+                <select defaultValue={this.state.selectedQSyllabus} id="job" name="Syllabus" onChange={(e)=>{this.editChangeHandler(e)}} required>
+                    <option value="None">-------</option>
+                    <option value="O-levels">O-levels</option>
+                    <option value="A-levels">A-levelsy</option>
+                    <option value="IGCSE">IGCSE</option>
+                    <option value="IBDP">IBDP</option>
+                </select>
+
                 <label htmlFor="job">Subject:</label>
-                <select defaultValue= {this.state.selectedQsubject} id="job" name="Subject" onChange={(e)=>{this.editChangeHandler(e)}} required>
+                <select defaultValue= {this.state.selectedQSubject} id="job" name="Subject" onChange={(e)=>{this.editChangeHandler(e)}} required>
                     <option value="None">-------</option>
                     <option value="Physics">Physics</option>
                     <option value="Chemistry">Chemistry</option>
                     <option value="Mathematics">Mathematics</option>
                     <option value="Additional Mathematics">Additional Mathematics</option>
-                    <option value="Biology">Biology</option>
-                    <option value="Computer Science">Computer Science</option>
-                    <option value="Pakistan Studies">Pakistan Studies</option>
-                    <option value="Islamic Studies;">Islamic Studies</option>
-                    <option value="Other">Other</option>
+                   
                 </select>
 
                 <input type="number" name="Year" placeholder="Year" value={this.state.selectedQYear} onChange={(e)=>{this.editChangeHandler(e)}} required/>
-                <input type="number" name="Zone" placeholder="Zone" value={this.state.selectedQZone} onChange={(e)=>{this.editChangeHandler(e)}} required/>
+                <label htmlFor="job">Session:</label>
+                <select defaultValue= {this.state.selectedQSession} id="job" name="Session" onChange={(e)=>{this.editChangeHandler(e)}} required>
+                  <option value="Spring">Spring</option>
+                  <option value="Summer">Summer</option>
+                  <option value="Winter">Winter</option>
+                </select>
                 <input type="number" name="Paper" placeholder="Paper" value={this.state.selectedQPaper} onChange={(e)=>{this.editChangeHandler(e)}} required/>   
               </fieldset>
 
@@ -283,6 +298,15 @@ class EditQ extends Component {
                 <span className="number">1</span> 
                 Question Details
               </legend>
+
+              <label htmlFor="job">Syllabus:</label>
+                <select defaultValue= "None" id="job" name="Syllabus" onChange={this.changeHandler}  required>
+                    <option value="None">-------</option>
+                    <option value="O-levels">O-levels</option>
+                    <option value="A-levels">A-levelsy</option>
+                    <option value="IGCSE">IGCSE</option>
+                    <option value="IBDP">IBDP</option>
+                </select>
               
               <label htmlFor="job">Subject:</label>
               <select defaultValue= "None" id="job" name="Subject" onChange={this.changeHandler} required>
@@ -291,15 +315,16 @@ class EditQ extends Component {
                   <option value="Chemistry">Chemistry</option>
                   <option value="Mathematics">Mathematics</option>
                   <option value="Additional Mathematics">Additional Mathematics</option>
-                  <option value="Biology">Biology</option>
-                  <option value="Computer Science">Computer Science</option>
-                  <option value="Pakistan Studies">Pakistan Studies</option>
-                  <option value="Islamic Studies;">Islamic Studies</option>
-                  <option value="Other">Other</option>
+               
               </select>
 
               <input type="number" name="Year" placeholder="Year" value={this.state.Year} onChange={this.changeHandler} required/>
-              <input type="number" name="Zone" placeholder="Zone" value={this.state.Zone} onChange={this.changeHandler} required/>
+              <label htmlFor="job">Session:</label>    
+              <select defaultValue= {this.state.Session} id="job" name="Session" onChange={this.changeHandler} required>
+                  <option value="Spring">Spring</option>
+                  <option value="Summer">Summer</option>
+                  <option value="Winter">Winter</option>
+              </select>
               <input type="number" name="Paper" placeholder="Paper" value={this.state.Paper} onChange={this.changeHandler} required/>   
             </fieldset>
 
@@ -324,7 +349,7 @@ class EditQ extends Component {
             <Card.Img className = "card-img-tosp" variant="top" src={"https://drive.google.com/uc?id="+question.question_link} />
             <Card.Body>
               <Card.Text>
-                <b>{question.subject} {question.year} Paper {question.paper} Zone {question.zone}</b>
+                <b>{question.subject} {question.year} Paper {question.paper} Session {question.session}</b>
                 <br/>
                 <b>Description:</b> {question.description}
                 <br/>

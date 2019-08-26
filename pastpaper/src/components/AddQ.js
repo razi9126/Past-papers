@@ -11,18 +11,19 @@ class AddQ extends Component {
 
       Subject: null,
       Year: '',
-      Zone:  '',
+      Session:  '',
       Paper: '',
       response:'',
       showModal:false,
-
+      Session:'',
       questionFile: '',
       questionText: 'Upload Question Image',
       Answer: null,
       answerFile: '',
       answerText: 'Upload Answer Image',
-      Difficulty: '',
+      Difficulty: 1,
       Description:'',
+      Syllabus:'',
     }
     this.questionselectedHandler = this.questionselectedHandler.bind(this);
     this.answerselectedHandler = this.answerselectedHandler.bind(this);
@@ -81,23 +82,24 @@ class AddQ extends Component {
 
   submitHandler = event =>{
     event.preventDefault();
-    const { Subject, Year, Zone, Paper, Difficulty, Answer, Description, questionFile, answerFile } = this.state;
+    const { Subject, Session, Year, Paper, Difficulty, Answer, Description, questionFile, answerFile, Syllabus } = this.state;
     let formData= new FormData();
     formData.append('subject', Subject);
+    formData.append('syllabus', Syllabus);
     formData.append('year', Year);
-    formData.append('zone', Zone);
+    formData.append('session', Session);
     formData.append('paper', Paper);
     formData.append('difficulty', Difficulty);
     formData.append('answertext', Answer);
     formData.append('description', Description);
     formData.append('question', questionFile);
-    formData.append('answer', answerFile)
+    formData.append('answer', answerFile);
 
     axios.post('/upload-question', formData)
       .then((result) =>{
         console.log(result)
         this.setState({
-          Difficulty: '',
+          Difficulty: 1,
           Answer: '',
           Description: '',
           questionFile: '',
@@ -140,6 +142,15 @@ class AddQ extends Component {
                 General Info
               </legend>
               
+              <label htmlFor="job">Syllabus:</label>
+              <select defaultValue= "None" id="job" name="Syllabus" onChange={this.changeHandler} required>
+                  <option value="None">-------</option>
+                  <option value="O-levels">O-levels</option>
+                  <option value="A-levels">A-levelsy</option>
+                  <option value="IGCSE">IGCSE</option>
+                  <option value="IBDP">IBDP</option>
+              </select>
+
               <label htmlFor="job">Subject:</label>
               <select defaultValue= "None" id="job" name="Subject" onChange={this.changeHandler} required>
                   <option value="None">-------</option>
@@ -147,15 +158,17 @@ class AddQ extends Component {
                   <option value="Chemistry">Chemistry</option>
                   <option value="Mathematics">Mathematics</option>
                   <option value="Additional Mathematics">Additional Mathematics</option>
-                  <option value="Biology">Biology</option>
-                  <option value="Computer Science">Computer Science</option>
-                  <option value="Pakistan Studies">Pakistan Studies</option>
-                  <option value="Islamic Studies;">Islamic Studies</option>
-                  <option value="Other">Other</option>
+                  
               </select>
 
               <input type="number" name="Year" placeholder="Year" value={this.state.Year} onChange={this.changeHandler} required/>
-              <input type="number" name="Zone" placeholder="Zone" value={this.state.Zone} onChange={this.changeHandler} required/>
+              <label htmlFor="job">Session:</label>
+              <select defaultValue= "None" id="job" name="Session" onChange={this.changeHandler} required>
+                  <option value="None">-------</option>                  
+                  <option value="Spring">Spring</option>
+                  <option value="Summer">Summer</option>
+                  <option value="Winter">Winter</option>
+              </select>
               <input type="number" name="Paper" placeholder="Paper" value={this.state.Paper} onChange={this.changeHandler} required/>   
             </fieldset>
 
@@ -186,6 +199,7 @@ class AddQ extends Component {
                 <button className="btn1">{this.state.answerText}</button>
                 <input type="file" onChange={this.answerselectedHandler} placeholder="sada"/>
               </div>
+              <label htmlFor="job">Difficulty</label>
               <input type="number" name="Difficulty" placeholder="Difficulty" value={this.state.Difficulty} onChange={this.changeHandler} required/>
               <textarea name="Description" placeholder="Description/Hints" value={this.state.Description} onChange={this.changeHandler}></textarea>
            

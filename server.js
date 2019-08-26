@@ -7,7 +7,6 @@ const { google } = require('googleapis');
 var firebase = require("firebase/app");
 var http = require('http');
 
-
 const SCOPES = ['https://www.googleapis.com/auth/drive']; // If modifying these scopes, delete token.json.
 const TOKEN_PATH = 'token.json';
 
@@ -107,18 +106,7 @@ function saveAuth(auth) {
 }
 
 function deletefile(file_id){
-	// var request=require("request");
-	// console.log(auth_data.credentials.access_token)
-
-	// url = 'https://www.googleapis.com/drive/v3/files/' + file_id
-	// request.del(url,function(error,response,body){
-	// if(error){
-	//      console.log(error);
-	// }else{
-	// 	console.log(response);
-	// 	console.log(response.body);
-	//         }
-			        // })
+	
 	const options = {
 	  hostname: 'https://www.googleapis.com',
 	  path: '/drive/v3/files/'+ file_id+'?key=AIzaSyBB5-95sXXExxLWgT_lZL1rSWzLkBSnHC0',
@@ -267,8 +255,9 @@ app.post('/upload-question', upload.any(), (req, res) => {
 		// console.log(vals)
 		let data = {
 					subject:(req.body.subject),
+					session:(req.body.session),
 					year:(req.body.year),
-					zone:(req.body.zone),
+					syllabus:(req.body.syllabus),
 					paper:(req.body.paper),
 					difficulty:(req.body.difficulty),
 					description:(req.body.description),
@@ -294,7 +283,7 @@ app.post('/find-questions', (req,res)=>{
 	let quesRef = db.collection('question')
 	let query = quesRef.where('subject','==',req.body.subject)
 	query = query.where('year','==',req.body.year)
-	query = query.where('zone','==',req.body.zone)
+	query = query.where('session','==',req.body.session)
 	query = query.where('paper','==',req.body.paper)
 	query.get()
 		.then(snapshot =>{
@@ -408,7 +397,6 @@ app.post('/find-tags', (req,res)=>{
 	let tagRef = db.collection('tags')
   	const alltags = tagRef.get()
   	.then(snapshot => {
-
   		let send_ret = new Promise((resolve1, reject1)=>{
 				let ret = []
 				snapshot.forEach(doc =>{
@@ -436,10 +424,7 @@ app.post('/find-tags', (req,res)=>{
 * @param {String} fileId ID of the file to delete.
 */
 function deleteFile(fileId) {
-  var request = gapi.client.drive.files.delete({
-    'fileId': fileId
-  });
-  request.execute(function(resp) { });
+  
 }
 
 app.post('/delete-question', (req,res)=>{
@@ -474,8 +459,9 @@ app.post('/delete-tag', (req,res)=>{
 app.post('/edit-question', (req,res)=>{
 	db.collection('question').doc(req.body.id).update({
 		subject: req.body.subject,
+		session: req.body.session,
 		year: req.body.year,
-		zone: req.body.zone,
+		session: req.body.session,
 		paper: req.body.paper,
 		difficulty: req.body.difficulty,
 		description: req.body.description,
