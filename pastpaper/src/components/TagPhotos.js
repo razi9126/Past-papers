@@ -16,10 +16,21 @@ class TagPhotos extends React.Component {
       alltags:[],
       options:[],
       Questions: [],
+      showForm: true,
+      Subject: null,
+      Syllabus: '',
     }
     this.fetchtags = this.fetchtags.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.saveTags = this.saveTags.bind(this);
+    this.changeHandler = this.changeHandler.bind(this);
+    this.fetchUntagged = this.fetchUntagged.bind(this);
+  }
+
+  changeHandler = event => {
+    this.setState({
+      [event.target.name]: event.target.value
+    })
   }
 
   fetchtags(){
@@ -54,21 +65,26 @@ class TagPhotos extends React.Component {
   fetchUntagged(){
     fetch('/untagged-questions', {
       method: 'POST',
-      body: '',
+      body: JSON.stringify({syllabus:this.state.Syllabus, subject: this.state.Subject}),
       headers: {
         "Content-Type": "application/json",
       }
     }).then((result) =>{
       result.json().then(untagged=>{
         // console.log(untagged)
-        this.setState({Questions:untagged})
+        this.setState({Questions:untagged, showForm: false})
       }) 
     })
   }
 
+  submitHandler = event =>{
+    event.preventDefault()
+    this.fetchUntagged()
+  }
+
   componentDidMount() {
     this.fetchtags()
-    this.fetchUntagged()
+    // this.fetchUntagged()
 
   }
 
@@ -144,10 +160,49 @@ class TagPhotos extends React.Component {
       </div>
       )
 
+    const searchform = (
+        <div>       
+          <div className="main_container"> 
+            <h1 className="title1"> Search for Questions To Tag </h1>    
+            <div className="form-style1">
+              <form onSubmit={this.submitHandler}>
+                <fieldset>
+                  <legend>
+                    <span className="number">1</span> 
+                    Question Details
+                  </legend>
+
+                  <label htmlFor="job">Syllabus:</label>
+                    <select defaultValue= "None" id="job" name="Syllabus" onChange={this.changeHandler}  required>
+                        <option value="None">-------</option>
+                        <option value="O-levels">O-levels</option>
+                        <option value="A-levels">A-levels</option>
+                        <option value="IGCSE">IGCSE</option>
+                        <option value="IBDP">IBDP</option>
+                    </select>
+                  
+                  <label htmlFor="job">Subject:</label>
+                  <select defaultValue= "None" id="job" name="Subject" onChange={this.changeHandler} required>
+                      <option value="None">-------</option>
+                      <option value="Physics">Physics</option>
+                      <option value="Chemistry">Chemistry</option>
+                      <option value="Mathematics">Mathematics</option>
+                      <option value="Additional Mathematics">Additional Mathematics</option>
+                   
+                  </select>
+                </fieldset>
+
+                <input type="submit" value="Show Results" />
+              </form>
+            </div>
+          </div> 
+        </div>
+      )
+
     return (
       <div>
       <br/><br/>
-        {this.state.Questions.length? cards:blank}
+        {this.state.showForm? searchform: (this.state.Questions.length? cards: blank)}
       </div>
     );
   }

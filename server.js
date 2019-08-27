@@ -311,6 +311,8 @@ app.post('/find-questions', (req,res)=>{
 app.post('/untagged-questions', (req,res)=>{
 	let quesRef = db.collection('question')
 	let query = quesRef.where('tags','==',[])
+	query = query.where('subject','==',req.body.subject)
+	query = query.where('syllabus','==', req.body.syllabus)
 	query.get()
 		.then(snapshot =>{
 			let send_ret = new Promise((resolve1, reject1)=>{

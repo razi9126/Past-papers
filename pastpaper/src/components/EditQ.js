@@ -290,7 +290,7 @@ class EditQ extends Component {
     const form= ( 
     <div>       
       <div className="main_container"> 
-        <h1 className="title1"> Search for questions </h1>    
+        <h1 className="title1"> Search for Questions To Edit</h1>    
         <div className="form-style1">
           <form onSubmit={this.submitHandler}>
             <fieldset>
