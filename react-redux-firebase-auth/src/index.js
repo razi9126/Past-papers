@@ -7,6 +7,8 @@ import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import reducers from './reducers';
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+
 
 const store = createStore(reducers, applyMiddleware(logger))
 
