@@ -290,7 +290,7 @@ class EditQ extends Component {
     const form= ( 
     <div>       
       <div className="main_container"> 
-        <h1 className="title1"> Search for questions </h1>    
+        <h1 className="title1"> Search for Questions To Edit</h1>    
         <div className="form-style1">
           <form onSubmit={this.submitHandler}>
             <fieldset>
@@ -303,7 +303,7 @@ class EditQ extends Component {
                 <select defaultValue= "None" id="job" name="Syllabus" onChange={this.changeHandler}  required>
                     <option value="None">-------</option>
                     <option value="O-levels">O-levels</option>
-                    <option value="A-levels">A-levelsy</option>
+                    <option value="A-levels">A-levels</option>
                     <option value="IGCSE">IGCSE</option>
                     <option value="IBDP">IBDP</option>
                 </select>
