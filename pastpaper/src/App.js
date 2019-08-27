@@ -7,7 +7,7 @@ import AddQ from './components/AddQ'
 import EditQ from './components/EditQ'
 import AddTags from './components/AddTags'
 import TagPhotos from './components/TagPhotos'
-import ProgNavbar from './components/ProgNavbar'
+import ProgNavbar from './components/Navbar/ProgNavbar'
 
 class App extends Component {
   render() {
