@@ -4,3 +4,7 @@ export const SIGN_IN = '/signin';
 export const PASSWORD_CHANGE = '/pw-change';
 export const PASSWORD_FORGET = '/pw-forget';
 export const ACCOUNT = '/account';
+export const ADDQ = '/AddQ';
+export const EDITQ = '/EditQ';
+export const TAGQ = '/TagPhotos';
+export const ADDTAG = '/AddTags';

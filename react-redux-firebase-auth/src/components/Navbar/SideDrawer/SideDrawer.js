@@ -6,11 +6,11 @@ import { Link } from 'react-router-dom';
 
 const loggedin = (
     <ul>
-        <li><a href="/">Home</a></li>
-        <li><a href="/AddQ">Add Questions</a></li>
-        <li><a href="/TagPhotos">Tag Photos</a></li>
-        <li><a href="/EditQ">Edit Questions</a></li>
-        <li><a href="/AddTags">Add Tags</a></li>
+        <li><Link to={routes.HOME}>Home</Link></li>
+        <li><Link to={routes.ADDQ}>Add Questions</Link></li>
+        <li><Link to={routes.EDITQ}>Edit Questions</Link></li>
+        <li><Link to={routes.TAGQ}>Tag Questions</Link></li>
+        <li><Link to={routes.ADDTAG}>Add Tags</Link></li>
         <li> <SignOut/> </li>
     </ul>
 
@@ -18,7 +18,8 @@ const loggedin = (
 
 const loggedout = (
     <ul> 
-        <li><Link to={routes.SIGN_IN}>Sign In</Link></li>
+        <li><Link to={routes.SIGN_IN}>Login</Link></li>
+        <li><Link to={routes.SIGN_UP}>Sign Up</Link></li>
     </ul>
     )
 
