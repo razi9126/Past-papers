@@ -7,6 +7,7 @@ import * as routes from '../constants/routes';
 
 class Navigation extends React.Component {
   render() {
+    console.log(this.props.user)
     if (this.props.user !== null) {
       return (
         <ul>

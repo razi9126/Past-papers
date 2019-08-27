@@ -16,30 +16,17 @@ class SignIn extends React.Component {
   }
 
   render() {
-    const {
-      email,
-      password,
-      error,
-    } = this.state;
+    const { email, password, error, } = this.state;
 
-    const isInvalid =
-      password === '' ||
-      email === '';
+    const isInvalid = password === '' || email === '';
 
     return (
       <div>
         <h1>SignIn</h1>
         <form onSubmit={ async (e) => {
           e.preventDefault();
-
-          const {
-            email,
-            password,
-          } = this.state;
-      
-          const {
-            history,
-          } = this.props;
+          const { email, password, } = this.state;
+          const {history,} = this.props;
 
           this.props.dispatch(requestSignIn());
 

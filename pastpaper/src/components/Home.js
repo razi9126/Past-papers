@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { ProgressBar } from 'react-bootstrap'
 import '../App.css';
 import logo from '../logo.svg';
 
