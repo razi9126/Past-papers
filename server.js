@@ -308,6 +308,12 @@ app.post('/find-questions', (req,res)=>{
 		})
 
 })
+
+app.post('/from-frontend', (req,res)=>{
+	console.log("From frontend recieved")
+
+})
+
 app.post('/untagged-questions', (req,res)=>{
 	let quesRef = db.collection('question')
 	let query = quesRef.where('tags','==',[])
