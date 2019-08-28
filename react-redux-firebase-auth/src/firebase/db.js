@@ -20,6 +20,7 @@ export const doCreateUser = (id, username, email) =>{
 		.catch(error=>{
 			console.log("DB error while adding question: ", error)
 		})
+		return (userRef)
 }
 
 

@@ -1,0 +1,143 @@
+.main_container{
+	text-align: center;
+}
+
+.form-style1{
+	max-width: 500px;
+	padding: 10px 20px;
+	margin: 10px auto;
+	padding: 20px;
+	background: #f4f7f8; /*background v light grey  */
+	border-radius: 8px;
+	font-family: Georgia, "Times New Roman", Times, serif;
+	width: 80%;
+}
+
+.form-style1 fieldset{
+	border: none;
+}
+.form-style1 legend {
+	font-size: 1.4em;
+	margin-bottom: 10px;
+	color: #8a97a0;
+}
+.form-style1 label {
+	display: block;
+	text-align: left;
+	margin-bottom: 8px;
+	color: #8a97a0;
+}
+
+.form-style1 input[type="text"],
+.form-style1 input[type="number"],
+.form-style1 textarea,
+.form-style1 select {
+	font-family: Georgia, "Times New Roman", Times, serif;
+	background: rgba(255,255,255,.1);
+	border: none;
+	border-radius: 4px;
+	font-size: 15px;
+	margin: 0;
+	outline: 0;
+	padding: 10px;
+	width: 100%;
+	box-sizing: border-box; 
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box; 
+	background-color: #e8eeef;
+	color:#8a97a0;
+	-webkit-box-shadow: 0 1px 0 rgba(0,0,0,0.03) inset;
+	box-shadow: 0 1px 0 rgba(0,0,0,0.03) inset;
+	margin-bottom: 30px;
+}
+.form-style1 input[type="text"]:focus,
+.form-style1 input[type="number"]:focus,
+.form-style1 textarea:focus,
+.form-style1 select:focus{
+	background: #d2d9dd; /* engraving */
+}
+.form-style1 select{
+	-webkit-appearance: menulist-button;
+	height:35px;
+}
+.form-style1 .number {
+	background: #1adae8;
+	color: #fff;
+	height: 30px;
+	width: 30px;
+	display: inline-block;
+	font-size: 0.8em;
+	margin-right: 4px;
+	line-height: 30px;
+	text-align: center;
+	text-shadow: 0 1px 0 rgba(255,255,255,0.2);
+	border-radius: 15px 15px 15px 0px;
+}
+
+.form-style1 input[type="submit"],
+.form-style1 input[type="button"],
+.form-style1 input[type="file"],
+.form-style1 button
+{
+	position: relative;
+	display: block;
+	padding: 19px 0px 18px 0px;
+	color: #FFF;
+	margin: 0 auto;
+	background: #1adae8;
+	font-size: 120%;
+	text-align: center;
+	font-style: normal;
+	width: 100%;
+	border: 1px solid #11c4d1;
+	border-width: 1px 1px 3px;
+	margin-bottom: 10px;
+}
+
+.form-style1 input[type="submit"]:hover,
+.form-style1 input[type="button"]:hover,
+.form-style1 input[type="file"]:hover
+{
+	background: #1a94bc;
+}
+
+.upload-btn1-wrapper {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+}
+
+.btn1 {
+  border: 2px solid gray;
+  color: gray;
+  background-color: cyan;
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.upload-btn1-wrapper input[type=file] {
+  font-size: 100px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+}
+
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,800,700,300);
+body {
+  padding: 20px 80px;
+  background: #eee url("blue_bg.jpg");
+}
+.title {
+  /*font-family: 'Open Sans', sans-serif;*/
+  /*color: #EDEDED;*/
+  /*text-decoration: none;*/
+  /*text-transform: uppercase;*/
+  /*font-weight: 800;*/
+  /*letter-spacing: -3px;*/
+  /*line-height: 1;*/
+  /*text-shadow: #EDEDED 3px 2px 0;*/
+  /*position: relative;*/
+}
