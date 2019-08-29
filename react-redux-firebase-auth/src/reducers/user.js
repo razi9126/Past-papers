@@ -5,7 +5,9 @@ import {
 } from '../actions/user';
 
 const initialState = {
-    user: null
+    user: null,
+    credits: null,
+    usertype: null
 }
 
 export default function user(state = initialState, action) {
@@ -14,7 +16,9 @@ export default function user(state = initialState, action) {
             return state;
         case SIGNED_IN:
             return Object.assign({}, state, {
-                user: action.user
+                user: action.user,
+                credits: action.credits,
+                usertype: action.usertype
             });
         case SIGN_OUT:
             return Object.assign({}, state, {

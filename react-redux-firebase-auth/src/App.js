@@ -14,6 +14,9 @@ import ProgNavbar from './components/Navbar/ProgNavbar'
 import PrivateRoute from './components/PrivateRoute';
 import PublicRoute from './components/PublicRoute';
 import AddQ from './components/AddQ';
+import EditQ from './components/EditQ';
+import TagPhotos from './components/TagPhotos';
+import AddTags from './components/AddTags';
 import * as routes from './constants/routes';
 import Auth from './components/Auth';
 import './App.css';
@@ -45,6 +48,9 @@ class App extends React.Component {
             <PrivateRoute exact path={routes.PASSWORD_CHANGE} user={this.props.user} component={() => <PasswordChange />} />
             <PrivateRoute exact path={routes.ACCOUNT} user={this.props.user} component={() => <Account />} />
             <PrivateRoute exact path={routes.ADDQ} user={this.props.user} component={() => <AddQ />} />
+            <PrivateRoute exact path={routes.EDITQ} user={this.props.user} component={() => <EditQ />} />
+            <PrivateRoute exact path={routes.TAGQ} user={this.props.user} component={() => <TagPhotos />} />
+            <PrivateRoute exact path={routes.ADDTAG} user={this.props.user} component={() => <AddTags />} />
           </Auth>
         </div>
       </BrowserRouter>
@@ -54,7 +60,9 @@ class App extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    user: state.user.user
+    user: state.user.user,
+    credits: state.user.credits,
+    usertype: state.user.usertype,
   };
 }
 

@@ -26,11 +26,23 @@ class SignIn extends React.Component {
             e.preventDefault();
             const { email, password, } = this.state;
             const {history,} = this.props;
+
+            // console.log(this.props)
+            
             this.props.dispatch(requestSignIn());
 
             try {
               const response = await auth.doSignInWithEmailAndPassword(email, password);
-              this.props.dispatch(signedIn(response.user));
+
+              // let dict={
+              //   // user1:response.user,
+              //   credits1:0 ,
+              //   type1:'stunt'
+              // }
+              let credits = 0;
+              let usertype= 'stunt'
+              // console.log("asda", Object.assign({}, response.user, credits, usertype))
+              this.props.dispatch(signedIn(response.user, credits, usertype))
               if (response.user === undefined) {
                 history.push(routes.SIGN_IN);
               } else {
@@ -58,7 +70,9 @@ class SignIn extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    user: state.user.user
+    user: state.user.user,
+    credits: state.user.credits,
+    usertype: state.user.usertype,
   };
 }
 
