@@ -80,7 +80,7 @@ class AddTags extends React.Component {
     }).then((result) =>{
       result.json().then(tags=>{
         this.setState({alltags:tags})
-        console.log(this.state.alltags)
+        // console.log(this.state.alltags)
       })
     }) 
   }
@@ -90,6 +90,7 @@ class AddTags extends React.Component {
   }
 
   render() {
+    console.log(this.props)
 
     let taglist = this.state.alltags.map((singletag,i) => 
       <div key={i}>      
@@ -148,7 +149,9 @@ const TagCard = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    user: state.user.user
+    user: state.user.user,
+    credits: state.user.credits,
+    usertype: state.user.usertype,
   };
 }
 export default withRouter(connect(mapStateToProps)(AddTags));

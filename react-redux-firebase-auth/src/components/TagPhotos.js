@@ -124,6 +124,7 @@ class TagPhotos extends React.Component {
       label: v,
       value: v
     }));
+        console.log(this.props)
 
     const cards = this.state.Questions.map((question,i)=>
       <div key={i} >
@@ -212,7 +213,9 @@ class TagPhotos extends React.Component {
 }
 const mapStateToProps = (state) => {
   return {
-    user: state.user.user
+    user: state.user.user,
+    credits: state.user.credits,
+    usertype: state.user.usertype,
   };
 }
 export default withRouter(connect(mapStateToProps)(TagPhotos));

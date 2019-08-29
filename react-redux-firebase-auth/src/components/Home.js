@@ -15,9 +15,7 @@ class Home extends Component {
   }
 
   render() {
-    console.log(this.state)
     const { users } = this.state;
-    console.log(this.props)
 
     return (
       <div>
@@ -33,7 +31,7 @@ class Home extends Component {
 }
 
 const mapStateToProps = (state) => {
-  console.log("state",state)
+  // console.log("state",state)
   return {
     user: state.user.user,
     credits: state.user.credits,

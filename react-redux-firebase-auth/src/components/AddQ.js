@@ -113,7 +113,7 @@ class AddQ extends Component {
   }
   
   render() {
-    console.log(this.props.user)
+    // console.log(this.props.user)
     const editModal = (
       <Modal show={this.state.showModal} animation='true' onHide={this.handleModalClose}>
         <Modal.Header closeButton>

@@ -3,6 +3,8 @@ import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { requestSignIn, signedIn } from '../actions/user'
 import { auth } from '../firebase';
+import { db } from '../firebase/firebase';
+
 import * as routes from '../constants/routes';
 import './SignIn.css'
 
@@ -28,24 +30,51 @@ class SignIn extends React.Component {
             const {history,} = this.props;
 
             // console.log(this.props)
-            
+
             this.props.dispatch(requestSignIn());
 
             try {
               const response = await auth.doSignInWithEmailAndPassword(email, password);
 
-              // let dict={
-              //   // user1:response.user,
-              //   credits1:0 ,
-              //   type1:'stunt'
-              // }
-              let credits = 0;
-              let usertype= 'stunt'
+              let credits = 11;
+              let usertype= 'from Signin.js'
               // console.log("asda", Object.assign({}, response.user, credits, usertype))
-              this.props.dispatch(signedIn(response.user, credits, usertype))
+
+              // this.props.dispatch(signedIn(response.user))
+              // this.props.dispatch(signedIn(response.user, credits, usertype))
+
+
               if (response.user === undefined) {
                 history.push(routes.SIGN_IN);
               } else {
+
+
+
+
+                let credits=0
+                let type =''
+                // console.log(response.user)
+                let userRef = db.collection('users')
+                let query = userRef.where('email','==',response.user.email).get()
+                  .then(snapshot => {
+                    if (snapshot.empty) {
+                      console.log('User does not exist in Database');
+                      return;
+                    }  
+                    snapshot.forEach(doc => {
+                        let temp = doc.data()
+                        credits = temp.credits
+                        type = temp.usertype
+                        this.props.dispatch(signedIn(response.user,credits,type));         
+                    });
+                  })
+                  .catch(err => {
+                    console.log('Error getting documents', err);
+                  });
+
+
+
+                // this.props.dispatch(signedIn(response.user, credits, usertype))
                 history.push(routes.HOME);
               }
             } catch (error) {
@@ -68,12 +97,15 @@ class SignIn extends React.Component {
   }
 }
 
+
 const mapStateToProps = (state) => {
+  // console.log("state",state)
   return {
     user: state.user.user,
     credits: state.user.credits,
     usertype: state.user.usertype,
   };
 }
+
 
 export default withRouter(connect(mapStateToProps)(SignIn));

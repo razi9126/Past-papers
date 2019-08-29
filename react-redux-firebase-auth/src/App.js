@@ -32,6 +32,7 @@ class App extends React.Component {
             <hr/>
 
             <Route exact path={routes.HOME} component={() => {
+              // console.log("props",this.props)
               if (this.props.user === null) {
                 return (
                   <Landing />
