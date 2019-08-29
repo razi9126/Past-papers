@@ -28,28 +28,16 @@ class SignIn extends React.Component {
             e.preventDefault();
             const { email, password, } = this.state;
             const {history,} = this.props;
-
-            // console.log(this.props)
-
             this.props.dispatch(requestSignIn());
 
             try {
               const response = await auth.doSignInWithEmailAndPassword(email, password);
-
-              let credits = 11;
-              let usertype= 'from Signin.js'
-              // console.log("asda", Object.assign({}, response.user, credits, usertype))
-
-              // this.props.dispatch(signedIn(response.user))
               // this.props.dispatch(signedIn(response.user, credits, usertype))
 
 
               if (response.user === undefined) {
                 history.push(routes.SIGN_IN);
               } else {
-
-
-
 
                 let credits=0
                 let type =''
@@ -71,10 +59,6 @@ class SignIn extends React.Component {
                   .catch(err => {
                     console.log('Error getting documents', err);
                   });
-
-
-
-                // this.props.dispatch(signedIn(response.user, credits, usertype))
                 history.push(routes.HOME);
               }
             } catch (error) {

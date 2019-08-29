@@ -48,7 +48,7 @@ class SignUp extends React.Component {
 
           try {
             const authUser = await auth.doCreateUserWithEmailAndPassword(email, passwordOne);
-            await db.doCreateUser(authUser.user.uid, username, email, 10, 'st');
+            await db.doCreateUser(authUser.user.uid, username, email, 10, 'student');
             history.push(routes.HOME);
           } catch (error) {
             this.setState({
