@@ -53,7 +53,7 @@ class PasswordForget extends React.Component {
 
               <div className = "reset-container">
                 <div className = "control-group space-1">
-                  <input required className="icon_signin signup-login-form__btn-xl" value={this.state.email} onChange={event => this.setState({email: event.target.value })} type="email" placeholder="Email Address"/>
+                  <input required className="pwf icon_signin signup-login-form__btn-xl" value={this.state.email} onChange={event => this.setState({email: event.target.value })} type="email" placeholder="Email Address"/>
                 </div>
                 <button className="block1 signup-login-form__btn-xl" type="submit">
                   Reset My Password

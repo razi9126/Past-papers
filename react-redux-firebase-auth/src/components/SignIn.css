@@ -57,10 +57,10 @@
   	background-position: 100% -79px;
 }
 
-input{
+.input0{
 	border: 1px solid #aaa;
   	border-radius: 2px;
-  	width: 90% !important;
+  	width: 100% !important;
   	padding: 10px 35px 10px 10px;
   	margin: 5px;
   	box-sizing: border-box;
@@ -94,7 +94,7 @@ input{
 	border-color: grey ;
 }
 
-.block {
+.block0 {
 	display: inline-block;
 	width: 90%;
 	border: 1px solid;
