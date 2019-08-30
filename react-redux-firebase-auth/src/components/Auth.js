@@ -13,7 +13,7 @@ class Auth extends React.Component {
         }
 
     }
-    componentWillMount() {
+    componentDidMount() {
         firebase.auth.onAuthStateChanged(authUser => {
             this.setState({
                 isAuthenticating: false
@@ -60,6 +60,7 @@ class Auth extends React.Component {
                 </div>
             )
         }
+        // console.log("children", this.props.children)
         return (
             this.props.children
         )

@@ -25,9 +25,6 @@ export const doCreateUser = (id, username, email, credits, usertype) =>{
 		return (userRef)
 }
 
-
-
-
 export const onceGetUsers = () =>{
 	// let userRef = db.collection('users')
  //  	const allusers = userRef.get()

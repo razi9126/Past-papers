@@ -4,6 +4,10 @@ import { connect } from 'react-redux';
 import { requestSignIn, signedIn } from '../actions/user'
 import { auth } from '../firebase';
 import { db } from '../firebase/firebase';
+import * as firebase from 'firebase'
+
+import {doCreateUser} from '../firebase/db';
+
 
 import * as routes from '../constants/routes';
 import './SignIn.css'
@@ -16,6 +20,66 @@ class SignIn extends React.Component {
       password: "",
       error: null
     };
+    
+    this.googleSignIn = this.googleSignIn.bind(this);
+  }
+
+  async googleSignIn(event) {
+    event.preventDefault();
+    const {history,} = this.props;
+    this.props.dispatch(requestSignIn());    
+    
+    try{
+
+      const auth = firebase.auth;
+      const auth_ = firebase.auth();
+   
+      var provider = new auth.GoogleAuthProvider();
+      console.log("asffas")
+      auth_.signInWithPopup(provider)
+      .then(response=>{
+        console.log(response)
+        if (response.user === undefined) {
+          history.push(routes.SIGN_IN);
+        } else {
+
+          let credits=0
+          let type =''
+          console.log(response.user)
+          let userRef = db.collection('users')
+          let query = userRef.where('email','==',response.user.email).get()
+            .then(async (snapshot) => {
+              if (snapshot.empty) {
+                // console.log('11User does not exist in Database');
+                await doCreateUser(response.user.uid, response.user.displayName, response.user.email, 10, 'student');
+              }  
+              snapshot.forEach(doc => {
+                  let temp = doc.data()
+                  credits = temp.credits
+                  type = temp.usertype
+                  this.props.dispatch(signedIn(response.user,credits,type));         
+              });
+            })
+            .catch(err => {
+              console.log('Error getting documents', err);
+            });
+          history.push(routes.HOME);
+        }
+      }) 
+      .catch(e=> {
+        console.log("error", e)
+      })
+
+
+
+      
+    }catch (error) {
+      console.log("asfag")
+      this.setState({
+        error
+      });
+    }
+
   }
 
   render() {
@@ -72,6 +136,10 @@ class SignIn extends React.Component {
           <input  value={password} onChange={event => this.setState({password: event.target.value})} type="password" placeholder="Password"/>
           <button  disabled={isInvalid} type="submit">
             Sign In
+          </button>
+
+          <button onClick = {this.googleSignIn}>
+            Sign In with Google
           </button>
             { error && <p>{error.message}</p> }
         </form>
