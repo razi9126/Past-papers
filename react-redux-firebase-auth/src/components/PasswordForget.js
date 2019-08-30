@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-
-
 import { auth } from '../firebase';
+
+import "./PasswordForget.css"
 
 class PasswordForget extends React.Component {
   constructor(props) {
@@ -21,13 +21,12 @@ class PasswordForget extends React.Component {
     } = this.state;
 
     const isInvalid = email === '';
-
+    const no_rec_db = "There is no user record corresponding to this identifier. The user may have been deleted."
+    const no_rec_a = "No User exists with this Email Address"
     return (
       <div>
-        <h1>PasswordForget</h1>
-        <form onSubmit={ async (e) => {
+        <form className = "main_container1" onSubmit={ async (e) => {
           e.preventDefault();
-
           const { email } = this.state;
 
           try {
@@ -38,19 +37,34 @@ class PasswordForget extends React.Component {
             });
           }          
         }}>
-          <input
-            value={this.state.email}
-            onChange={event => this.setState({
-              email: event.target.value
-            })}
-            type="text"
-            placeholder="Email Address"
-          />
-          <button disabled={isInvalid} type="submit">
-            Reset My Password
-          </button>
 
-          { error && <p>{error.message}</p> }
+            <section>
+              <div className = "reset-container" >
+                <h1 tabindex="-1" className = "reset-heading">
+                  <div className= "reset-text">
+                    Reset Password
+                  </div>
+                </h1>
+              </div>
+
+              <div className="body-text">
+                Enter the email address associated with your account, and we’ll email you a link to reset your password.
+              </div>
+
+              <div className = "reset-container">
+                <div className = "control-group space-1">
+                  <input required className="icon_signin signup-login-form__btn-xl" value={this.state.email} onChange={event => this.setState({email: event.target.value })} type="email" placeholder="Email Address"/>
+                </div>
+                <button className="block1 signup-login-form__btn-xl" type="submit">
+                  Reset My Password
+                </button>
+              </div>
+              <br/><div className = "control-group space-2"/>
+              
+          </section>
+          <div className={error? "error_msg":null}>
+            { error && <p>{error.message === no_rec_db? no_rec_a: error.message}</p> }
+          </div>
         </form>
       </div>
     )

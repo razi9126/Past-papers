@@ -38,7 +38,7 @@ class SignIn extends React.Component {
       console.log("asffas")
       auth_.signInWithPopup(provider)
       .then(response=>{
-        console.log(response)
+        // console.log(response)
         if (response.user === undefined) {
           history.push(routes.SIGN_IN);
         } else {
@@ -146,10 +146,10 @@ class SignIn extends React.Component {
               <span className = "or"><b>or</b></span>
             </div>
             <br/>
+
             <div className = "control-group space-1">
               <input className = "icon_signin signup-login-form__btn-xl" value={email} onChange={event => this.setState({email: event.target.value})} type="email" placeholder="Email Address" required/>
             </div>
-
             <div className = "control-group space-2" id="signin_email">
               <input className = "icon_password signup-login-form__btn-xl" value={password} onChange={event => this.setState({password: event.target.value})} type="password" placeholder="Password" required/>
             </div>
@@ -162,7 +162,6 @@ class SignIn extends React.Component {
           
           <div className={error? "error_msg":null}>
             { error && <p>{error.message===er_email_db? er_email_a: (error.message===er_pw_db? er_pw_a:error.message) }</p> }
-          
           </div>
           <br/>
           <Link className = "forgot-pw" to={routes.PASSWORD_FORGET}>Forgot Password?</Link>
