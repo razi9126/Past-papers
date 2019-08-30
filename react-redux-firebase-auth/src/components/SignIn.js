@@ -69,12 +69,9 @@ class SignIn extends React.Component {
       .catch(e=> {
         console.log("error", e)
       })
-
-
-
       
     }catch (error) {
-      console.log("asfag")
+      // console.log("asfag")
       this.setState({
         error
       });
@@ -82,13 +79,23 @@ class SignIn extends React.Component {
 
   }
 
+
   render() {
+
+    const er_email_db = "There is no user record corresponding to this identifier. The user may have been deleted."
+    const er_email_a = "Invalid Email Address"
+
+    const er_pw_db = "The password is invalid or the user does not have a password."
+    const er_pw_a = "Incorrect Password"
+
     const { email, password, error, } = this.state;
     const isInvalid = password === '' || email === '';
 
+
     return (
-      <div className="main_container">
-        <form className="signUpFormContainer" onSubmit={ async (e) => {
+      <div >
+          <br/><br/><br/>
+        <form className = "main_container"onSubmit={ async (e) => {
             e.preventDefault();
             const { email, password, } = this.state;
             const {history,} = this.props;
@@ -131,19 +138,36 @@ class SignIn extends React.Component {
               });
             }
         }}>
+          <br/><div className = "control-group space-2"/>
+          <button className = "test signup-login-form__btn-xl space-1" onClick = {this.googleSignIn}>Sign In with Google</button>
+          <div className = "center-container">
+            <br/>
+            <div className = "a">
+              <span className = "or"><b>or</b></span>
+            </div>
+            <br/>
+            <div className = "control-group space-1">
+              <input className = "icon_signin signup-login-form__btn-xl" value={email} onChange={event => this.setState({email: event.target.value})} type="email" placeholder="Email Address" required/>
+            </div>
 
-          <input value={email} onChange={event => this.setState({email: event.target.value})} type="text" placeholder="Email Address"/>
-          <input  value={password} onChange={event => this.setState({password: event.target.value})} type="password" placeholder="Password"/>
-          <button  disabled={isInvalid} type="submit">
-            Sign In
-          </button>
-
-          <button onClick = {this.googleSignIn}>
-            Sign In with Google
-          </button>
-            { error && <p>{error.message}</p> }
+            <div className = "control-group space-2" id="signin_email">
+              <input className = "icon_password signup-login-form__btn-xl" value={password} onChange={event => this.setState({password: event.target.value})} type="password" placeholder="Password" required/>
+            </div>
+          
+            <button className="block signup-login-form__btn-xl space-2"  type="submit">
+              Sign In
+            </button>
+            <br/><div className = "control-group space-2"/>
+          </div>        
+          
+          <div className={error? "error_msg":null}>
+            { error && <p>{error.message===er_email_db? er_email_a: (error.message===er_pw_db? er_pw_a:error.message) }</p> }
+          
+          </div>
+          <br/>
+          <Link className = "forgot-pw" to={routes.PASSWORD_FORGET}>Forgot Password?</Link>
+          <br/><br/>
         </form>
-        <Link to={routes.PASSWORD_FORGET}>Forgot Password?</Link>
       </div>
     )
   }
@@ -161,3 +185,4 @@ const mapStateToProps = (state) => {
 
 
 export default withRouter(connect(mapStateToProps)(SignIn));
+ // <img width="20px" alt="Google &quot;G&quot; Logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png"/>
