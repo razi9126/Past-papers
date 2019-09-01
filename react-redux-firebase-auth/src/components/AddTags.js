@@ -60,8 +60,8 @@ class AddTags extends React.Component {
       }
     }).then((result) =>{
       result.json().then(body=>{
-        console.log(body.response)
-        this.setState({response:body.response, showAlert: true})
+        // console.log(body.response)
+        this.setState({response:body.response, showAlert: true, label:''})
         this.fetchtags()
         if(body.response!== "The tag already exists"){
           this.setState({counter: this.state.counter+1})
@@ -80,7 +80,6 @@ class AddTags extends React.Component {
     }).then((result) =>{
       result.json().then(tags=>{
         this.setState({alltags:tags})
-        // console.log(this.state.alltags)
       })
     }) 
   }
@@ -90,7 +89,7 @@ class AddTags extends React.Component {
   }
 
   render() {
-    console.log(this.props)
+    // console.log(this.props)
 
     let taglist = this.state.alltags.map((singletag,i) => 
       <div key={i}>      
@@ -155,4 +154,3 @@ const mapStateToProps = (state) => {
   };
 }
 export default withRouter(connect(mapStateToProps)(AddTags));
-// export default AddTags;

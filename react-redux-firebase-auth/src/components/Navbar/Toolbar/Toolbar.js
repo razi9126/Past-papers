@@ -6,13 +6,23 @@ import SignOut from '../../SignOut';
 import * as routes from '../../../constants/routes';
 
 
-const loggedin = (
+const loggedin_admin = (
     <ul>
         <li><Link to={routes.HOME}>Home</Link></li>
         <li><Link to={routes.ADDQ}>Add Questions</Link></li>
         <li><Link to={routes.EDITQ}>Edit Questions</Link></li>
         <li><Link to={routes.TAGQ}>Tag Questions</Link></li>
         <li><Link to={routes.ADDTAG}>Add Tags</Link></li>
+        <li><Link to={routes.ACCOUNT}>Account</Link></li>
+        <li> <SignOut/> </li>
+    </ul>
+
+    )
+const loggedin_student = (
+    <ul>
+        <li><Link to={routes.HOME}>Home</Link></li>
+        <li><Link to={routes.EDITQ}>Edit Questions</Link></li>
+        <li><Link to={routes.TAGQ}>Tag Questions</Link></li>
         <li> <SignOut/> </li>
     </ul>
 
@@ -34,7 +44,9 @@ const toolbar = props => (
         <div className="toolbar__logo"><a href="/">THE LOGO</a></div>
         <div className="spacer" />
         <div className="toolbar_navigation-items">
-            {props.user !== null? loggedin: loggedout}
+            {
+                props.user !== null? loggedin_admin: loggedout
+            }
         </div>
     </nav>
   </header>

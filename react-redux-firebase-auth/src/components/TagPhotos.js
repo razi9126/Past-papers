@@ -215,7 +215,7 @@ const mapStateToProps = (state) => {
   return {
     user: state.user.user,
     credits: state.user.credits,
-    usertype: state.user.usertype,
+    usertype: state.user.usertype  
   };
 }
 export default withRouter(connect(mapStateToProps)(TagPhotos));
