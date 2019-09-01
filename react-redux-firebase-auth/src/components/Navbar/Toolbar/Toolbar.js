@@ -44,8 +44,9 @@ const toolbar = props => (
         <div className="toolbar__logo"><a href="/">THE LOGO</a></div>
         <div className="spacer" />
         <div className="toolbar_navigation-items">
+     
             {
-                props.user !== null? loggedin_admin: loggedout
+                (props.user !== null )? (props.user.usertype==='admin'? loggedin_admin: loggedin_student): loggedout
             }
         </div>
     </nav>

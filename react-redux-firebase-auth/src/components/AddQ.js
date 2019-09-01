@@ -216,7 +216,9 @@ class AddQ extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    user: state.user.user
+    user: state.user.user,
+    credits: state.user.credits,
+    usertype: state.user.usertype,
   };
 }
 export default withRouter(connect(mapStateToProps)(AddQ));

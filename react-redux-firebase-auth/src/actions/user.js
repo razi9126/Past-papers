@@ -15,15 +15,6 @@ export function requestSignIn() {
     }
 }
 
-// export function signedIn(user,credits,usertype) {
-//     console.log("USER PLS" , credits)
-//     return { 
-//         type: SIGNED_IN,
-//         user,
-//         credits,
-//         usertype
-//     }
-// }
 export function signedIn(user,credits,usertype) {
     // console.log("USER PLS" , credits)
     return { 

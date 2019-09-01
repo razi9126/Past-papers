@@ -28,8 +28,8 @@ class ProgNavbar extends Component {
     }
     return (
       <div style={{height: '100%'}}>
-        <Toolbar drawerClickHandler={this.drawerToggleClickHandler} user = {this.props.user}/>
-        <SideDrawer show={this.state.sideDrawerOpen} user = {this.props.user}/>
+        <Toolbar drawerClickHandler={this.drawerToggleClickHandler} user = {this.props}/>
+        <SideDrawer show={this.state.sideDrawerOpen} user = {this.props}/>
         {backdrop}
       </div>
     )
@@ -38,7 +38,9 @@ class ProgNavbar extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    user: state.user.user
+    user: state.user.user,
+    credits: state.user.credits,
+    usertype: state.user.usertype,
   };
 }
 
