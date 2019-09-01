@@ -9,6 +9,8 @@ class Account extends React.Component {
     return (
       <div>
         <h1>Account: {this.props.user.email}</h1>
+        <h3>Account type: {this.props.usertype}</h3>
+        <h3>Account credits: {this.props.credits}</h3>
         <Link to={routes.PASSWORD_CHANGE}>Change password</Link>
       </div>
     )

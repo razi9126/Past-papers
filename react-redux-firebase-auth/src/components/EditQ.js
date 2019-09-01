@@ -27,6 +27,7 @@ class EditQ extends Component {
       selectedQDifficulty: '',
       selectedQDescription: '',
       selectedQAnswer: '',
+      permission:false,
     }
 
     this.changeHandler = this.changeHandler.bind(this);
@@ -42,6 +43,14 @@ class EditQ extends Component {
     })
   }
 
+  componentDidMount(){
+    if(this.props.user!=null){
+      console.log(this.props)
+        if (this.props.usertype==="admin"){
+          this.setState({permission: true})
+        }
+      }
+  }
   editChangeHandler = event => {
     this.setState({
       ["selectedQ"+event.target.name] : event.target.value
@@ -396,19 +405,25 @@ class EditQ extends Component {
     )
 
     return (
+      <div>
+      {!this.state.permission ? <h3 className="heading"> Inadequate access rights </h3> :
 
       <div>
       <br/><br/>
         {this.state.Form? form:cards}
         {this.state.showModal? editModal:null}
       </div>
+    }
+    </div>
     );
   }
 }
 
 const mapStateToProps = (state) => {
   return {
-    user: state.user.user
+    user: state.user.user,
+    credits: state.user.credits,
+    usertype: state.user.usertype,
   };
 }
 export default withRouter(connect(mapStateToProps)(EditQ));

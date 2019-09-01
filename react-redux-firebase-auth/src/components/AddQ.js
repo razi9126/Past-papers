@@ -5,6 +5,8 @@ import { Modal, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
+let status=false
+
 class AddQ extends Component {
   constructor(props){
     super(props);
@@ -24,6 +26,7 @@ class AddQ extends Component {
       Difficulty: 1,
       Description:'',
       Syllabus:'',
+      permission:false,
     }
     this.questionselectedHandler = this.questionselectedHandler.bind(this);
     this.answerselectedHandler = this.answerselectedHandler.bind(this);
@@ -46,6 +49,15 @@ class AddQ extends Component {
         questionText: 'Upload Question Image'
       })
     }      
+  }
+
+  componentDidMount(){
+    if(this.props.user!=null){
+      console.log(this.props)
+        if (this.props.usertype==="admin"){
+          this.setState({permission: true})
+        }
+      }
   }
 
   answerselectedHandler = event =>{
@@ -131,6 +143,8 @@ class AddQ extends Component {
     )
 
     return (
+      <div>
+      {!this.state.permission ? <h3 className="heading"> Inadequate access rights </h3> :
       <div className="main_container">
       <br/><br/>
       <br/><br/>
@@ -210,6 +224,8 @@ class AddQ extends Component {
         </div> 
         <div>{this.state.showModal? editModal:null}  </div> 
       </div>
+    }
+    </div>
     );
   }
 }

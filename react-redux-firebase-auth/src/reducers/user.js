@@ -25,7 +25,9 @@ export default function user(state = initialState, action) {
             
         case SIGN_OUT:
             return Object.assign({}, state, {
-                user: null
+                user: null,
+                // credits: 0,
+                // usertype: ''
             });
         default:
             return state;

@@ -23,6 +23,8 @@ const loggedin_student = (
         <li><Link to={routes.HOME}>Home</Link></li>
         <li><Link to={routes.EDITQ}>Edit Questions</Link></li>
         <li><Link to={routes.TAGQ}>Tag Questions</Link></li>
+        <li><Link to={routes.ACCOUNT}>Account</Link></li>
+
         <li> <SignOut/> </li>
     </ul>
 
@@ -46,7 +48,8 @@ const toolbar = props => (
         <div className="toolbar_navigation-items">
      
             {
-                (props.user !== null )? (props.user.usertype==='admin'? loggedin_admin: loggedin_student): loggedout
+            // props.user.user !== null? loggedin_admin: loggedout
+               (props.user.user !== null ? (props.user.usertype==='admin'? loggedin_admin: loggedin_student): loggedout)
             }
         </div>
     </nav>
