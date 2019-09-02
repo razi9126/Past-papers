@@ -6,9 +6,7 @@ import { connect } from 'react-redux';
 class SignOut extends React.Component {
   render() {
     return (
-      <a
-        href=""
-        onClick={(e) => {
+      <a href="" onClick={(e) => {
           e.preventDefault();
           auth.doSignOut();
         }}

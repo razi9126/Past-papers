@@ -10,7 +10,6 @@ class Home extends Component {
 
     this.state = {
       users: {},
-
     };
   }
 
@@ -40,11 +39,3 @@ const mapStateToProps = (state) => {
 }
 
 export default withRouter(connect(mapStateToProps)(Home));
-
-
-// <div>
-//   <h2>List of Usernames of Users</h2>
-//   {Object.keys(users).map(key =>
-//     <div key={key}>{users[key].username}</div>
-//   )}
-// </div>

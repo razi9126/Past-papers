@@ -219,4 +219,3 @@ const mapStateToProps = (state) => {
   };
 }
 export default withRouter(connect(mapStateToProps)(AddQ));
-// export default AddQ;

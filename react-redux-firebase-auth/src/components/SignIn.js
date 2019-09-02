@@ -5,10 +5,7 @@ import { requestSignIn, signedIn } from '../actions/user'
 import { auth } from '../firebase';
 import { db } from '../firebase/firebase';
 import * as firebase from 'firebase'
-
 import {doCreateUser} from '../firebase/db';
-
-
 import * as routes from '../constants/routes';
 import './SignIn.css'
 
@@ -20,7 +17,6 @@ class SignIn extends React.Component {
       password: "",
       error: null
     };
-    
     this.googleSignIn = this.googleSignIn.bind(this);
   }
 
@@ -30,7 +26,7 @@ class SignIn extends React.Component {
     this.props.dispatch(requestSignIn());    
     
     try{
-
+   
       const auth = firebase.auth;
       const auth_ = firebase.auth();
    
@@ -38,7 +34,6 @@ class SignIn extends React.Component {
       console.log("asffas")
       auth_.signInWithPopup(provider)
       .then(response=>{
-        // console.log(response)
         if (response.user === undefined) {
           history.push(routes.SIGN_IN);
         } else {
@@ -71,14 +66,11 @@ class SignIn extends React.Component {
       })
       
     }catch (error) {
-      // console.log("asfag")
       this.setState({
         error
       });
     }
-
   }
-
 
   render() {
 
@@ -174,7 +166,6 @@ class SignIn extends React.Component {
 
 
 const mapStateToProps = (state) => {
-  // console.log("state",state)
   return {
     user: state.user.user,
     credits: state.user.credits,
@@ -184,4 +175,3 @@ const mapStateToProps = (state) => {
 
 
 export default withRouter(connect(mapStateToProps)(SignIn));
- // <img width="20px" alt="Google &quot;G&quot; Logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png"/>

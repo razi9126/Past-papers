@@ -2,7 +2,6 @@ import React from 'react';
 import { BrowserRouter, Route} from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import Navigation from './components/Navigation';
 import SignUp from './components/SignUp';
 import SignIn from './components/SignIn';
 import PasswordChange from './components/PasswordChange';

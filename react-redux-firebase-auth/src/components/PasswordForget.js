@@ -16,11 +16,10 @@ class PasswordForget extends React.Component {
   
   render() {
     const {
-      email,
+      // email,
       error,
     } = this.state;
 
-    const isInvalid = email === '';
     const no_rec_db = "There is no user record corresponding to this identifier. The user may have been deleted."
     const no_rec_a = "No User exists with this Email Address"
     return (
@@ -56,7 +55,7 @@ class PasswordForget extends React.Component {
                   <input required className="pwf icon_signin signup-login-form__btn-xl" value={this.state.email} onChange={event => this.setState({email: event.target.value })} type="email" placeholder="Email Address"/>
                 </div>
                 <button className="block1 signup-login-form__btn-xl" type="submit">
-                  Reset My Password
+                  Reset Password
                 </button>
               </div>
               <br/><div className = "control-group space-2"/>

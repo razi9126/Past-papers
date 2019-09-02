@@ -11,6 +11,8 @@ const loggedin = (
         <li><Link to={routes.EDITQ}>Edit Questions</Link></li>
         <li><Link to={routes.TAGQ}>Tag Questions</Link></li>
         <li><Link to={routes.ADDTAG}>Add Tags</Link></li>
+        <li><Link to={routes.PASSWORD_CHANGE}>Change Password</Link></li>
+
         <li> <SignOut/> </li>
     </ul>
 
