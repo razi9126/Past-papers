@@ -26,28 +26,7 @@ export const doCreateUser = (id, username, email, credits, usertype) =>{
 }
 
 export const onceGetUsers = () =>{
-	// let userRef = db.collection('users')
- //  	const allusers = userRef.get()
- //  	.then(snapshot => {
- //  		let send_ret = new Promise((resolve1, reject1)=>{
-	// 			let ret = []
-	// 			snapshot.forEach(doc =>{
-	// 				// console.log(doc.id, "=>", doc.data())
-	// 				let add_id = new Promise((resolve, reject) =>{
-	// 					let temp = doc.data()
-	// 					temp["key"] = doc.id
-	// 					resolve(temp)
-	// 				})
-	// 				add_id.then(temp=>{ret.push(temp)})
-	// 			})
-	// 			resolve1(ret)
-	// 		})
-	// 		send_ret.then(ret=>{res.send(ret)})
 
-	//   })
-	//   .catch(err => {
-	//     console.log('Error getting documents', err);
-	//   });
 
   // db.ref('users').once('value');
 }
