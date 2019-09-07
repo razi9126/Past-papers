@@ -16,6 +16,8 @@ import AddQ from './components/AddQ';
 import EditQ from './components/EditQ';
 import TagPhotos from './components/TagPhotos';
 import AddTags from './components/AddTags';
+import EditAccount from './components/edit-account-type';
+import AddCredit from './components/edit-credit';
 import * as routes from './constants/routes';
 import Auth from './components/Auth';
 import './App.css';
@@ -51,6 +53,8 @@ class App extends React.Component {
             <PrivateRoute exact path={routes.EDITQ} user={this.props.user} component={() => <EditQ />} />
             <PrivateRoute exact path={routes.TAGQ} user={this.props.user} component={() => <TagPhotos />} />
             <PrivateRoute exact path={routes.ADDTAG} user={this.props.user} component={() => <AddTags />} />
+            <PrivateRoute exact path={routes.EDIT_ACCOUNT_TYPE} user={this.props.user} component={() => <EditAccount />} />
+            <PrivateRoute exact path={routes.EDIT_CREDIT} user={this.props.user} component={() => <AddCredit />} />
           </Auth>
         </div>
       </BrowserRouter>

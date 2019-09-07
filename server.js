@@ -496,6 +496,35 @@ app.post('/get-username', (req, res)=>{
 	  });	
 })
 
+app.post('/find-user', (req, res)=>{
+	// console.log(req.body)
+	// console.log(req.body.email)
+	db.collection('users').where('email', '==', req.body.email).get()
+	  .then(snapshot => {
+  		let send_ret = new Promise((resolve1, reject1)=>{
+				let ret = []
+				snapshot.forEach(doc =>{
+					// console.log(doc.id, "=>", doc.data())
+					let add_id = new Promise((resolve, reject) =>{
+						let temp = doc.data()
+						temp["key"] = doc.id
+						resolve(temp)
+					})
+					add_id.then(temp=>{ret.push(temp)})
+				})
+				resolve1(ret)
+			})
+			send_ret.then(ret=>{res.send(ret)})
+
+	  })
+	  .catch(err => {
+	    console.log('Error finding the user', err);
+	    res.status(400).send({response: "The user does not exist"})
+
+
+	  });
+})
+
 app.use(express.static(path.join(__dirname, 'pastpaper/build')));  
 app.get('*', function(req, res) {
 	res.sendFile(path.join(__dirname, 'pastpaper/build', 'index.html'));
