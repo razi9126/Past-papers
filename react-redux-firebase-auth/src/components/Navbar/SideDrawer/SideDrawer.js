@@ -11,7 +11,7 @@ const loggedin_admin = (
         <li><Link to={routes.EDITQ}>Edit Questions</Link></li>
         <li><Link to={routes.TAGQ}>Tag Questions</Link></li>
         <li><Link to={routes.ADDTAG}>Add Tags</Link></li>
-        <li><Link to={routes.PASSWORD_CHANGE}>Change Password</Link></li>
+        <li><Link to={routes.EDIT_PROFILE}>Edit Profile</Link></li>
         <li><Link to={routes.ACCOUNT}>Account</Link></li>
         <li> <SignOut/> </li>
     </ul>

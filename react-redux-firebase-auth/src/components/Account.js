@@ -11,7 +11,7 @@ class Account extends React.Component {
         <h1>Account: {this.props.user.email}</h1>
         <h3>Account type: {this.props.usertype}</h3>
         <h3>Account credits: {this.props.credits}</h3>
-        <Link to={routes.PASSWORD_CHANGE}>Change password</Link>
+        <Link to={routes.EDIT_PROFILE}>Change password</Link>
       </div>
     )
   }

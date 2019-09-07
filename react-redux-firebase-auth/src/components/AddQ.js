@@ -145,7 +145,7 @@ class AddQ extends Component {
     return (
       <div>
       {!this.state.permission ? <h3 className="heading"> Inadequate access rights </h3> :
-      <div className="main_container">
+      <div className="main-container-q">
       <br/><br/>
       <br/><br/>
         <h1 className="title1"> ADD A QUESTION </h1>

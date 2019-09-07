@@ -55,12 +55,6 @@ class SignUp extends React.Component {
       error,
     } = this.state;
 
-    const isInvalid =
-      passwordOne !== passwordTwo ||
-      passwordOne === '' ||
-      username === '' ||
-      email === '';
-
     return (
       <div className = "right">
         <form className="main_container" onSubmit={async (e) => {

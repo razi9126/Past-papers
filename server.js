@@ -364,7 +364,6 @@ app.post('/tag-question', (req, res)=>{
 			res.send("Error in Tagging Question")
 		})
 	})
-
 })
 
 app.post('/add-tags', (req,res)=>{
@@ -484,6 +483,18 @@ app.post('/edit-question', (req,res)=>{
 		res.send("Error in Editing Question")
 	})	
 })
+
+app.post('/get-username'), (req, res)=>{
+	db.collection('users').where('id', '==', req.body.id).get()
+	  .then(snapshot => {
+	  	snapshot.forEach(doc =>{
+		   	console.log(doc.data())  
+	  	})
+	  })
+	  .catch(err => {
+	    console.log('Error getting documents', err);
+	  });	
+}
 
 app.use(express.static(path.join(__dirname, 'pastpaper/build')));  
 app.get('*', function(req, res) {

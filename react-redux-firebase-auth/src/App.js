@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import SignUp from './components/SignUp';
 import SignIn from './components/SignIn';
-import PasswordChange from './components/PasswordChange';
+import EditProfile from './components/EditProfile';
 import PasswordForget from './components/PasswordForget';
 import Home from './components/Home';
 import Account from './components/Account';
@@ -45,7 +45,7 @@ class App extends React.Component {
             <PublicRoute exact path={routes.SIGN_UP} user={this.props.user} component={() => <SignUp />} />
             <PublicRoute exact path={routes.SIGN_IN} user={this.props.user} component={() => <SignIn />} />
             <PublicRoute exact path={routes.PASSWORD_FORGET} user={this.props.user} component={() => <PasswordForget />} />
-            <PrivateRoute exact path={routes.PASSWORD_CHANGE} user={this.props.user} component={() => <PasswordChange />} />
+            <PrivateRoute exact path={routes.EDIT_PROFILE} user={this.props.user} component={() => <EditProfile />} />
             <PrivateRoute exact path={routes.ACCOUNT} user={this.props.user} component={() => <Account />} />
             <PrivateRoute exact path={routes.ADDQ} user={this.props.user} component={() => <AddQ />} />
             <PrivateRoute exact path={routes.EDITQ} user={this.props.user} component={() => <EditQ />} />

@@ -89,7 +89,6 @@ class AddTags extends React.Component {
   }
 
   render() {
-    // console.log(this.props)
 
     let taglist = this.state.alltags.map((singletag,i) => 
       <div key={i}>      
@@ -105,7 +104,7 @@ class AddTags extends React.Component {
       <div>
       <br/> <br/>
         <React.Fragment>
-            <div className="main_container">
+            <div className="main-container-q">
               <div className="form-style1">
                 <form onSubmit = {this.handleSubmit}>
                   <fieldset>

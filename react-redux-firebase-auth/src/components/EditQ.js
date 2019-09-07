@@ -218,7 +218,7 @@ class EditQ extends Component {
   render() {
     const editform = (
       <div>       
-        <div className="main_container"> 
+        <div className="main-container-q"> 
           <div className="form-style1">
             <form onSubmit = {this.editSubmitHandler}>
               <fieldset>
@@ -299,7 +299,7 @@ class EditQ extends Component {
 
     const form= ( 
     <div>       
-      <div className="main_container"> 
+      <div className="main-container-q"> 
         <h1 className="title1"> Search for Questions To Edit</h1>    
         <div className="form-style1">
           <form onSubmit={this.submitHandler}>
@@ -393,7 +393,7 @@ class EditQ extends Component {
 
     const cards = (
       <div>
-        <div className="main_container">
+        <div className="main-container-q">
           <h1 className="title1"> Search Results </h1>    
         </div>
         <Button className="filter" variant="info" onClick={this.changeFilter}><i className="fa fa-search"></i> Change Filter</Button>

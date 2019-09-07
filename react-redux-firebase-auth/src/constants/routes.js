@@ -1,7 +1,7 @@
 export const HOME = '/';
 export const SIGN_UP = '/signup';
 export const SIGN_IN = '/signin';
-export const PASSWORD_CHANGE = '/pw-change';
+export const EDIT_PROFILE = '/edit-profile';
 export const PASSWORD_FORGET = '/pw-forget';
 export const ACCOUNT = '/account';
 export const ADDQ = '/AddQ';

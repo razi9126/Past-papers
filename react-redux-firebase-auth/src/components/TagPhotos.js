@@ -154,7 +154,7 @@ class TagPhotos extends React.Component {
     )
 
     const blank = (
-      <div className= "main_container">
+      <div className= "main-container-q">
         <br/><br/><br/>
         <Card  bg = "dark" id="blank" className ="vc">
           <Card.Header as="h5" className="white_text">
@@ -166,7 +166,7 @@ class TagPhotos extends React.Component {
 
     const searchform = (
         <div>       
-          <div className="main_container"> 
+          <div className="main-container-q"> 
             <h1 className="title1"> Search for Questions To Tag </h1>    
             <div className="form-style1">
               <form onSubmit={this.submitHandler}>

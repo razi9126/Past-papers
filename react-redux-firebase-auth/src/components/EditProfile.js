@@ -22,13 +22,13 @@ class PasswordChange extends React.Component {
 
   componentDidMount(){
     this.setState({email: this.props.user.email})
-    fetch('/get-username', {
-      method: 'POST',
-      body: JSON.stringify({id: this.props.user.uid}),
-      headers: {
-        "Content-Type": "application/json",
-      }
-    })
+    // fetch('/get-username', {
+    //   method: 'POST',
+    //   body: JSON.stringify({id: this.props.user.uid}),
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   }
+    // })
   }
 
   render() {
@@ -36,7 +36,6 @@ class PasswordChange extends React.Component {
 
     return (
       <div className = "right">
-        {console.log(this.props.user)}
         <form className= "main_container" onSubmit={ async (e) => {
           e.preventDefault();
           const { passwordOne, passwordTwo, username, oldusername } = this.state;
@@ -82,10 +81,10 @@ class PasswordChange extends React.Component {
               <input disabled className="icon_signin signup-login-form__btn-xl" value={this.state.email} type="email" placeholder="Email Address" />
             </div>
             <div className = "control-group space-1">
-              <input required className="icon_password signup-login-form__btn-xl" value={this.state.passwordOne} onChange={event => this.setState({ passwordOne: event.target.value})} type="password" placeholder="New Password" />
+              <input  className="icon_password signup-login-form__btn-xl" value={this.state.passwordOne} onChange={event => this.setState({ passwordOne: event.target.value})} type="password" placeholder="New Password" />
             </div>
             <div className = "control-group space-1">
-              <input required className="icon_password signup-login-form__btn-xl" value={this.state.passwordTwo} onChange={event => this.setState({ passwordTwo: event.target.value})} type="password" placeholder="Confirm Password" />
+              <input  className="icon_password signup-login-form__btn-xl" value={this.state.passwordTwo} onChange={event => this.setState({ passwordTwo: event.target.value})} type="password" placeholder="Confirm Password" />
             </div>
 
             <button className="block signup-login-form__btn-xl space-2" type="submit">

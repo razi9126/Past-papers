@@ -123,6 +123,11 @@ input{
 	display: inline-block;
 }
 
+.updated_msg{
+  color: green;
+  display: inline-block;
+}
+
 .footer{
 	display: inline-block;
 	width: 90%;
