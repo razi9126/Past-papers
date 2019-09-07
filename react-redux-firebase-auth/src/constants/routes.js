@@ -8,3 +8,5 @@ export const ADDQ = '/AddQ';
 export const EDITQ = '/EditQ';
 export const TAGQ = '/TagPhotos';
 export const ADDTAG = '/AddTags';
+export const EDIT_ACCOUNT_TYPE = '/edit-ccount-type';
+export const EDIT_CREDIT = 'edit-credit';

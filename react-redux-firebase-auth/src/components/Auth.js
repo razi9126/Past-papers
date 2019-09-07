@@ -19,7 +19,8 @@ class Auth extends React.Component {
                 isAuthenticating: false
             });
             if (authUser !== null) {
-
+                //
+                this.props.dispatch(signedIn(authUser,0,''));
                 // console.log(authUser)
                 let credits=0
                 let type =''
