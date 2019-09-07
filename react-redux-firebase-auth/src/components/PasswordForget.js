@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { auth } from '../firebase';
 
 import "./PasswordForget.css"
-
+import background from './blue_bg.jpg'
 class PasswordForget extends React.Component {
   constructor(props) {
     super(props);
@@ -23,7 +23,8 @@ class PasswordForget extends React.Component {
     const no_rec_db = "There is no user record corresponding to this identifier. The user may have been deleted."
     const no_rec_a = "No User exists with this Email Address"
     return (
-      <div>
+      <div className ="full-fgt-pw">
+        <img className= "bkg" src = {background} />
         <form className = "main_container1" onSubmit={ async (e) => {
           e.preventDefault();
           const { email } = this.state;
