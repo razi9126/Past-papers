@@ -484,7 +484,7 @@ app.post('/edit-question', (req,res)=>{
 	})	
 })
 
-app.post('/get-username'), (req, res)=>{
+app.post('/get-username', (req, res)=>{
 	db.collection('users').where('id', '==', req.body.id).get()
 	  .then(snapshot => {
 	  	snapshot.forEach(doc =>{
@@ -494,7 +494,7 @@ app.post('/get-username'), (req, res)=>{
 	  .catch(err => {
 	    console.log('Error getting documents', err);
 	  });	
-}
+})
 
 app.use(express.static(path.join(__dirname, 'pastpaper/build')));  
 app.get('*', function(req, res) {
