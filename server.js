@@ -489,11 +489,29 @@ app.post('/get-username', (req, res)=>{
 	  .then(snapshot => {
 	  	snapshot.forEach(doc =>{
 		   	console.log(doc.data())  
+		   	res.send(doc.data())
+		   	return; 
 	  	})
 	  })
 	  .catch(err => {
 	    console.log('Error getting documents', err);
 	  });	
+})
+
+app.post('/change-username', (req, res)=>{
+	console.log(req.body.username)
+	db.collection('users').where('id', '==', req.body.id).get()
+	.then(snapshot=>{
+		snapshot.forEach(doc1=>{
+			console.log("INSIDE", doc1.data())
+			db.collection("users").doc(doc1.id).update({username: req.body.newusername})
+			res.send("Updated Successfully")
+		})
+	})
+	.catch(err=>{
+		console.log("Error getting documents")
+	})
+
 })
 
 app.use(express.static(path.join(__dirname, 'pastpaper/build')));  

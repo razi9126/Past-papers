@@ -4,7 +4,8 @@ import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import './SignUp.css'
 
-class PasswordChange extends React.Component {
+class EditProfile extends React.Component {
+  _isMounted = false;
   constructor(props) {
     super(props);
 
@@ -21,14 +22,21 @@ class PasswordChange extends React.Component {
   }
 
   componentDidMount(){
+    this._isMounted = true;
     this.setState({email: this.props.user.email})
-    // fetch('/get-username', {
-    //   method: 'POST',
-    //   body: JSON.stringify({id: this.props.user.uid}),
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   }
-    // })
+    
+    fetch('/get-username', {
+      method: 'POST',
+      body: JSON.stringify({id: this.props.user.uid}),
+      headers: {
+        "Content-Type": "application/json",
+      }
+    }).then(res=>{
+      res.json().then(res1=>{
+        console.log(res1)
+        this.setState({username: res1.username, oldusername: res1.username})
+      })
+    })
   }
 
   render() {
@@ -57,14 +65,14 @@ class PasswordChange extends React.Component {
           }
           
           if(username!==oldusername){
-            fetch('/get-username', {
+            fetch('/change-username', {
               method: 'POST',
-              body: JSON.stringify({id: this.props.user.uid}),
+              body: JSON.stringify({id: this.props.user.uid, newusername: this.state.username}),
               headers: {
                 "Content-Type": "application/json",
               }
             }).then(res=>{
-              this.setState({updated: true, updated_msg: "Your profile has been updated."})
+              this.setState({updated: true, updated_msg: "Your profile has been updated.", oldusername:this.state.username})
             })
           }
         }}>
@@ -115,4 +123,4 @@ const mapStateToProps = (state) => {
   };
 }
 
-export default withRouter(connect(mapStateToProps)(PasswordChange));
+export default withRouter(connect(mapStateToProps)(EditProfile));
