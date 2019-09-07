@@ -37,22 +37,8 @@ class PasswordChange extends React.Component {
           });
         }
       }}>
-        <input
-          value={passwordOne}
-          onChange={event => this.setState({
-            passwordOne: event.target.value
-          })}
-          type="password"
-          placeholder="New Password"
-        />
-        <input
-          value={passwordTwo}
-          onChange={event => this.setState({
-            passwordTwo: event.target.value
-          })}
-          type="password"
-          placeholder="Confirm New Password"
-        />
+        <input value={passwordOne} onChange={event => this.setState({ passwordOne: event.target.value })}  type="password"  placeholder="New Password"/>
+        <input value={passwordTwo} onChange={event => this.setState({ passwordTwo: event.target.value })} type="password" placeholder="Confirm New Password"/>
         <button disabled={isInvalid} type="submit">
           Reset My Password
         </button>

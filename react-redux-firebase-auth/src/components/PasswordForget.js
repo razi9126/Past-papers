@@ -40,7 +40,7 @@ class PasswordForget extends React.Component {
 
             <section>
               <div className = "reset-container" >
-                <h1 tabindex="-1" className = "reset-heading">
+                <h1 tabIndex="-1" className = "reset-heading">
                   <div className= "reset-text">
                     Reset Password
                   </div>
