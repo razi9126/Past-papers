@@ -16,15 +16,27 @@ class EditAccount extends Component {
       Users:[],
       showModal:false,
       permission:false,
+      response: '',
     }
 
     this.handleChange = this.handleChange.bind(this);
     this.submitHandler = this.submitHandler.bind(this);
     this.changeFilter = this.changeFilter.bind(this);
     this.editChangeHandler = this.editChangeHandler.bind(this);
-    this.submitchange = this.submitchange.bind(this);
+    this.submitChange = this.submitChange.bind(this);
+    this.handleModalClose = this.handleModalClose.bind(this);
+    this.handleModalShow = this.handleModalShow.bind(this);
   
   }
+
+  handleModalClose() {
+    this.setState({showModal: false, Form: true})
+  }
+
+  handleModalShow() {
+    this.setState({showModal: true})
+  }
+
   editChangeHandler(event){
     this.setState({
       Type: event.target.value
@@ -37,10 +49,26 @@ class EditAccount extends Component {
     this.setState({Email: event.target.value});
   };
 
-  submitchange = event => {
+  submitChange(event) {
     event.preventDefault()
-    console.log("sfsf")
-    console.log(event)
+    fetch('/change-usertype', {
+        method: 'POST',
+        body: JSON.stringify({email: this.state.Email, usertype: this.state.Type}),
+        headers: {
+          "Content-Type": "application/json",
+        }
+    }).then(res =>{
+      res.json().then(res1=>{
+        this.setState({
+          Email: '',
+          Users: [],
+          Type: '',
+          response: res1.data
+        })
+        this.handleModalShow()
+        }
+      )
+    })
   };
 
   componentDidMount(){
@@ -52,7 +80,7 @@ class EditAccount extends Component {
       }
   };
 
-  submitHandler = event =>{
+  submitHandler(event){
     event.preventDefault();
     const { Email } = this.state;  
     fetch('/find-user', {
@@ -65,19 +93,11 @@ class EditAccount extends Component {
         result.json().then(body=>{
           console.log(body)
           this.setState({
-            Users: body,
-            Email:'',
-            Username:'',
-            Type:'',
-            Credits:'',
-            SelectedUser:'',
-            Questions:'',
+            Users: [body],
             Form: false,
           })
         })
       })  
-
-    this.setState({Form: false})    
   }
 
   changeFilter = event =>{
@@ -87,6 +107,22 @@ class EditAccount extends Component {
 
 
   render() {
+
+    const msgModal = (
+      <Modal show={this.state.showModal} animation='true' onHide={this.handleModalClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Status</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <h3>{this.state.response} </h3>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={this.handleModalClose}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    )
 
     const form= ( 
     <div>       
@@ -111,8 +147,6 @@ class EditAccount extends Component {
     </div> 
     )
 
-    
-
     const card = this.state.Users.map((user,i)=>
         <div>
           <Card bg = "dark" text= "white">
@@ -126,7 +160,7 @@ class EditAccount extends Component {
                 <b>Credits: {user.credits} <br/>  Email: {user.email}</b>
                 <br/>
 
-                <label htmlFor="job">Typet:</label>
+                <label htmlFor="job">Type:</label>
                 <select defaultValue= {user.usertype} id="job" name="Type" onChange={(e)=>{this.editChangeHandler(e)}} required>
                     <option value="student">Student</option>
                     <option value="admin">Admin</option>
@@ -136,11 +170,7 @@ class EditAccount extends Component {
               </Card.Text>
             </Card.Body> 
             <Card.Footer as="h5">
-              <div>
-                <form onSubmit={this.submitchange(user)}>
-                <input type="submit" value="Save Changes" />
-                </form>
-              </div>
+              <Button onClick={this.submitChange}> Save Changes</Button>
             </Card.Footer>
           </Card>
           <br />  
@@ -163,13 +193,14 @@ class EditAccount extends Component {
 
     return (
       <div>
-      {!this.state.permission ? <h3 className="heading"> Inadequate access rights </h3> :
+        {!this.state.permission ? <h3 className="heading"> Inadequate access rights </h3> :
 
-      <div>
-      <br/><br/>
-        {this.state.Form? form:cards}
-      </div>
-    }
+          <div>
+            <br/><br/>
+            {this.state.Form? form:cards}
+            <div>{this.state.showModal? msgModal:null}  </div> 
+          </div>
+      }
     </div>
     );
   }

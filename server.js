@@ -495,36 +495,24 @@ app.post('/get-username', (req, res)=>{
 	  })
 	  .catch(err => {
 	    console.log('Error getting documents', err);
+	    res.status(400).send({response: "The user does not exist"})
 	  });	
 })
 
 app.post('/find-user', (req, res)=>{
-	// console.log(req.body)
-	// console.log(req.body.email)
 	db.collection('users').where('email', '==', req.body.email).get()
 	  .then(snapshot => {
-  		let send_ret = new Promise((resolve1, reject1)=>{
-				let ret = []
-				snapshot.forEach(doc =>{
-					// console.log(doc.id, "=>", doc.data())
-					let add_id = new Promise((resolve, reject) =>{
-						let temp = doc.data()
-						temp["key"] = doc.id
-						resolve(temp)
-					})
-					add_id.then(temp=>{ret.push(temp)})
-				})
-				resolve1(ret)
-			})
-			send_ret.then(ret=>{res.send(ret)})
-
+		snapshot.forEach(doc =>{
+			console.log(doc.data())
+			res.send(doc.data())
+			return;
+		})
 	  })
 	  .catch(err => {
 	    console.log('Error finding the user', err);
 	    res.status(400).send({response: "The user does not exist"})
-
-
 	  });
+})
 
 app.post('/change-username', (req, res)=>{
 	console.log(req.body.username)
@@ -533,14 +521,35 @@ app.post('/change-username', (req, res)=>{
 		snapshot.forEach(doc1=>{
 			console.log("INSIDE", doc1.data())
 			db.collection("users").doc(doc1.id).update({username: req.body.newusername})
-			res.send("Updated Successfully")
+			res.send({data: "Updated User Profile Successfully"})
+			return;
 		})
 	})
 	.catch(err=>{
 		console.log("Error getting documents")
+		res.send({data: "Error getting documents"})
 	})
 
 })
+
+app.post('/change-usertype', (req, res)=>{
+	console.log(req.body.usertype)
+	db.collection('users').where('email', '==', req.body.email).get()
+	.then(snapshot=>{
+		snapshot.forEach(doc1=>{
+			console.log(doc1.data())
+			db.collection("users").doc(doc1.id).update({usertype: req.body.usertype})
+			res.send({data:"Updated User Privileges Successfully"})
+			return;
+		})
+	})
+	.catch(err=>{
+		console.log("Error getting documents")
+		res.send({data: "Error getting documents"})
+	})
+
+})
+
 
 app.use(express.static(path.join(__dirname, 'pastpaper/build')));  
 app.get('*', function(req, res) {

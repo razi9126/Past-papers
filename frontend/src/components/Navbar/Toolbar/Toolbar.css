@@ -43,6 +43,7 @@
 .toolbar_navigation-items a {
   color: white;
   text-decoration: none;
+  font-size: 90%;
 }
 
 .toolbar_navigation-items a:hover,
