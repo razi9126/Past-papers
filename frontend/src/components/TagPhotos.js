@@ -5,12 +5,6 @@ import './TagPhotos.css'
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-const options = [
-  { value: 'chocolate', label: 'Chocolate' },
-  { value: 'strawberry', label: 'Strawberry' },
-  { value: 'vanilla', label: 'Vanilla' },
-];
-
 class TagPhotos extends React.Component {
   constructor(props){
     super(props);
@@ -110,7 +104,7 @@ class TagPhotos extends React.Component {
         // document.getElementById(id).classList.add("animated-card")
         let temp = this.state.Questions
         for (var i = temp.length - 1; i >= 0; i--) {
-          if (temp[i]["id"]==id){
+          if (temp[i]["id"]===id){
             temp.splice(i,1)
           }
         }
@@ -120,10 +114,10 @@ class TagPhotos extends React.Component {
 
   render() {
     const { selectedOption } = this.state;
-    const myoptions = this.state.alltags.map(v => ({
-      label: v,
-      value: v
-    }));
+    // const myoptions = this.state.alltags.map(v => ({
+    //   label: v,
+    //   value: v
+    // }));
         console.log(this.props)
 
     const cards = this.state.Questions.map((question,i)=>

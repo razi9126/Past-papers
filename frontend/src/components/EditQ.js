@@ -46,7 +46,7 @@ class EditQ extends Component {
   componentDidMount(){
     if(this.props.user!=null){
       console.log(this.props)
-        if (this.props.usertype==="admin"){
+        if (this.props.usertype==="admin" || this.props.usertype==="teacher"){
           this.setState({permission: true})
         }
       }

@@ -488,7 +488,7 @@ app.post('/get-username', (req, res)=>{
 	db.collection('users').where('id', '==', req.body.id).get()
 	  .then(snapshot => {
 	  	snapshot.forEach(doc =>{
-		   	console.log(doc.data())  
+		   	// console.log(doc.data())  
 		   	res.send(doc.data())
 		   	return; 
 	  	})
