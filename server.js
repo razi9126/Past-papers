@@ -503,7 +503,7 @@ app.post('/find-user', (req, res)=>{
 	db.collection('users').where('email', '==', req.body.email).get()
 	  .then(snapshot => {
 		snapshot.forEach(doc =>{
-			console.log(doc.data())
+			// console.log(doc.data())
 			res.send(doc.data())
 			return;
 		})
@@ -532,14 +532,13 @@ app.post('/change-username', (req, res)=>{
 
 })
 
-app.post('/change-usertype', (req, res)=>{
-	console.log(req.body.usertype)
+app.post('/change-usertype-credits', (req, res)=>{
 	db.collection('users').where('email', '==', req.body.email).get()
 	.then(snapshot=>{
 		snapshot.forEach(doc1=>{
-			console.log(doc1.data())
-			db.collection("users").doc(doc1.id).update({usertype: req.body.usertype})
-			res.send({data:"Updated User Privileges Successfully"})
+			db.collection("users").doc(doc1.id).update({usertype: req.body.usertype,
+				credits:req.body.credits})
+			res.send({data:"Updated User Privileges and Credits Successfully"})
 			return;
 		})
 	})
@@ -549,6 +548,7 @@ app.post('/change-usertype', (req, res)=>{
 	})
 
 })
+
 
 
 app.use(express.static(path.join(__dirname, 'frontend/build')));  

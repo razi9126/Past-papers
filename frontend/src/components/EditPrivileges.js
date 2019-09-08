@@ -17,6 +17,8 @@ class EditAccount extends Component {
       showModal:false,
       permission:false,
       response: '',
+      Credits:0,
+
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -45,15 +47,22 @@ class EditAccount extends Component {
     })
   }
 
+  editChangeHandler2(event){
+    this.setState({
+      Credits: event.target.value
+    })
+  }
+
   handleChange(event) {
     this.setState({Email: event.target.value});
   };
 
   submitChange(event) {
     event.preventDefault()
-    fetch('/change-usertype', {
+    fetch('/change-usertype-credits', {
         method: 'POST',
-        body: JSON.stringify({email: this.state.Email, usertype: this.state.Type}),
+        body: JSON.stringify({email: this.state.Email, usertype: this.state.Type, 
+          credits: (Number(this.state.Users[0].credits) + Number(this.state.Credits))}),
         headers: {
           "Content-Type": "application/json",
         }
@@ -63,6 +72,7 @@ class EditAccount extends Component {
           Email: '',
           Users: [],
           Type: '',
+          Credits:0,
           response: res1.data
         })
         this.handleModalShow()
@@ -73,7 +83,6 @@ class EditAccount extends Component {
 
   componentDidMount(){
     if(this.props.user!=null){
-      console.log(this.props)
         if (this.props.usertype==="admin"){
           this.setState({permission: true})
         }
@@ -95,6 +104,9 @@ class EditAccount extends Component {
           this.setState({
             Users: [body],
             Form: false,
+            Type: body.usertype,
+          }, function () {
+            console.log(this.state.Type)
           })
         })
       })  
@@ -167,6 +179,8 @@ class EditAccount extends Component {
                     <option value="teacher">Teacher</option>
                 </select>
                 <br/>
+                <label htmlFor="job">Amount to credit:</label>
+                <input required className="credits" name='Credits' value={this.state.Credits} onChange={(e)=>{this.editChangeHandler2(e)}} type="number" placeholder="Enter credits"/>
               </Card.Text>
             </Card.Body> 
             <Card.Footer as="h5">
