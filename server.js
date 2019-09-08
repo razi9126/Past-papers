@@ -525,6 +525,7 @@ app.post('/find-user', (req, res)=>{
 
 
 	  });
+	})
 
 app.post('/change-username', (req, res)=>{
 	console.log(req.body.username)
