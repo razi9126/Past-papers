@@ -24,19 +24,23 @@ class EditProfile extends React.Component {
   componentDidMount(){
     this._isMounted = true;
     this.setState({email: this.props.user.email})
-    
-    fetch('/get-username', {
-      method: 'POST',
-      body: JSON.stringify({id: this.props.user.uid}),
-      headers: {
-        "Content-Type": "application/json",
-      }
-    }).then(res=>{
-      res.json().then(res1=>{
-        console.log(res1)
-        this.setState({username: res1.username, oldusername: res1.username})
+    if (this.props.user.displayName === undefined){
+      fetch('/get-username', {
+        method: 'POST',
+        body: JSON.stringify({id: this.props.user.uid}),
+        headers: {
+          "Content-Type": "application/json",
+        }
+      }).then(res=>{
+        res.json().then(res1=>{
+          console.log(res1)
+          this.setState({username: res1.username, oldusername: res1.username})
+        })
       })
-    })
+    }
+    else{
+      this.setState({username: this.props.user.displayName, oldusername: this.props.displayName})
+    }
   }
 
   render() {
@@ -83,7 +87,7 @@ class EditProfile extends React.Component {
             <br/>
 
             <div className = "control-group space-1">
-              <input required className="icon_username signup-login-form__btn-xl" value={this.state.username} onChange={event => this.setState({ username: event.target.value})} type="text" placeholder="Name"/>
+              <input disabled = {this.props.user.displayName!==undefined? true: false} required className="icon_username signup-login-form__btn-xl" value={this.state.username} onChange={event => this.setState({ username: event.target.value})} type="text" placeholder="Name"/>
             </div>
             <div className = "control-group space-1">
               <input disabled className="icon_signin signup-login-form__btn-xl" value={this.state.email} type="email" placeholder="Email Address" />

@@ -42,6 +42,12 @@ body {
   }
 }
 
-.progress{
-  display: inline-block;
+.spinner{
+  margin-top: 10%;
+  margin-left: 45%;
+}
+
+.spinner-actual{
+  width: 50px !important;
+  height: 50px !important;
 }

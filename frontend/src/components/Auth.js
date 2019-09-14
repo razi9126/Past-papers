@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { firebase } from '../firebase';
 import { signedIn, signOut } from '../actions/user'
 import { db } from '../firebase/firebase';
-
+import {Spinner} from 'react-bootstrap'
 class Auth extends React.Component {
     constructor(props) {
         super(props);
@@ -51,12 +51,11 @@ class Auth extends React.Component {
     render() {
         if (this.state.isAuthenticating) {
             return (
-                <div>
-                    isLoading
+                <div className = "spinner">
+                    <div className="inner-spinner"><Spinner className="spinner-actual" animation="border" variant="primary"/></div>
                 </div>
             )
         }
-        // console.log("children", this.props.children)
         return (
             this.props.children
         )

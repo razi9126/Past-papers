@@ -1,9 +1,11 @@
+/*original grey #363B42*/
+
 .toolbar {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  background: #363B42;
+  background: #18aaff;
   height: 56px;
   z-index:1; 
 }
@@ -34,21 +36,26 @@
   margin: 0;
   padding: 0;
   display: flex;
+  height: 100%;
+  line-height: 350%;
 }
 
 .toolbar_navigation-items li {
   padding: 0 0.5rem;
+  height: 100%;
+  display: inline-block;
 }
 
-.toolbar_navigation-items a {
+.toolbar_navigation-items li:hover{
+  background: #64c6ff;
+
+}
+
+.toolbar_navigation-items li a {
   color: white;
   text-decoration: none;
   font-size: 90%;
-}
-
-.toolbar_navigation-items a:hover,
-.toolbar_navigation-items a:active {
-  color: cyan;
+  display: block;
 }
 
 @media (max-width: 768px) {

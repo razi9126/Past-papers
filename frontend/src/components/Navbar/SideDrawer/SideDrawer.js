@@ -3,12 +3,31 @@ import './SideDrawer.css'
 import * as routes from '../../../constants/routes';
 import SignOut from '../../SignOut';
 import { Link } from 'react-router-dom';
+import noicon from '../../no-icon.jpg'
+ 
+
+const blue_in =props => (
+    <Link to={routes.EDIT_PROFILE}>
+    <div className = "loggedin">
+        <div className="drawer-content-in">
+            <img className ="avatar" src = {props.user.user.photoURL!==undefined? noicon: props.user.user.photoURL} />
+            {props.user.user.username===undefined? props.user.user.displayName: props.user.user.username}
+            <small> {props.user.user.email}</small>
+        </div>
+    </div>
+    </Link>
+    )
+
+const blue_out = (
+    <div className = "loggedout">
+    PUT LOGO HERE
+    </div>
+    )
 
 const loggedin_admin = (
     <ul>
         <li><Link to={routes.HOME}>Home</Link></li>
         <li><Link to={routes.EDIT_PRIVILEGES}>Privileges</Link></li>
-        <li><Link to={routes.EDIT_PROFILE}>Edit Profile</Link></li>
         <li> <SignOut/> </li>
     </ul>
 
@@ -17,7 +36,6 @@ const loggedin_admin = (
 const loggedin_student = (
     <ul>
         <li><Link to={routes.HOME}>Home</Link></li>
-        <li><Link to={routes.EDIT_PROFILE}>Edit Profile</Link></li>
         <li> <SignOut/> </li>
     </ul>
 
@@ -30,7 +48,6 @@ const loggedin_teacher = (
         <li><Link to={routes.EDITQ}>Edit Questions</Link></li>
         <li><Link to={routes.TAGQ}>Tag Questions</Link></li>
         <li><Link to={routes.ADDTAG}>Add Tags</Link></li>
-        <li><Link to={routes.EDIT_PROFILE}>Edit Profile</Link></li>
         <li> <SignOut/> </li>
     </ul>
     )
@@ -49,6 +66,7 @@ const sideDrawer = props => {
   }
   return (
     <nav className={drawerClasses}>
+      {(props.user.user !==null? blue_in(props): blue_out)}      
       {(props.user.user !== null ? (props.user.usertype==='admin'? loggedin_admin: (props.user.usertype==="teacher"? loggedin_teacher:loggedin_student)): loggedout)}
     </nav>
   )
