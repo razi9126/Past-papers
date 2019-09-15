@@ -10,9 +10,10 @@ const blue_in =props => (
     <Link to={routes.EDIT_PROFILE}>
     <div className = "loggedin">
         <div className="drawer-content-in">
-            <img className ="avatar" src = {props.user.user.photoURL!==undefined? noicon: props.user.user.photoURL} />
+            <img className ="avatar" src = {props.user.user.photoURL===undefined? noicon: props.user.user.photoURL} />
+            <div className = "spacer-2"/>
             {props.user.user.username===undefined? props.user.user.displayName: props.user.user.username}
-            <small> {props.user.user.email}</small>
+            <br/><small> {props.user.user.email}</small>
         </div>
     </div>
     </Link>

@@ -41,10 +41,11 @@
 
 .loggedout{
   width: 100%;
-  height: 56px;
+  height: 30%;
   background: #18aaff;
   color: white;
   text-align: center;
+  margin: 0 auto;
 }
 
 .loggedin{
@@ -58,19 +59,27 @@
 
 .drawer-content-in{
   position: absolute;
-  bottom: 10%;
+  width: 80%;
+  bottom: 5%;
   left: 10%;
   font-size: 1.2em;
   overflow-wrap: hidden;
 }
 
-.loggedin .avatar{
+.drawer-content-in .avatar{
   border-radius: 50%;
   width: 50%;
-  margin-left: 20%;
-  margin-top: auto;
   display: block;
-  margin-bottom: 10%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.drawer-content-in small{
+  overflow-wrap: break-word;
+}
+
+.spacer-2 {
+    margin-bottom: 10px;
 }
 
 @media (min-width: 769px) {

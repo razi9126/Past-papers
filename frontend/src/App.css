@@ -4,8 +4,6 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:400,800,700,300);
 body {
   padding: 20px 80px;
-  /*background: #363B42; */
-  /*background: #eee url("blue_bg.jpg");*/
 }
 
 .App {
@@ -19,14 +17,12 @@ body {
 }
 
 .App-header {
-  /*background-color: #282c34;*/
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  /*color: white;*/
 }
 
 .App-link {
