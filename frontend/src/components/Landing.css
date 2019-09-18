@@ -8,20 +8,126 @@
 
 .backdrop-landing{
 	padding-top: 56px;
-	background-color: dodgerblue;
+	background-color: white;
 	position:relative;
-	/*height: 20%;*/
+	/*height: 100vh;*/
   	width: 100vw;
   	color: white;
 }
 
-.backdrop-image{
-	width: 100%;
+@media screen and (min-width: 1025px) {
+  .backdrop-landing {
+    width: 100%;
+    height: 100vh;
+  }
+}	
+
+.button-landing{
+	position: absolute;
+  	width: 35%;
+  	height: 10%;
+   	display: inline-block;
+    padding: 0.5em 1em;
+    text-decoration: none;
+    border-radius: 25px;
+    border-color: white;
+    font-weight: bold;
+    color: #FFF;
+    background-image: -webkit-linear-gradient(45deg, #ff5a5f 50%, #b0c9ff 100%);
+    background-image: linear-gradient(45deg, #ff5a5f 50%, #b0c9ff 100%);
+    transition: .4s;
 }
 
-.backdrop-image-text{
-	position: absolute;
-	top: 70px;
-	padding-left: 20px;
+.button-landing:hover{
+	background-image: -webkit-linear-gradient(45deg, #ff5a5f 0%, #b0c9ff 100%);
+    background-image: linear-gradient(45deg, #ff5a5f 0%, #b0c9ff 100%);
+}
 
+@media screen and (min-width: 1025px) {
+  .button-landing {
+    top: 58%;
+  	right: 10%;
+  	font-size: 2.0em;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .button-landing {
+  	top:58%;
+  	right: 10%;
+  	font-size: 1em;
+  }
+}
+
+@media screen and (max-width: 660px) {
+  .button-landing {
+    transform: translate(-50%, -50%);
+  	-ms-transform: translate(-50%, -50%);
+  	top:80%;
+  	left: 50%;
+  	font-size: 10px;
+  }
+}
+
+.backdrop-image{
+	width: 100%;
+	height: 100%;
+}
+
+.textbox1{
+	position: absolute;
+	width: 35%;
+	transition: .4s;
+}
+
+@media screen and (min-width: 1025px) {
+  .textbox1 {
+    top: 30%;
+  	right: 10%;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .textbox1 {
+    top: 30%;
+    right: 9%;
+  }
+}
+
+@media screen and (max-width: 660px) {
+  .textbox1 {
+    transform: translate(-50%, -50%);
+  	-ms-transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+  }
+}
+
+span {
+    font: 600 1.5em/1 'Raleway', sans-serif;
+    color: #ff5a5f;
+    display: inline-block;
+    position: relative;
+    /*font-weight: 80;*/
+    /*z-index: 100;*/
+	/*text-align: center;*/
+}
+
+@media screen and (min-width: 1025px) {
+  span {
+    font-size: 4em;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  span {
+    font-size: 2em;
+  }
+}
+
+@media screen and (max-width: 660px) {
+  span {
+    font-size: 1em;
+    text-align: center;
+  }
 }
