@@ -24,7 +24,6 @@ class PasswordForget extends React.Component {
     const no_rec_a = "No User exists with this Email Address"
     return (
       <div className ="full-fgt-pw">
-        <img className= "bkg" src = {background} />
         <form className = "main_container1" onSubmit={ async (e) => {
           e.preventDefault();
           const { email } = this.state;
